@@ -1,0 +1,12 @@
+{
+  "name": "serverless-static-cfg",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./main.js"
+  },
+  "dependencies": {
+    "esprima": "*",
+    "js-yaml": "*"
+  }
+}
