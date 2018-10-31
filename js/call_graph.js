@@ -50,14 +50,14 @@ module.exports = {
   }
 
   add_node(n) {
-      if (this.nodes.some((x) => x.valueOf == n.valueOf)) {
+      if (![...this.nodes].some((x) => x.valueOf === n.valueOf)) {
                this.nodes = this.nodes.add(n);
      }
       return this;
   }
 
   add_edge(e) {
-      if (this.nodes.some((x) => x.valueOf == e.valueOf)) {
+      if (![...this.edges].some((x) => x.valueOf === e.valueOf)) {
                this.edges = this.edges.add(e);
      }
       return this;

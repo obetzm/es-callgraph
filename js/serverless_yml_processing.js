@@ -21,9 +21,9 @@ function event_to_node(e) {
 }
 
 
-function handler_events_to_graph(f) {
+function config_function_to_graph(f) {
     let lambda_node = new GraphNode("lambda", f.handler, false);
-
+    if (f.events === undefined )  { f.events=[]; }
     return f.events
         .map(event_to_node)
         .map((event_node) => ({"node": event_node, "edge": new GraphEdge(event_node, lambda_node)}))
@@ -31,8 +31,9 @@ function handler_events_to_graph(f) {
 }
 
 module.exports = function convert_serverless_to_graph(config) {
+    if (config.functions === undefined) { config.functions=[]; }
     return Object.keys(config.functions)
         .map((f) => config.functions[f])
-        .map(handler_events_to_graph)
+        .map(config_function_to_graph)
         .reduce((a, n) => a.union_graphs(n), new CallGraph());
 };
