@@ -19,23 +19,24 @@ function event_to_node(e) {
 }
 
 
-function config_function_to_graph(f) {
-    let lambda_node = new GraphNode("lambda", f.handler, false);
-    if (f.events === undefined )  { f.events=[]; }
-    return f.events
+function config_function_to_graph(fn, ctx) {
+    let lambda_node = new GraphNode("lambda", fn.handler, false).set_context(ctx);
+    if (fn.events === undefined )  { fn.events=[]; }
+    return fn.events
         .map(event_to_node)
+        .map((n)=> n.set_context(ctx))
         .map((event_node) => ({"node": event_node, "edge": new GraphEdge(event_node, lambda_node)}))
         .reduce((g, n) => g.add_node(n.node).add_edge(n.edge), new CallGraph().add_node(lambda_node));
 }
 
 
-let process_serverless = function (config) {
+let process_serverless = function (config, ctx) {
     if (config.functions === undefined) {
         config.functions = [];
     }
     return Object.keys(config.functions)
         .map((f) => config.functions[f])
-        .map(config_function_to_graph)
+        .map((fn) => config_function_to_graph(fn, ctx))
         .reduce((a, n) => a.union_graphs(n), new CallGraph());
 };
 

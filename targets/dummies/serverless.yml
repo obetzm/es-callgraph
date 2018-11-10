@@ -1,0 +1,12 @@
+frameworkVersion: '>=1.0.0 <2.0.0'
+
+service: dummy-test
+
+functions:
+  main:
+    handler: simple.main
+    events:
+      - http:
+          path: SomeService
+          method: CallMain
+          cors: true

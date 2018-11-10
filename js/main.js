@@ -1,34 +1,17 @@
 "use strict";
 
 let fs = require("fs");
-let parser = require("esprima");
 let {process_serverless, find_serverless_files, load_yaml_from_filename} = require("./serverless_yml_processing");
-let {CallGraph,GraphNode,GraphEdge} = require("./call_graph");
+let {walk_ast} = require("./call_graph_analysis");
+let {CallGraph} = require("./call_graph");
+let parser = require("esprima");
 
-
-function walk_ast(entry_file, main_method, entry_node, ancestor) {
-    let ast = parser.parseModule(entry_file);
-    let new_nodes = [];
-
-    ast.body.forEach((stmt) => {
-        console.log(JSON.stringify(stmt, null, 2));
-        if (stmt.type === "FunctionExpression" && id.name !== undefined && id.name !== null) {
-            let found_method = new GraphNode("lambda", main_method+"."+id.name);
-            new_nodes.push(found_method);
-            walk_ast(stmt.body, main_method, entry_node, found_method);
-        }
-        //look for pattern of call to db function
-    });
-
-    return new_nodes //nodes updated by this parse
-}
 
 function main(directories) {
     let files = find_serverless_files(directories);
     let graph = files
         .map(load_yaml_from_filename)
-        .map(([f, y]) => [f, process_serverless(y)])
-        .map(([f, g]) => g.set_context_on_nodes(f))
+        .map(([f, y]) => process_serverless(y, f))
         .reduce((a,n) => a.union_graphs(n), new CallGraph());
 
     let initial_files = [...graph.nodes].filter((n) => n.type === "lambda");
@@ -40,7 +23,8 @@ function main(directories) {
         let lambda_entrypoint = next_method.label.slice(next_method.label.indexOf(".") + 1);
 
         let entry_file = fs.readFileSync(lambda_filename, 'utf8');
-        walk_ast(entry_file, lambda_entrypoint, next_method, null);
+        let ast = parser.parseModule(entry_file);
+        walk_ast(ast, next_method, null);
     }//while we have files to process
 
 }//main

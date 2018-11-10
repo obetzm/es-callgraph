@@ -3,10 +3,11 @@
 module.exports = {
 "GraphNode": class GraphNode {
 
-    constructor(type, label, entry) {
+    constructor(type, label, entry, group) {
         this.type = type;
         this.label = label;
         this.isEntry = entry;
+        this.group = group || this;
     }
 
     set_context(context) {
@@ -33,14 +34,17 @@ module.exports = {
 
 "CallGraph": class CallGraph {
   constructor() {
+      if (CallGraph.instance) return CallGraph.instance;
+
       this.nodes = new Set();
       this.edges = new Set();
+      CallGraph.instance = this;
   }
 
   union_graphs(b) {
-      this.nodes = [...b.nodes].reduce((a, n) => a.add(n), this.nodes);
-      this.edges = [...b.edges].reduce((a, n) => a.add(n), this.edges);
-
+      //NOTE: now that this is a singleton, this is a null-op
+      //this.nodes = [...b.nodes].reduce((a, n) => a.add(n), this.nodes);
+      //this.edges = [...b.edges].reduce((a, n) => a.add(n), this.edges);
       return this;
   }
 
