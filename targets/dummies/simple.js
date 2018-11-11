@@ -1,11 +1,14 @@
 
 
-var library =  require("libname")
+var aws =  require("aws")
+var dynamo = aws.DynamoDB.DocumentClient();
+
+function subMethod() {
+
+}
 
 function mainMethod(a) {
-    var innerVariable = 4;
-    innerVariable = a;
-    library.method(innerVariable);
+    subMethod();
 }
 
 

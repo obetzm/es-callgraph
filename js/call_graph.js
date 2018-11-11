@@ -10,13 +10,14 @@ module.exports = {
         this.group = group || this;
     }
 
-    set_context(context) {
+    set_context(context, file) {
         this.context = context;
+        this.file = file + ".js";
         return this;
     }
 
-    valueOf() {
-        return this.type + ",,," + this.label + ",,," + this.isEntry;
+    get value() {
+        return this.type + ",,," + + this.file + "." + this.label;
     }
 },
 
@@ -27,8 +28,8 @@ module.exports = {
         this.to = to;
     }
 
-    valueOf() {
-        return this.from.valueOf() + "|||" + this.to.valueOf();
+    get value() {
+        return this.from.value + "|||" + this.to.value;
     }
 },
 
@@ -54,15 +55,16 @@ module.exports = {
   }
 
   add_node(n) {
-      if (![...this.nodes].some((x) => x.valueOf === n.valueOf)) {
+      if (![...this.nodes].some((x) => x.value === n.value)) {
+
                this.nodes = this.nodes.add(n);
      }
       return this;
   }
 
   add_edge(e) {
-      if (![...this.edges].some((x) => x.valueOf === e.valueOf)) {
-               this.edges = this.edges.add(e);
+      if (![...this.edges].some((x) => x.value === e.value)) {
+          this.edges = this.edges.add(e);
      }
       return this;
   }

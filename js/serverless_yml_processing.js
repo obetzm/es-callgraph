@@ -20,7 +20,8 @@ function event_to_node(e) {
 
 
 function config_function_to_graph(fn, ctx) {
-    let lambda_node = new GraphNode("lambda", fn.handler, false).set_context(ctx);
+    let [fn_file,fn_name] = fn.handler.split(".");
+    let lambda_node = new GraphNode("lambda", fn_name, false).set_context(ctx, fn_file);
     if (fn.events === undefined )  { fn.events=[]; }
     return fn.events
         .map(event_to_node)

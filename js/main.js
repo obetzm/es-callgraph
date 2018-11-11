@@ -19,14 +19,17 @@ function main(directories) {
 
     while (initial_files.length > 0 ) {
         let next_method = initial_files.shift();
-        let lambda_filename = next_method.context.slice(0, next_method.context.lastIndexOf("/")) + "/" + next_method.label.slice(0, next_method.label.indexOf(".")) + ".js";
-        let lambda_entrypoint = next_method.label.slice(next_method.label.indexOf(".") + 1);
+        let lambda_filename = next_method.context.slice(0, next_method.context.lastIndexOf("/")) + "/" + next_method.file;
 
         let entry_file = fs.readFileSync(lambda_filename, 'utf8');
         let ast = parser.parseModule(entry_file);
         walk_ast(ast, next_method, null);
     }//while we have files to process
-
+    console.log("Produced graph:\n");
+    console.log("Nodes");
+    console.log([...graph.nodes].map((n)=> " === " + n.label).join("\n"));
+    console.log("Edges");
+    console.log([...graph.edges].map((e)=> " === " + e.from.label + " : " + e.to.label).join("\n"));
 }//main
 
 if (require.main === module) {

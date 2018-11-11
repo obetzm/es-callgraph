@@ -3,10 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./main.js"
+    "start": "node ./js/main.js"
   },
   "dependencies": {
     "esprima": "*",
     "js-yaml": "*"
+  },
+  "devDependencies": {
+    "nodeunit": "*"
   }
 }
