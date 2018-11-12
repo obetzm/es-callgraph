@@ -14,9 +14,27 @@ class AnalysisScope {
         top_scope.parent_scope = top_scope;
         return top_scope;
     }
-    set(name, value) {this.declarations[name] = value;}
+    set(name, value) {
+        if (name.indexOf(".")>-1) {
+            let parts = name.split(".");
+            let target_obj;
+            try { target_obj = this.find(parts[0]); }
+            catch(e) {
+                target_obj = new AnalysisObject();
+                this.declarations[parts[0]] = target_obj;
+            }
+            target_obj.set(parts.slice(1).join("."), value);
+        }
+        else this.declarations[name] = value;
+    }
     find(name) {
         if (this === AnalysisScope.OutOfScope ) { throw new Error(`Attempted to find '${name}', but not in scope`); }
+        if (name.indexOf(".")>-1) {
+            let parts = name.split(".");
+            let first_obj = this.declarations[parts[0]] || this.parent_scope.find(parts[0]);
+
+            return first_obj.find(parts.slice(1).join("."));
+        }
         return this.declarations[name] || this.parent_scope.find(name);
     }
 
@@ -47,14 +65,30 @@ class AnalysisLiteral {
 class AnalysisImport {
     constructor(path) { this.path = path; }
     clone() { return this; }
+    find(key) { return this; }
 }
 
 class AnalysisObject {
     constructor() { this.fields = {}; }
-    set(key, val) { this.fields[key] = val; }
+    set(key, val) {
+        let dotIndex = key.indexOf(".");
+        let field = key.substr(0,dotIndex);
+        let target;
+        if (dotIndex>-1) {
+            try { target = this.find(field); }
+            catch(e) {
+                target = new AnalysisObject();
+                this.fields[field] = target;
+            }
+            target.set(key.substr(dotIndex + 1), val);
+        }
+        else this.fields[key] = val;
+    }
     find(key) {
+        let dotIndex = key.indexOf(".");
+        if (dotIndex>-1) { return this.fields[key.substr(0,dotIndex)].find(key.substr(dotIndex+1))}
         if (this.fields[key] !== undefined) return this.fields[key];
-        throw new Error(`Attmpted to access undefined field ${key}`);
+        throw new Error(`Attempted to access undefined field ${key}`);
     }
     clone() { return this; /*objects are passed by ref*/}
 }
@@ -63,9 +97,15 @@ function exec_fn(call_expr, scope) {
     let fn_name_parts = unroll_memberexpr(call_expr.callee);
 
     let fn = scope.find(fn_name_parts);
-    let edge = new GraphEdge(scope.graph_rep, fn.node);
-    CallGraph.instance.add_edge(edge);
-    return walk_ast(fn.tree.body, scope.graph_rep, fn.scope);
+    if ( fn instanceof AnalysisFunc ) {
+        let edge = new GraphEdge(scope.graph_rep, fn.node);
+        CallGraph.instance.add_edge(edge);
+        return walk_ast(fn.tree.body, scope.graph_rep, fn.scope);
+    }
+    else if ( fn instanceof AnalysisImport ) {
+        return new AnalysisValue(); //TODO: anyvalue
+    }
+
 }
 
 let unroll_memberexpr = (expr) => expr.type === "MemberExpression" ? `${unroll_memberexpr(expr.object)}.${unroll_memberexpr(expr.property)}` : expr.name;
@@ -101,7 +141,7 @@ function parse_assignment(lhs, rhs, scope) {
         scope.set(lhs.name, val);
     }
     else if (lhs.type === "MemberExpression") {
-        parse_assignment()
+        scope.set(unroll_memberexpr(lhs), val);
     }
     else throw new Error(`Unsupported assignment to ${JSON.stringify(lhs)}`);
 }
@@ -121,7 +161,7 @@ function walk_ast(ast, node_rep, scope) {
         let main_fn_name = node_rep.label;
         let exports = program_scope.find("module.exports");
         let main_fn = exports.find(main_fn_name);
-        console.log(ast);
+        cg.merge_nodes(node_rep, main_fn.node);
         walk_ast(main_fn.tree.body, node_rep, program_scope);
     }
     else if (ast.type === "FunctionDeclaration" && ast.id.name !== undefined ) {

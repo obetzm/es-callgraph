@@ -62,6 +62,13 @@ module.exports = {
       return this;
   }
 
+  merge_nodes(a,b) {//needed because of aliasing in module.exports
+      [...this.edges].filter((e) => e.from === b).forEach((e) => e.from = a);
+      [...this.edges].filter((e) => e.to === b).forEach((e) => e.to = a);
+      this.nodes.delete(b);
+
+  }
+
   add_edge(e) {
       if (![...this.edges].some((x) => x.value === e.value)) {
           this.edges = this.edges.add(e);

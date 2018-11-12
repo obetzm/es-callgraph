@@ -5,6 +5,7 @@ let {process_serverless, find_serverless_files, load_yaml_from_filename} = requi
 let {walk_ast} = require("./call_graph_analysis");
 let {CallGraph} = require("./call_graph");
 let parser = require("esprima");
+let {draw_graph} = require("./draw_graph");
 
 
 function main(directories) {
@@ -30,6 +31,16 @@ function main(directories) {
     console.log([...graph.nodes].map((n)=> " === " + n.label).join("\n"));
     console.log("Edges");
     console.log([...graph.edges].map((e)=> " === " + e.from.label + " : " + e.to.label).join("\n"));
+
+    draw_graph(graph)
+        .then((img) => {
+            let img_data = img.split(';base64,').pop();
+            let outfile = 'output.png';
+            fs.writeFile(outfile, img_data, {encoding: 'base64'},
+                (err)=> (err === null) ? console.log(`Generated ${outfile}`) : console.log("Error: " + err));
+        });
+
+
 }//main
 
 if (require.main === module) {

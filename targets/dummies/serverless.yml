@@ -7,6 +7,6 @@ functions:
     handler: simple.main
     events:
       - http:
-          path: SomeService
-          method: CallMain
+          path: Web
+          method: Endpoint
           cors: true

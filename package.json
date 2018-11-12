@@ -6,6 +6,9 @@
     "start": "node ./js/main.js"
   },
   "dependencies": {
+    "cytoscape": "^3.2.20",
+    "cytoscape-cose-bilkent": "^4.0.0",
+    "cytosnap": "^3.0.0",
     "esprima": "*",
     "js-yaml": "*"
   },

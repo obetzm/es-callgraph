@@ -6,15 +6,15 @@ let fs = require("fs");
 
 
 const event_label_map = Object.freeze({
-    "stream": "arn",
-    "http": "path",
-    "s3": "bucket"
+    "stream": (e) => e.arn,
+    "http": (e) => `${e.path}/${e.method}`,
+    "s3": (e) => e.bucket
 });
 
 function event_to_node(e) {
     let type = Object.keys(e)[0];
     let isEntry = (type === "http");
-    let label = e[type][event_label_map[type]];
+    let label = event_label_map[type](e[type]);
     return new GraphNode(type, label, isEntry);
 }
 
