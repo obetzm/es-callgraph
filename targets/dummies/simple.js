@@ -1,10 +1,15 @@
 
 
-var aws =  require("aws")
+var aws =  require("aws-sdk")
 var dynamo = aws.DynamoDB.DocumentClient();
 
 function subMethod() {
-    //dynamo.update("someTable", {});
+    updateMethod();
+}
+
+function updateMethod() {
+
+    dynamo.update({ TableName: "some_table"}, callback);
 }
 
 function deadEndMethod() {

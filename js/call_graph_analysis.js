@@ -51,6 +51,24 @@ class AnalysisFunc {//TODO: this needs to store delcared scope
     clone() { return this; }
 }
 
+class DatabaseHandle {
+    constructor() {}
+    find(operation) {
+        if ( operation === "update" ) {
+            return new DatabaseUpdateFunc();
+        }
+    }
+}
+
+class DatabaseUpdateFunc {
+    constructor() {}
+    setUpdateParams(v) {
+        this.params = v; //TODO: make V an AnalysisObject that's been processed already, e.g identifier points to variable in scope
+        this.table_name = v.properties[0].value.value;
+    }
+
+}
+
 class AnalysisValue {
     constructor() { this.possibilities = []; }
     add(possibility) { this.possibilities.push(possibility); }
@@ -65,7 +83,10 @@ class AnalysisLiteral {
 class AnalysisImport {
     constructor(path) { this.path = path; }
     clone() { return this; }
-    find(key) { return this; }
+    find(key) {
+        if (this.path==="aws-sdk" && key === "DynamoDB.DocumentClient") return new DatabaseHandle();
+        else return this;
+    }
 }
 
 class AnalysisObject {
@@ -95,15 +116,25 @@ class AnalysisObject {
 
 function exec_fn(call_expr, scope) {
     let fn_name_parts = unroll_memberexpr(call_expr.callee);
-
     let fn = scope.find(fn_name_parts);
     if ( fn instanceof AnalysisFunc ) {
         let edge = new GraphEdge(scope.graph_rep, fn.node);
         CallGraph.instance.add_edge(edge);
-        return walk_ast(fn.tree.body, scope.graph_rep, fn.scope);
+        return walk_ast(fn.tree.body, scope.graph_rep, new AnalysisScope(fn.node, fn.scope));
     }
-    else if ( fn instanceof AnalysisImport ) {
-        return new AnalysisValue(); //TODO: anyvalue
+    else if ( fn instanceof DatabaseHandle ) {
+        return fn;
+    }
+    else if ( fn instanceof DatabaseUpdateFunc ) {
+        fn.setUpdateParams(call_expr.arguments[0]); //TODO: what if this is an identifier, parse arguments
+        let dbcall = new GraphNode("database", "dynamodb." + fn.table_name, false, null); //TODO: what does this look like in serverless.yml
+        CallGraph.instance.add_node(dbcall);
+        let edge = new GraphEdge(scope.graph_rep, dbcall);
+        CallGraph.instance.add_edge(edge);
+        return null;
+    }
+    else {
+        throw new Error(`Tried to call a non-function as a function: ${fn_name_parts}`);
     }
 
 }
