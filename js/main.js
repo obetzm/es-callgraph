@@ -6,6 +6,8 @@ let {walk_ast} = require("./call_graph_analysis");
 let {CallGraph} = require("./call_graph");
 let parser = require("esprima");
 let {draw_graph} = require("./draw_graph");
+let {rewrite_ast} = require("./analysis_rewrite/prime_tree");
+let {CallGraphVisitor} = require("./analysis_rewrite/callgraph_visitor");
 
 
 function main(directories) {
@@ -24,7 +26,12 @@ function main(directories) {
 
         let entry_file = fs.readFileSync(lambda_filename, 'utf8');
         let ast = parser.parseModule(entry_file);
-        walk_ast(ast, next_method, null);
+        //walk_ast(ast, next_method, null);
+
+
+        let CGA = new CallGraphVisitor([next_method]);
+        let visitor_ast = rewrite_ast(ast);
+        visitor_ast.apply(CGA);
     }//while we have files to process
     console.log("Produced graph:\n");
     console.log("Nodes");

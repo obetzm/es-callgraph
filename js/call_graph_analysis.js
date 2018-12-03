@@ -2,8 +2,7 @@
 let {GraphNode,GraphEdge,CallGraph} = require("./call_graph.js");
 
 class AnalysisScope {
-    constructor(representing_node, parent_scope){
-        this.graph_rep = representing_node;
+    constructor(parent_scope){
         this.parent_scope = (parent_scope === undefined || parent_scope === null)
                                 ? this.parent_scope = AnalysisScope.OutOfScope : parent_scope;
         this.declarations = {}
@@ -28,7 +27,7 @@ class AnalysisScope {
         else this.declarations[name] = value;
     }
     find(name) {
-        if (this === AnalysisScope.OutOfScope ) { throw new Error(`Attempted to find '${name}', but not in scope`); }
+        if (this === AnalysisScope.OutOfScope ) { return null; }
         if (name.indexOf(".")>-1) {
             let parts = name.split(".");
             let first_obj = this.declarations[parts[0]] || this.parent_scope.find(parts[0]);
@@ -70,7 +69,7 @@ class DatabaseUpdateFunc {
 }
 
 class AnalysisValue {
-    constructor() { this.possibilities = []; }
+    constructor(init) { this.possibilities = []; if (init) { this.add(init); }}
     add(possibility) { this.possibilities.push(possibility); }
     clone() { return this.possibilities.reduce((a,n) => a.add(n), new AnalysisValue()); }
 }
@@ -229,5 +228,7 @@ function walk_ast(ast, node_rep, scope) {
 }
 
 module.exports = {
-    walk_ast: walk_ast
+    walk_ast: walk_ast,
+    AnalysisValue: AnalysisValue,
+    AnalysisScope: AnalysisScope
 };
