@@ -9,8 +9,7 @@ var dynamo = aws.DynamoDB.DocumentClient();
 var subMethod = function () { updateMethod() };
 
 function updateMethod() {
-
-    dynamo.update({ TableName: "some_table"}, callback);
+    dynamo.update({ TableName: "someTable"}, callback);
 }
 
 function deadEndMethod() {

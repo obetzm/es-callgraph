@@ -50,6 +50,7 @@ class AnalysisFunc {//TODO: this needs to store delcared scope
     clone() { return this; }
 }
 
+/*
 class DatabaseHandle {
     constructor() {}
     find(operation) {
@@ -67,13 +68,14 @@ class DatabaseUpdateFunc {
     }
 
 }
+*/
 
 class AnalysisValue {
     constructor(init) { this.possibilities = []; if (init) { this.add(init); }}
     add(possibility) { this.possibilities.push(possibility); }
     clone() { return this.possibilities.reduce((a,n) => a.add(n), new AnalysisValue()); }
 }
-
+/*
 class AnalysisLiteral {
     constructor(val) { this.val = val; }
     clone() { return this; } //literals are constant
@@ -87,7 +89,7 @@ class AnalysisImport {
         else return this;
     }
 }
-
+*/
 class AnalysisObject {
     constructor() { this.fields = {}; }
     set(key, val) {
@@ -112,7 +114,7 @@ class AnalysisObject {
     }
     clone() { return this; /*objects are passed by ref*/}
 }
-
+/*
 function exec_fn(call_expr, scope) {
     let fn_name_parts = unroll_memberexpr(call_expr.callee);
     let fn = scope.find(fn_name_parts);
@@ -225,10 +227,9 @@ function walk_ast(ast, node_rep, scope) {
 
 
     return retval;
-}
+}*/
 
 module.exports = {
-    walk_ast: walk_ast,
     AnalysisValue: AnalysisValue,
     AnalysisScope: AnalysisScope
 };

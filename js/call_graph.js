@@ -3,11 +3,12 @@
 module.exports = {
 "GraphNode": class GraphNode {
 
-    constructor(type, label, entry, group) {
+    constructor(type, label, entry, group, rep) {
         this.type = type;
         this.label = label;
         this.isEntry = entry;
-        this.group = group || this;
+        this.group = group || label;
+        this.rep = rep;
     }
 
     set_context(context, file) {
@@ -74,6 +75,10 @@ module.exports = {
           this.edges = this.edges.add(e);
      }
       return this;
+  }
+
+  get_external_node(type, identifier) { //TODO: cache these for faster lookup
+      return [...this.nodes].filter((n) => n.type === type && n.label.includes(identifier));
   }
 },
 

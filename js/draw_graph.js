@@ -9,7 +9,7 @@ function convert_callgraph_to_cytoscape(cg) {
     return [...cg.nodes]
         .map((n) => ({ data: {
             id: n.label,
-            parent: (n.type === "lambda") ? `lambda_${n.group.label}` : undefined,
+            parent: (n.type === "lambda") ? `lambda_${n.group}` : undefined,
             type: n.type
         }}))
         .concat(
@@ -23,7 +23,7 @@ function convert_callgraph_to_cytoscape(cg) {
         .concat(
             [...[...cg.nodes]
                 .filter((n)=>n.type === "lambda")
-                .reduce((a,n)=> a.add("lambda_"+n.group.label), new Set())]
+                .reduce((a,n)=> a.add("lambda_"+n.group), new Set())]
                 .map((l) => ({ data: { id: l, type: 'group'}})));
 
 
@@ -44,6 +44,7 @@ function draw_graph(call_graph) {
                 }
             },
             { selector: 'node[type="lambda"]', style: {'background-color': '#50b080'} },
+            { selector: 'node[type="stream"]', style: {'background-color': '#ff6600'} },
             { selector: 'node[type="http"]', style: {'background-color': '#6688EE'} },
             {
                 selector: 'edge',

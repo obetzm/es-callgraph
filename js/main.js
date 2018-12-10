@@ -2,7 +2,6 @@
 
 let fs = require("fs");
 let {process_serverless, find_serverless_files, load_yaml_from_filename} = require("./serverless_yml_processing");
-let {walk_ast} = require("./call_graph_analysis");
 let {CallGraph} = require("./call_graph");
 let parser = require("esprima");
 let {draw_graph} = require("./draw_graph");
@@ -30,7 +29,7 @@ function main(directories) {
 
 
         let CGA = new CallGraphVisitor([next_method]);
-        let visitor_ast = rewrite_ast(ast);
+        let visitor_ast = rewrite_ast(ast, next_method.group);
         visitor_ast.apply(CGA);
     }//while we have files to process
     console.log("Produced graph:\n");

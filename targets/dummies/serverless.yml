@@ -10,3 +10,9 @@ functions:
           path: Web
           method: Endpoint
           cors: true
+  dbtrigger:
+    handler: trigger.onwrite
+    events:
+      - stream:
+          type: dynamo
+          arn: aws:dynamodb:us-east-1:xxxxxx:table/someTable/stream

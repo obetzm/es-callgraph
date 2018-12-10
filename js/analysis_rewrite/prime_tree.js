@@ -29,8 +29,8 @@ class AbstractNode {
             return new LiteralNode(group, ast_node.value);
         }
         else if (ast_node.type === "MemberExpression") {
-            let obj = AbstractNode.flattenExpression(ast_node.object);
-            let field = AbstractNode.flattenExpression(ast_node.property);
+            let obj = AbstractNode.flattenExpression(ast_node.object, group);
+            let field = AbstractNode.flattenExpression(ast_node.property, group);
             return new FieldAccessNode(group, obj, field);
         }
         else if (ast_node.type === "AssignmentExpression") {
@@ -50,8 +50,8 @@ class AbstractNode {
                 }
                 return new AssignmentNode(group, lhs, rhs);
             }*/
-            let lhs = AbstractNode.flattenExpression(ast_node.left);
-            let rhs = AbstractNode.flattenExpression(ast_node.right);
+            let lhs = AbstractNode.flattenExpression(ast_node.left, group);
+            let rhs = AbstractNode.flattenExpression(ast_node.right, group);
             return new ReassignmentNode(group, lhs, rhs);
         }
         else if (ast_node.type === "CallExpression") {
@@ -103,14 +103,19 @@ class ObjectNode extends AbstractNode {
         super(group);
         this.properties = {};
         properties
-            .map((p)=>({key: p.key.name, val: AbstractNode.flattenExpression(p.value)}))
+            .map((p)=>({key: p.key.name, val: AbstractNode.flattenExpression(p.value, group)}))
             .forEach((p) => this.properties[p.key] = p.val);
     }
 
     apply(visitor) {
         visitor.visit(this);
     }
+
+    find(property) {
+        return this.properties[property] || null;
+    }
 }
+
 
 class LiteralNode extends AbstractNode {
     constructor(group, value) {
@@ -164,14 +169,22 @@ class BlockNode extends AbstractNode {
 class FunctionNode extends AbstractNode {
     constructor(group, name, params, body) {
         super(group);
-        this.name = name;
-        this.params = params.map((a)=>AbstractNode.flattenExpression(a));
+        this._name = name;
+        this.params = params.map((a)=>AbstractNode.flattenExpression(a, group));
         this.body = body.map((n) => AbstractNode.make(n, group));
-
-        this.node = new GraphNode("lambda", name, false, this);
+        this.node = new GraphNode("lambda", name, false, group, this);
     }
 
-    exec(visitor) {
+    set name(nv) {
+        this._name = nv;
+        this.node.label = nv;
+    }
+
+    get name() {
+        return this._name;
+    }
+
+    exec(visitor) { //TODO: return
         this.body.forEach((n) => n.apply(visitor));
     }
 
@@ -183,8 +196,8 @@ class FunctionNode extends AbstractNode {
 class FuncCallNode extends AbstractNode {
     constructor(group, callee, params) {
         super(group);
-        this.callee = AbstractNode.flattenExpression(callee);
-        this.params = params.map((a)=>AbstractNode.flattenExpression(a));
+        this.callee = AbstractNode.flattenExpression(callee, group);
+        this.params = params.map((a)=>AbstractNode.flattenExpression(a, group));
     }
 
     apply(visitor) {
