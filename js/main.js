@@ -1,7 +1,7 @@
 "use strict";
 
 let fs = require("fs");
-let {process_serverless, find_serverless_files, load_yaml_from_filename} = require("./serverless_yml_processing");
+let {process_yaml, find_serverless_files, load_yaml_from_filename} = require("./serverless_yml_processing");
 let {CallGraph} = require("./call_graph");
 let parser = require("esprima");
 let {draw_graph} = require("./draw_graph");
@@ -13,7 +13,7 @@ function main(directories) {
     let files = find_serverless_files(directories);
     let graph = files
         .map(load_yaml_from_filename)
-        .map(([f, y]) => process_serverless(y, f))
+        .map(([f, y]) => process_yaml(y, f))
         .reduce((a,n) => a.union_graphs(n), new CallGraph());
 
     let initial_files = [...graph.nodes].filter((n) => n.type === "lambda");
