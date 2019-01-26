@@ -83,6 +83,18 @@ class AbstractNode {
         else if (ast_node.type === "FunctionDeclaration") {
             return new FunctionNode(group, ast_node.id.name, ast_node.params, ast_node.body.body);
         }
+        else if (ast_node.type === "IfStatement") {
+            return new ConditionNode(group, AbstractNode.flattenExpression(ast_node.test, group), AbstractNode.make(ast_node.consequent, group), AbstractNode.make(ast_node.alternate, group));
+        }
+        else if (ast_node.type === "WhileStatement") {
+            return new WhileNode(group, AbstractNode.flattenExpression(ast_node.test, group), AbstractNode.make(ast_node.body, group));
+        }
+        else if (ast_node.type === "ForStatement") {
+            return new WhileNode(group, AbstractNode.flattenExpression(ast_node.test, group),
+                                        AbstractNode.flattenExpression(ast_node.init, group),
+                                        AbstractNode.flattenExpression(ast_node.update, group),
+                                        AbstractNode.make(ast_node.body, group));
+        }
     }//make
 }//AbstractNode
 
@@ -152,6 +164,44 @@ class DeclarationNode extends AssignmentNode {
     }
 }
 
+class ConditionNode extends AbstractNode {
+    constructor(group, condition, tbody, fbody) {
+        super(group);
+        this.condition = condition;
+        this.tbody = tbody;
+        this.fbody = fbody;
+    }
+
+    apply(visitor) {
+        visitor.visit(this);
+        this.condition.apply(visitor);
+        this.tbody.apply(visitor);
+        if (this.fbody !== null) this.fbody.apply(visitor);
+    }
+}
+
+class WhileNode extends AbstractNode {
+    constructor(group, condition, body) {
+        super(group);
+        this.condition = condition;
+        this.body = body;
+    }
+    apply(visitor) {
+        visitor.visit(this);
+        this.condition.apply(visitor);
+        this.body.apply(visitor);
+    }
+}
+
+class ForNode extends AbstractNode {
+    constructor(group, condition, init, update, body) {
+        super(group);
+        this.condition = condition;
+        this.init = init;
+        this.update = update;
+        this.body = body;
+    }
+}
 
 class BlockNode extends AbstractNode {
     constructor(group, children) {
@@ -231,6 +281,9 @@ module.exports = {
     ReassignmentNode: ReassignmentNode,
     DeclarationNode: DeclarationNode,
     BlockNode: BlockNode,
+    ConditionNode: ConditionNode,
+    WhileNode: WhileNode,
+    ForNode: ForNode,
     FunctionNode: FunctionNode,
     FuncCallNode: FuncCallNode,
     FieldAccessNode: FieldAccessNode

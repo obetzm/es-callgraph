@@ -29,7 +29,6 @@ let process_yaml = function (config, ctx) {
 function cf_event_to_node(e) {
     let isEntry = (e.Type === "Api");
     let label = cf_event_label_map[e.Type](e);
-    console.log(e.Properties);
     return new GraphNode(e.Type, label, isEntry);
 }
 
