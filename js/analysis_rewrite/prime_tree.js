@@ -63,6 +63,12 @@ class AbstractNode {
         else if (ast_node.type === "ObjectExpression") {
             return new ObjectNode(group, ast_node.properties);
         }
+        else if (ast_node.type === "UpdateExpression") {
+            return new UnaryNode(group, ast_node.operator, AbstractNode.flattenExpression(ast_node.argument));
+        }
+        else if (ast_node.type === "BinaryExpression") {
+            return new BinaryNode(group, ast_node.operator, AbstractNode.flattenExpression(ast_node.left), AbstractNode.flattenExpression(ast_node.right));
+        }
     }//flattenExpression
 
     static make(ast_node, group) {
@@ -84,13 +90,15 @@ class AbstractNode {
             return new FunctionNode(group, ast_node.id.name, ast_node.params, ast_node.body.body);
         }
         else if (ast_node.type === "IfStatement") {
-            return new ConditionNode(group, AbstractNode.flattenExpression(ast_node.test, group), AbstractNode.make(ast_node.consequent, group), AbstractNode.make(ast_node.alternate, group));
+            let tbody = AbstractNode.make(ast_node.consequent, group);
+            let fbody = (ast_node.alternate !== null) ? AbstractNode.make(ast_node.alternate, group) : null;
+            return new ConditionNode(group, AbstractNode.flattenExpression(ast_node.test, group), tbody, fbody);
         }
         else if (ast_node.type === "WhileStatement") {
             return new WhileNode(group, AbstractNode.flattenExpression(ast_node.test, group), AbstractNode.make(ast_node.body, group));
         }
         else if (ast_node.type === "ForStatement") {
-            return new WhileNode(group, AbstractNode.flattenExpression(ast_node.test, group),
+            return new ForNode(group, AbstractNode.flattenExpression(ast_node.test, group),
                                         AbstractNode.flattenExpression(ast_node.init, group),
                                         AbstractNode.flattenExpression(ast_node.update, group),
                                         AbstractNode.make(ast_node.body, group));
@@ -137,6 +145,34 @@ class LiteralNode extends AbstractNode {
 
     apply(visitor) {
         visitor.visit(this);
+    }
+}
+
+class UnaryNode extends AbstractNode {
+    constructor(group, op, arg) {
+        super(group);
+        this.arg = arg;
+        this.op = op;
+    }
+
+    apply(visitor) {
+        visitor.visit(this);
+        this.arg.apply(visitor);
+    }
+}
+
+class BinaryNode extends AbstractNode {
+    constructor(group, op, left, right) {
+        super(group);
+        this.left = left;
+        this.right = right;
+        this.op = op;
+    }
+
+    apply(visitor) {
+        visitor.visit(this);
+        this.left.apply(visitor);
+        this.right.apply(visitor);
     }
 }
 
@@ -200,6 +236,14 @@ class ForNode extends AbstractNode {
         this.init = init;
         this.update = update;
         this.body = body;
+    }
+
+    apply(visitor) {
+        visitor.visit(this);
+        this.init.apply(visitor);
+        this.condition.apply(visitor);
+        this.update.apply(visitor);
+        this.body.apply(visitor);
     }
 }
 
@@ -277,6 +321,8 @@ module.exports = {
     VariableNode: VariableNode,
     ObjectNode: ObjectNode,
     LiteralNode: LiteralNode,
+    UnaryNode: UnaryNode,
+    BinaryNode: BinaryNode,
     AssignmentNode: AssignmentNode,
     ReassignmentNode: ReassignmentNode,
     DeclarationNode: DeclarationNode,

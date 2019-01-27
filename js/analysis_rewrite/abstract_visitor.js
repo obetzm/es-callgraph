@@ -1,5 +1,6 @@
 
-let {VariableNode,ObjectNode,LiteralNode,AssignmentNode,BlockNode,FunctionNode,FieldAccessNode,FuncCallNode} =
+let {VariableNode,ObjectNode,LiteralNode,UnaryNode,BinaryNode,AssignmentNode,BlockNode,FunctionNode,FieldAccessNode,
+    FuncCallNode,WhileNode, ForNode, ConditionNode} =
     require("./prime_tree");
 
 class AbstractVisitor {
@@ -7,11 +8,16 @@ class AbstractVisitor {
     visitVariable(node) {}
     visitObjectLiteral(node) {}
     visitLiteral(node) {}
+    visitUnaryExpr(node) {}
+    visitBinaryExpr(node) {}
     visitAssignment(node) {}
     visitBlock(node) {}
     visitFunctionDeclaration(node) {}
     visitFieldAccess(node) {}
     visitFuncCall(node) {}
+    visitForLoop(node) {}
+    visitWhileLoop(node) {}
+    visitCondition(node) {}
 
     afterBlock(node) {}
 
@@ -22,6 +28,10 @@ class AbstractVisitor {
             this.visitObjectLiteral(node);
         else if (node instanceof LiteralNode)
             this.visitLiteral(node);
+        else if (node instanceof UnaryNode)
+            this.visitUnaryExpr(node);
+        else if (node instanceof BinaryNode)
+            this.visitBinaryExpr(node);
         else if (node instanceof AssignmentNode)
             this.visitAssignment(node);
         else if (node instanceof BlockNode)
@@ -32,6 +42,12 @@ class AbstractVisitor {
             this.visitFieldAccess(node);
         else if (node instanceof FuncCallNode)
             this.visitFuncCall(node);
+        else if (node instanceof ConditionNode)
+            this.visitCondition(node);
+        else if (node instanceof WhileNode)
+            this.visitWhileLoop(node);
+        else if (node instanceof ForNode)
+            this.visitForLoop(node);
         else throw new Error("unknown node type.")
     }
 }
