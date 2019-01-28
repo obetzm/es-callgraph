@@ -3,7 +3,7 @@ var a;
 a = myvar.myfield;
 
 var aws =  require("aws-sdk")
-var dynamo = aws.DynamoDB.DocumentClient();
+var dynamo = new aws.DynamoDB.DocumentClient();
 
 
 var subMethod = function () { updateMethod() };

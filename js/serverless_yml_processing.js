@@ -13,7 +13,8 @@ const serverless_event_label_map = Object.freeze({
 
 const cf_event_label_map = Object.freeze({
     "Api": (e) => `${e.Properties.Method} ${e.Properties.Path}`,
-    "S3": (e) => e.Properties.Bucket.Ref //TODO: ref to another variable defined in the yml
+    "S3": (e) => e.Properties.Bucket.Ref, //TODO: ref to another variable defined in the yml
+    "Schedule": (e) => `Scheduled Event`
 });
 
 
@@ -46,6 +47,7 @@ function cloudformation_config_function_to_graph(fn, ctx) {
 }
 
 let process_cloudformation = function(config, ctx) {
+    console.log(ctx);
     return Object.keys(config.Resources)
         .map((r) => config.Resources[r])
         .filter((r) => r.Type === "AWS::Serverless::Function")
@@ -95,7 +97,7 @@ let find_serverless_files = (paths, known) => {
         .reduce((all_paths, path) => all_paths.concat(fs.readdirSync(path).map((file) => path + "/" + file)), []);
 
     let found_serverless = known.concat(path_contents.filter((p) => p.endsWith(".yml") || p.endsWith(".yaml")));
-    let subdirs = path_contents.filter((p) => fs.statSync(p).isDirectory());
+    let subdirs = path_contents.filter((p) => fs.statSync(p).isDirectory() && -1 === p.indexOf("node_modules"));
 
     if (subdirs.length === 0)
         return found_serverless;

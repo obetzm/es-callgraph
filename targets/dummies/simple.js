@@ -1,5 +1,2 @@
 
-for(i=0;i<2;i++) {
-    subMethod();
-    deadEndMethod();
-}
+let x = new aws.SES()

@@ -1,5 +1,5 @@
 let {CallGraph,GraphNode,GraphEdge} = require("../call_graph");
-let {FunctionNode,FieldAccessNode,VariableNode, FuncCallNode, ObjectNode} = require("./prime_tree");
+let {FunctionNode,FieldAccessNode,VariableNode, FuncCallNode, ObjectNode, NewNode} = require("./prime_tree");
 let {AbstractVisitor} = require("./abstract_visitor");
 let {AnalysisScope, AnalysisValue} = require("../call_graph_analysis");
 
@@ -9,7 +9,8 @@ class AnalysisAmazonNode extends ObjectNode {
         super("", []);
     }
     find(property) {
-        return (property === "DynamoDB") ? new AnalysisValue(new AnalysisDynamoNode()) : null;
+        return (property === "DynamoDB") ? new AnalysisValue(new AnalysisDynamoNode()) :
+            (property === "SES") ? new AnalysisValue(new AnalysisEmailerNode()) : null;
     }
 }
 
@@ -28,7 +29,7 @@ class AnalysisDBClientNode extends ObjectNode {
         console.log("Spawning a Client Node");
     }
     find(property) {
-        return (property === "update") ? new AnalysisValue(new AnalysisDBUpdate()) : null;
+        return (property === "update" || property === "put") ? new AnalysisValue(new AnalysisDBUpdate()) : null;
     }
 }
 
@@ -38,6 +39,23 @@ class AnalysisDBUpdate {
 
     }
 }
+
+class AnalysisEmailerNode extends ObjectNode {
+    constructor () {
+        super("", []);
+    }
+    find(property) {
+        return (property === "sendEmail") ? new AnalysisValue(new AnalysisOutgoingEmail()) : null;
+    }
+}
+
+class AnalysisOutgoingEmail {
+    constructor() {}
+    exec(params) {
+
+    }
+}
+
 
 
 /*
@@ -80,9 +98,7 @@ class CallgraphVisitor extends AbstractVisitor {
             if (assgn_stmt.rhs.name === null) {
                 assgn_stmt.rhs.name = lhs;
             }
-        }
-
-        if (assgn_stmt.rhs instanceof FuncCallNode) {//if we're storing the result of a function
+        } else if (assgn_stmt.rhs instanceof FuncCallNode) {//if we're storing the result of a function
             if (assgn_stmt.rhs.callee.name
                 && assgn_stmt.rhs.callee.name === "require") {//if it's an import
                 if (assgn_stmt.rhs.params[0].value === "aws-sdk") {//if we're importing the Amazon SDK
@@ -93,7 +109,10 @@ class CallgraphVisitor extends AbstractVisitor {
                 let resolved_func = resolveField(this.scope, assgn_stmt.rhs.callee);
                 this.scope.set(assgn_stmt.lhs.name, resolved_func);
             }
-        }//if lhs = functionCall()
+        } else if (assgn_stmt.rhs instanceof NewNode ) {//if we're storing the result of an object initialization
+            let resolved_func = resolveField(this.scope, assgn_stmt.rhs.initialized);
+            this.scope.set(assgn_stmt.lhs.name, resolved_func);
+        }
 
 
         if (assgn_stmt.lhs instanceof FieldAccessNode) {
@@ -143,6 +162,10 @@ class CallgraphVisitor extends AbstractVisitor {
                 let to_node = cg.get_external_node("stream", call_stmt.params[0].properties["TableName"].value)[0];//TODO: more robust way to do this
                 cg.add_edge(new GraphEdge(this.coming_from, to_node))
             }//if it's a special call with implicit flow
+            else if(called_func instanceof AnalysisOutgoingEmail) {
+               let to_node = (cg.get_external_node("email", "") || (()=>{let n=new GraphNode("email", "Outgoing Email", false);cg.add_node(n); return[n];})())[0];
+               cg.add_edge(new GraphEdge(this.coming_from, to_node));
+            }//
             else {
                 if (this.coming_from) {
                     cg.add_edge(new GraphEdge(this.coming_from, called_func.node));

@@ -1,6 +1,6 @@
 
 let {VariableNode,ObjectNode,LiteralNode,UnaryNode,BinaryNode,AssignmentNode,BlockNode,FunctionNode,FieldAccessNode,
-    FuncCallNode,WhileNode, ForNode, ConditionNode} =
+    FuncCallNode,ReturnNode, WhileNode, ForNode, ConditionNode} =
     require("./prime_tree");
 
 class AbstractVisitor {
@@ -13,6 +13,7 @@ class AbstractVisitor {
     visitAssignment(node) {}
     visitBlock(node) {}
     visitFunctionDeclaration(node) {}
+    visitReturn(node) {}
     visitFieldAccess(node) {}
     visitFuncCall(node) {}
     visitForLoop(node) {}
@@ -38,6 +39,8 @@ class AbstractVisitor {
             this.visitBlock(node);
         else if (node instanceof FunctionNode)
             this.visitFunctionDeclaration(node);
+        else if (node instanceof ReturnNode)
+            this.visitReturn(node);
         else if (node instanceof FieldAccessNode)
             this.visitFieldAccess(node);
         else if (node instanceof FuncCallNode)

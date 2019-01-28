@@ -69,6 +69,9 @@ class AbstractNode {
         else if (ast_node.type === "BinaryExpression") {
             return new BinaryNode(group, ast_node.operator, AbstractNode.flattenExpression(ast_node.left), AbstractNode.flattenExpression(ast_node.right));
         }
+        else if (ast_node.type === "NewExpression") {
+            return new NewNode(group, AbstractNode.flattenExpression(ast_node.callee));
+        }
     }//flattenExpression
 
     static make(ast_node, group) {
@@ -88,6 +91,9 @@ class AbstractNode {
         }
         else if (ast_node.type === "FunctionDeclaration") {
             return new FunctionNode(group, ast_node.id.name, ast_node.params, ast_node.body.body);
+        }
+        else if (ast_node.type === "ReturnStatement") {
+            return new ReturnNode(group, AbstractNode.flattenExpression(ast_node.argument));
         }
         else if (ast_node.type === "IfStatement") {
             let tbody = AbstractNode.make(ast_node.consequent, group);
@@ -134,6 +140,17 @@ class ObjectNode extends AbstractNode {
     find(property) {
         return this.properties[property] || null;
     }
+}
+
+class NewNode extends AbstractNode {
+   constructor(group, initialized) {
+       super(group);
+       this.initialized = initialized;
+   }
+
+   apply(visitor) {
+       visitor.visit(this);
+   }
 }
 
 
@@ -287,6 +304,17 @@ class FunctionNode extends AbstractNode {
     }
 }
 
+class ReturnNode extends AbstractNode {
+    constructor(group, retval) {
+        super(group);
+        this.retval = retval;
+    }
+
+    apply(visitor) {
+        visitor.visit(this);
+    }
+}
+
 class FuncCallNode extends AbstractNode {
     constructor(group, callee, params) {
         super(group);
@@ -320,6 +348,7 @@ module.exports = {
     AbstractNode: AbstractNode,
     VariableNode: VariableNode,
     ObjectNode: ObjectNode,
+    NewNode: NewNode,
     LiteralNode: LiteralNode,
     UnaryNode: UnaryNode,
     BinaryNode: BinaryNode,
@@ -331,6 +360,7 @@ module.exports = {
     WhileNode: WhileNode,
     ForNode: ForNode,
     FunctionNode: FunctionNode,
+    ReturnNode: ReturnNode,
     FuncCallNode: FuncCallNode,
     FieldAccessNode: FieldAccessNode
 
