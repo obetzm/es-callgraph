@@ -46,7 +46,6 @@ function main(directories) {
                 (err)=> (err === null) ? console.log(`Generated ${outfile}`) : console.log("Error: " + err));
         });
 
-
 }//main
 
 if (require.main === module) {

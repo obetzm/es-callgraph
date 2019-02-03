@@ -22,7 +22,8 @@ class AbstractNode {
 
 
     static flattenExpression(ast_node, group) {
-        if (ast_node.type === "Identifier") {
+        if (ast_node === null) { return null; }
+        else if (ast_node.type === "Identifier") {
             return new VariableNode(group, ast_node.name);
         }
         else if (ast_node.type === "Literal") {
@@ -60,6 +61,9 @@ class AbstractNode {
         else if (ast_node.type === "FunctionExpression") {
             return new FunctionNode(group, ast_node.id, ast_node.params, ast_node.body.body);
         }
+        else if (ast_node.type === "ArrowFunctionExpression") {
+            return new FunctionNode(group, ast_node.id, ast_node.params, ast_node.body.body);//TODO: expression bodies
+        }
         else if (ast_node.type === "ObjectExpression") {
             return new ObjectNode(group, ast_node.properties);
         }
@@ -93,7 +97,7 @@ class AbstractNode {
             return new FunctionNode(group, ast_node.id.name, ast_node.params, ast_node.body.body);
         }
         else if (ast_node.type === "ReturnStatement") {
-            return new ReturnNode(group, AbstractNode.flattenExpression(ast_node.argument));
+            return new ReturnNode(group, AbstractNode.flattenExpression(ast_node.argument)); //NOTE: ast_node.argument may be null
         }
         else if (ast_node.type === "IfStatement") {
             let tbody = AbstractNode.make(ast_node.consequent, group);
@@ -277,12 +281,17 @@ class BlockNode extends AbstractNode {
     }
 }
 
+function flatten_array(arr) {
+    return arr.reduce((a,e) => a.concat(e), []);
+}
+
 class FunctionNode extends AbstractNode {
     constructor(group, name, params, body) {
+        console.log(body);
         super(group);
         this._name = name;
         this.params = params.map((a)=>AbstractNode.flattenExpression(a, group));
-        this.body = body.map((n) => AbstractNode.make(n, group));
+        this.body = flatten_array(body.map((n) => AbstractNode.make(n, group)));
         this.node = new GraphNode("lambda", name, false, group, this);
     }
 
@@ -296,6 +305,7 @@ class FunctionNode extends AbstractNode {
     }
 
     exec(visitor) { //TODO: return
+        console.log(this.body);
         this.body.forEach((n) => n.apply(visitor));
     }
 

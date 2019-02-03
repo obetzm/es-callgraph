@@ -30,6 +30,7 @@ function convert_callgraph_to_cytoscape(cg) {
 }
 
 function draw_graph(call_graph) {
+    console.log(convert_callgraph_to_cytoscape(call_graph));
     return renderer.start().then(()=> renderer.shot({
         elements: convert_callgraph_to_cytoscape(call_graph),
         layout: {
@@ -44,8 +45,11 @@ function draw_graph(call_graph) {
                 }
             },
             { selector: 'node[type="lambda"]', style: {'background-color': '#50b080'} },
+            { selector: 'node[type="Schedule"]', style: {'background-color': '#502050'} },
             { selector: 'node[type="stream"]', style: {'background-color': '#ff6600'} },
+            { selector: 'node[type="Stream"]', style: {'background-color': '#ff6600'} },
             { selector: 'node[type="http"]', style: {'background-color': '#6688EE'} },
+            { selector: 'node[type="Api"]', style: {'background-color': '#6688EE'} },
             {
                 selector: 'edge',
                 style: {

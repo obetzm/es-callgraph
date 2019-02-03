@@ -29,11 +29,21 @@ class AnalysisDBClientNode extends ObjectNode {
         console.log("Spawning a Client Node");
     }
     find(property) {
-        return (property === "update" || property === "put") ? new AnalysisValue(new AnalysisDBUpdate()) : null;
+        console.log("FINDING CLIENT: " + property);
+             if (property === "update" || property === "put") return new AnalysisValue(new AnalysisDBUpdate());
+        else if (property === "scan") return new AnalysisValue(new AnalysisDBRead());
+        else return null;
     }
 }
 
 class AnalysisDBUpdate {
+    constructor() {}
+    exec(params) {
+
+    }
+}
+
+class AnalysisDBRead {
     constructor() {}
     exec(params) {
 
@@ -86,7 +96,43 @@ class CallgraphVisitor extends AbstractVisitor {
     }
 
     visitAssignment(assgn_stmt) {
-        if (assgn_stmt.rhs instanceof FunctionNode) {
+        if (assgn_stmt.lhs instanceof FieldAccessNode) {
+
+            if ((assgn_stmt.lhs.obj.name === "module" && assgn_stmt.lhs.field.name === "exports")){
+
+                let entry_method_name = this.entrypoints[0].label;
+                console.log("Entry method is:" + entry_method_name);
+                let entry_func = assgn_stmt.rhs.properties[entry_method_name];
+                if (entry_func instanceof FunctionNode) {
+                    CallGraph.instance.merge_nodes(this.entrypoints[0], entry_func.node);
+                    entry_func.node = this.entrypoints[0]; //TODO: this is unsafe if more than one function holds a ref
+                    this.exec_func(entry_func);
+                }
+                else if (entry_func instanceof VariableNode) {
+                    let entry_methods = this.scope.find(entry_func.name);
+                    if (entry_methods) {
+                        entry_methods.possibilities.forEach((p) => {
+                            CallGraph.instance.merge_nodes(this.entrypoints[0], p.node);
+                            p.node = this.entrypoints[0]; //TODO: this is unsafe if more than one function holds a ref
+                            this.exec_func(p)
+                        });
+                    }//if entry method was found
+                }//if the entry function is not declared in module.exports
+            }//if the assignment is to module.exports
+            else if (assgn_stmt.lhs.obj.name === "exports") {
+                let entry_method_name = this.entrypoints[0].label;
+                let func_name = assgn_stmt.lhs.field.name;
+                if (func_name === entry_method_name) {
+                    let entry_func = assgn_stmt.rhs;
+                    CallGraph.instance.merge_nodes(this.entrypoints[0], entry_func.node);
+                    entry_func.node = this.entrypoints[0]; //TODO: this is unsafe if more than one function holds a ref
+                    this.exec_func(entry_func);
+                }//if the thing assigned to exports is the entry method
+            }//if the assignment is to exports.VARNAME
+        }//if the assignment is a field write
+
+
+        else if (assgn_stmt.rhs instanceof FunctionNode) {
             let lhs = assgn_stmt.lhs.name;
             let assigned_to = this.scope.find(lhs);
             if (assigned_to === null) {
@@ -114,32 +160,6 @@ class CallgraphVisitor extends AbstractVisitor {
             this.scope.set(assgn_stmt.lhs.name, resolved_func);
         }
 
-
-        if (assgn_stmt.lhs instanceof FieldAccessNode) {
-
-            if (assgn_stmt.lhs.obj.name === "module"
-                && assgn_stmt.lhs.field.name === "exports") {
-
-                let entry_method_name = this.entrypoints[0].label;
-                console.log("Entry method is:" + entry_method_name);
-                let entry_func = assgn_stmt.rhs.properties[entry_method_name];
-                if (entry_func instanceof FunctionNode) {
-                    CallGraph.instance.merge_nodes(this.entrypoints[0], entry_func.node);
-                    entry_func.node = this.entrypoints[0]; //TODO: this is unsafe if more than one function holds a ref
-                    this.exec_func(entry_func);
-                }
-                else if (entry_func instanceof VariableNode) {
-                    let entry_methods = this.scope.find(entry_func.name);
-                    if (entry_methods) {
-                        entry_methods.possibilities.forEach((p) => {
-                            CallGraph.instance.merge_nodes(this.entrypoints[0], p.node);
-                            p.node = this.entrypoints[0]; //TODO: this is unsafe if more than one function holds a ref
-                            this.exec_func(p)
-                        });
-                    }//if entry method was found
-                }//if the entry function is not declared in module.exports
-            }//if the assignment is to module.exports
-        }//if the assignment is a field write
     }//visitAssignment
 
     visitFunctionDeclaration(func_stmt) {
@@ -152,7 +172,6 @@ class CallgraphVisitor extends AbstractVisitor {
     }
 
     visitFuncCall(call_stmt) {
-
         let cg = CallGraph.instance;
 
         let func_resolutions = resolveField(this.scope, call_stmt.callee);
@@ -161,9 +180,17 @@ class CallgraphVisitor extends AbstractVisitor {
             if (called_func instanceof AnalysisDBUpdate) {
                 let to_node = cg.get_external_node("stream", call_stmt.params[0].properties["TableName"].value)[0];//TODO: more robust way to do this
                 cg.add_edge(new GraphEdge(this.coming_from, to_node))
+            } else if (called_func instanceof AnalysisDBRead) {
+                let to_node = this.coming_from;
+                let from_node = cg.get_external_node("stream", call_stmt.params[0].properties["TableName"].value)[0];//TODO: see line for AnalysisDBUpdate
+                cg.add_edge(new GraphEdge(from_node, to_node));
             }//if it's a special call with implicit flow
             else if(called_func instanceof AnalysisOutgoingEmail) {
-               let to_node = (cg.get_external_node("email", "") || (()=>{let n=new GraphNode("email", "Outgoing Email", false);cg.add_node(n); return[n];})())[0];
+                let to_node = cg.get_external_node("email", "");
+                if (to_node.length === 0) {
+                    to_node = new GraphNode("email", "Outgoing Email", false);
+                    cg.add_node(to_node);
+                } else to_node = to_node[0];
                cg.add_edge(new GraphEdge(this.coming_from, to_node));
             }//
             else {

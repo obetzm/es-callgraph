@@ -32,7 +32,7 @@ const createResponse = (statusCode, body) => {
     };
 };
 
-exports.check = (event, context, callback) => {
+exports.check = function (event, context, callback) {
     if (!tableName || !subject || !emailAdmin || !notifiedNDaysAgo || isNaN(notifiedNDaysAgo)) {
         var response;
         response = createResponse(500, 'parameter check error');
