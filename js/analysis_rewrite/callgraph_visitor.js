@@ -1,5 +1,5 @@
 let {CallGraph,GraphNode,GraphEdge} = require("../call_graph");
-let {FunctionNode,FieldAccessNode,VariableNode, FuncCallNode, ObjectNode, NewNode} = require("./prime_tree");
+let {FunctionNode,FieldAccessNode,VariableNode, FuncCallNode, ObjectNode, NewNode, LiteralNode} = require("./prime_tree");
 let {AbstractVisitor} = require("./abstract_visitor");
 let {AnalysisScope, AnalysisValue} = require("../call_graph_analysis");
 
@@ -29,9 +29,8 @@ class AnalysisDBClientNode extends ObjectNode {
         console.log("Spawning a Client Node");
     }
     find(property) {
-        console.log("FINDING CLIENT: " + property);
              if (property === "update" || property === "put") return new AnalysisValue(new AnalysisDBUpdate());
-        else if (property === "scan") return new AnalysisValue(new AnalysisDBRead());
+        else if (property === "scan" || property === "get") return new AnalysisValue(new AnalysisDBRead());
         else return null;
     }
 }
@@ -158,7 +157,13 @@ class CallgraphVisitor extends AbstractVisitor {
         } else if (assgn_stmt.rhs instanceof NewNode ) {//if we're storing the result of an object initialization
             let resolved_func = resolveField(this.scope, assgn_stmt.rhs.initialized);
             this.scope.set(assgn_stmt.lhs.name, resolved_func);
-        }
+        } else if (assgn_stmt.rhs instanceof FieldAccessNode) {
+            if (assgn_stmt.rhs.obj.obj && assgn_stmt.rhs.obj.obj.name === "process" && assgn_stmt.rhs.obj.field.name === "env") {
+                this.scope.set(assgn_stmt.lhs.name, new AnalysisValue(new LiteralNode(assgn_stmt.group, "ENV_" + assgn_stmt.rhs.field.name)));
+            }//TODO: field reference assigned to variable
+        } else if (!(assgn_stmt.rhs instanceof VariableNode || assgn_stmt.rhs instanceof FieldAccessNode)) {
+            this.scope.set(assgn_stmt.lhs.name, new AnalysisValue(assgn_stmt.rhs));
+        }//TODO: assign variable to another variable
 
     }//visitAssignment
 
@@ -173,25 +178,35 @@ class CallgraphVisitor extends AbstractVisitor {
 
     visitFuncCall(call_stmt) {
         let cg = CallGraph.instance;
-
+        console.log(call_stmt.callee);
         let func_resolutions = resolveField(this.scope, call_stmt.callee);
         if (func_resolutions !== null) {//TODO: all, not just first
             let called_func = func_resolutions.possibilities[0];
             if (called_func instanceof AnalysisDBUpdate) {
-                let to_node = cg.get_external_node("stream", call_stmt.params[0].properties["TableName"].value)[0];//TODO: more robust way to do this
-                cg.add_edge(new GraphEdge(this.coming_from, to_node))
+                let config_obj = call_stmt.params[0];
+                if (config_obj instanceof VariableNode) config_obj = this.scope.find(config_obj.name).possibilities[0];
+                let table_name = config_obj.properties["TableName"];
+                if (table_name instanceof VariableNode) table_name = this.scope.find(table_name.name).possibilities[0].value;
+                let to_node = cg.find_or_create_dynamo_node(table_name);//TODO: more robust way to do this
+                cg.add_edge(new GraphEdge(this.coming_from, to_node));
+                call_stmt.params[1].exec(this);//TODO: when func is a ref
             } else if (called_func instanceof AnalysisDBRead) {
                 let to_node = this.coming_from;
-                let from_node = cg.get_external_node("stream", call_stmt.params[0].properties["TableName"].value)[0];//TODO: see line for AnalysisDBUpdate
-                cg.add_edge(new GraphEdge(from_node, to_node));
+                let config_obj = call_stmt.params[0];
+                if (config_obj instanceof VariableNode) config_obj = this.scope.find(config_obj.name).possibilities[0];
+                let table_name = config_obj.properties["TableName"];
+                if (table_name instanceof VariableNode) table_name = this.scope.find(table_name.name).possibilities[0].value;
+                let from_node = cg.find_or_create_dynamo_node(table_name);//TODO: same problem as AnalysisDBUpdate
+                cg.add_edge(new GraphEdge(from_node, to_node, "dashed"));
+                call_stmt.params[1].exec(this);//TODO: when func is a ref
             }//if it's a special call with implicit flow
-            else if(called_func instanceof AnalysisOutgoingEmail) {
+            else if (called_func instanceof AnalysisOutgoingEmail) {
                 let to_node = cg.get_external_node("email", "");
                 if (to_node.length === 0) {
                     to_node = new GraphNode("email", "Outgoing Email", false);
                     cg.add_node(to_node);
                 } else to_node = to_node[0];
-               cg.add_edge(new GraphEdge(this.coming_from, to_node));
+                cg.add_edge(new GraphEdge(this.coming_from, to_node));
             }//
             else {
                 if (this.coming_from) {
@@ -201,6 +216,11 @@ class CallgraphVisitor extends AbstractVisitor {
                 this.exec_func(called_func);
             }//if it is a normal function call
         }//if the function can be resolved
+        else if (call_stmt.callee instanceof FieldAccessNode) {
+            if (call_stmt.callee.field.name && call_stmt.callee.field.name === "forEach") {
+                call_stmt.params[0].exec(this); //TODO: when func is a ref
+            }//TODO: consider remaining function calls
+        }
         else {
             console.log(`Warning: Cannot resolve function: ${call_stmt.callee.name}`)
         }

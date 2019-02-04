@@ -59,7 +59,7 @@ exports.check = function (event, context, callback) {
                     if(!emailCCAddress) {
                         var eParams = {
                             Destination: {
-                                ToAddresses: [record.email]
+                                ToAddresses: record.email
                             },
                             Message: {
                                 Body: {
@@ -78,8 +78,8 @@ exports.check = function (event, context, callback) {
                     } else {
                         eParams = {
                             Destination: {
-                                ToAddresses: [record.email],
-                                CcAddresses: [emailCCAddress]
+                                ToAddresses: record.email,
+                                CcAddresses: emailCCAddress
                             },
                             Message: {
                                 Body: {

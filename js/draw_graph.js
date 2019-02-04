@@ -17,7 +17,8 @@ function convert_callgraph_to_cytoscape(cg) {
                 .map((e) => ({ data: {
                     id: e.from.label+"->"+e.to.label,
                     source: e.from.label,
-                    target: e.to.label
+                    target: e.to.label,
+                    type: e.type || "plain"
                 }}))
         )
         .concat(
@@ -30,12 +31,12 @@ function convert_callgraph_to_cytoscape(cg) {
 }
 
 function draw_graph(call_graph) {
-    console.log(convert_callgraph_to_cytoscape(call_graph));
     return renderer.start().then(()=> renderer.shot({
         elements: convert_callgraph_to_cytoscape(call_graph),
         layout: {
             name: 'cose-bilkent',
             fit: true,
+            idealEdgeLength: 80,
         },
         style: [{
                 selector: 'node',
@@ -56,7 +57,10 @@ function draw_graph(call_graph) {
                     'curve-style': 'bezier',
                     'target-arrow-shape': 'triangle'
                 }
-            }],
+            },
+            { selector: 'edge[type="dashed"]', style: {'line-style': 'dashed', 'line-color': '#dd7722'}}
+
+            ],
         height: 600,
         width: 800
     }));

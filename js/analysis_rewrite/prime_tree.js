@@ -67,15 +67,16 @@ class AbstractNode {
         else if (ast_node.type === "ObjectExpression") {
             return new ObjectNode(group, ast_node.properties);
         }
-        else if (ast_node.type === "UpdateExpression") {
+        else if (ast_node.type === "UpdateExpression" || ast_node.type === "UnaryExpression") {
             return new UnaryNode(group, ast_node.operator, AbstractNode.flattenExpression(ast_node.argument));
         }
-        else if (ast_node.type === "BinaryExpression") {
+        else if (ast_node.type === "BinaryExpression" || ast_node.type === "LogicalExpression") {
             return new BinaryNode(group, ast_node.operator, AbstractNode.flattenExpression(ast_node.left), AbstractNode.flattenExpression(ast_node.right));
         }
         else if (ast_node.type === "NewExpression") {
             return new NewNode(group, AbstractNode.flattenExpression(ast_node.callee));
         }
+        else {throw new Error("unknown type: " + ast_node.type);}
     }//flattenExpression
 
     static make(ast_node, group) {
@@ -287,7 +288,6 @@ function flatten_array(arr) {
 
 class FunctionNode extends AbstractNode {
     constructor(group, name, params, body) {
-        console.log(body);
         super(group);
         this._name = name;
         this.params = params.map((a)=>AbstractNode.flattenExpression(a, group));
@@ -305,7 +305,6 @@ class FunctionNode extends AbstractNode {
     }
 
     exec(visitor) { //TODO: return
-        console.log(this.body);
         this.body.forEach((n) => n.apply(visitor));
     }
 

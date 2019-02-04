@@ -17,6 +17,13 @@ const cf_event_label_map = Object.freeze({
     "Schedule": (e) => `Scheduled Event`
 });
 
+const cf_event_to_serverless_event = Object.freeze({
+   "Api": "http",
+   "S3": "s3",
+   "Stream": "stream",
+   "Schedule": "Schedule"//TODO: serverless name for this?
+});
+
 
 let process_yaml = function (config, ctx) {
     if (ctx.indexOf("serverless") === -1) {
@@ -30,7 +37,7 @@ let process_yaml = function (config, ctx) {
 function cf_event_to_node(e) {
     let isEntry = (e.Type === "Api");
     let label = cf_event_label_map[e.Type](e);
-    return new GraphNode(e.Type, label, isEntry);
+    return new GraphNode(cf_event_to_serverless_event[e.Type], label, isEntry);
 }
 
 function cloudformation_config_function_to_graph(fn, ctx) {

@@ -28,7 +28,7 @@ class AnalysisScope {
     }
     find(name) {
         if (this === AnalysisScope.OutOfScope ) { return null; }
-        if (name.indexOf(".")>-1) {
+        if (name && name.indexOf(".")>-1) {
             let parts = name.split(".");
             let first_obj = this.declarations[parts[0]] || this.parent_scope.find(parts[0]);
 
