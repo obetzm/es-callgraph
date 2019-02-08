@@ -62,19 +62,36 @@ class AbstractNode {
             return new FunctionNode(group, ast_node.id, ast_node.params, ast_node.body.body);
         }
         else if (ast_node.type === "ArrowFunctionExpression") {
-            return new FunctionNode(group, ast_node.id, ast_node.params, ast_node.body.body);//TODO: expression bodies
+            let body = (ast_node.body.type === "BlockStatement") ? ast_node.body.body : [AbstractNode.flattenExpression(ast_node.body)];
+            return new FunctionNode(group, ast_node.id, ast_node.params, body);
         }
         else if (ast_node.type === "ObjectExpression") {
             return new ObjectNode(group, ast_node.properties);
         }
         else if (ast_node.type === "UpdateExpression" || ast_node.type === "UnaryExpression") {
-            return new UnaryNode(group, ast_node.operator, AbstractNode.flattenExpression(ast_node.argument));
+            return new UnaryNode(group, ast_node.operator, AbstractNode.flattenExpression(ast_node.argument, group));
         }
         else if (ast_node.type === "BinaryExpression" || ast_node.type === "LogicalExpression") {
-            return new BinaryNode(group, ast_node.operator, AbstractNode.flattenExpression(ast_node.left), AbstractNode.flattenExpression(ast_node.right));
+            return new BinaryNode(group, ast_node.operator, AbstractNode.flattenExpression(ast_node.left, group), AbstractNode.flattenExpression(ast_node.right, group));
         }
         else if (ast_node.type === "NewExpression") {
-            return new NewNode(group, AbstractNode.flattenExpression(ast_node.callee));
+            return new NewNode(group, AbstractNode.flattenExpression(ast_node.callee, group));
+        }
+        else if (ast_node.type === "ObjectPattern") {
+            return new ObjectNode(group, ast_node.properties);
+        }
+        else if (ast_node.type === "SequenceExpression") {
+            return new BlockNode(group, ast_node.expressions.map((e) => AbstractNode.flattenExpression(e, group)));
+        }
+        else if (ast_node.type === "ArrayExpression") {
+            //TODO: arrays
+        }
+        else if (ast_node.type === "VariableDeclaration") {
+            return ast_node.declarations.map((d) => {
+                let lhs = AbstractNode.flattenExpression(d.id, group);
+                let rhs = (d.init) ? AbstractNode.flattenExpression(d.init, group) : new LiteralNode(group, null);
+                return new DeclarationNode(group, lhs, rhs);
+            })[0];
         }
         else {throw new Error("unknown type: " + ast_node.type);}
     }//flattenExpression
@@ -92,7 +109,7 @@ class AbstractNode {
                 let lhs = AbstractNode.flattenExpression(d.id, group);
                 let rhs = (d.init) ? AbstractNode.flattenExpression(d.init, group) : new LiteralNode(group, null);
                 return new DeclarationNode(group, lhs, rhs);
-            });
+            })[0];
         }
         else if (ast_node.type === "FunctionDeclaration") {
             return new FunctionNode(group, ast_node.id.name, ast_node.params, ast_node.body.body);
@@ -262,6 +279,7 @@ class ForNode extends AbstractNode {
 
     apply(visitor) {
         visitor.visit(this);
+        console.log(this.init);
         this.init.apply(visitor);
         this.condition.apply(visitor);
         this.update.apply(visitor);

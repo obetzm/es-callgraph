@@ -79,7 +79,8 @@ let resolveField = (scope, access_node) => {
     if (access_node === null) return null;
     if (access_node instanceof FieldAccessNode) {
         let parent_obj = resolveField(scope, access_node.obj);
-        if (parent_obj === null) return null;
+        if (parent_obj === null ) return null;
+        else if (parent_obj.possibilities.length === 0) { console.log(`Warning: resolved ${access_node.obj.name}, but unable to determine possible refs.`); return null; }
         else return parent_obj.possibilities[0].find(access_node.field.name); //TODO: all possibilities, not just first
     } else return scope.find(access_node.name);
 };
@@ -178,7 +179,6 @@ class CallgraphVisitor extends AbstractVisitor {
 
     visitFuncCall(call_stmt) {
         let cg = CallGraph.instance;
-        console.log(call_stmt.callee);
         let func_resolutions = resolveField(this.scope, call_stmt.callee);
         if (func_resolutions !== null) {//TODO: all, not just first
             let called_func = func_resolutions.possibilities[0];
