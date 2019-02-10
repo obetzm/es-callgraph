@@ -93,6 +93,14 @@ class AbstractNode {
                 return new DeclarationNode(group, lhs, rhs);
             })[0];
         }
+        else if (ast_node.type === "ConditionalExpression") {
+            let cond = AbstractNode.flattenExpression(ast_node.test, group);
+            let tbody = AbstractNode.flattenExpression(ast_node.consequent, group);
+            let fbody = (ast_node.alternate !== null) ? AbstractNode.flattenExpression(ast_node.alternate, group) : null;
+            return new ConditionNode(group, cond, tbody, fbody)
+        }
+        else if (ast_node.type === "AssignmentPattern") {//TODO: default values in func parameters
+        }
         else {throw new Error("unknown type: " + ast_node.type);}
     }//flattenExpression
 
@@ -131,6 +139,7 @@ class AbstractNode {
                                         AbstractNode.flattenExpression(ast_node.update, group),
                                         AbstractNode.make(ast_node.body, group));
         }
+        else {console.log(ast_node.params[1]); throw new Error("unknown type: " + ast_node.type);}
     }//make
 }//AbstractNode
 
@@ -279,7 +288,6 @@ class ForNode extends AbstractNode {
 
     apply(visitor) {
         visitor.visit(this);
-        console.log(this.init);
         this.init.apply(visitor);
         this.condition.apply(visitor);
         this.update.apply(visitor);

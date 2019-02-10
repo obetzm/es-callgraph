@@ -81,7 +81,7 @@ let resolveField = (scope, access_node) => {
         let parent_obj = resolveField(scope, access_node.obj);
         if (parent_obj === null ) return null;
         else if (parent_obj.possibilities.length === 0) { console.log(`Warning: resolved ${access_node.obj.name}, but unable to determine possible refs.`); return null; }
-        else return parent_obj.possibilities[0].find(access_node.field.name); //TODO: all possibilities, not just first
+        else return parent_obj.possibilities.reduce((a,n) => a.concat(n.find(access_node.field.name)), new AnalysisValue());
     } else return scope.find(access_node.name);
 };
 
@@ -126,6 +126,7 @@ class CallgraphVisitor extends AbstractVisitor {
                     let entry_func = assgn_stmt.rhs;
                     CallGraph.instance.merge_nodes(this.entrypoints[0], entry_func.node);
                     entry_func.node = this.entrypoints[0]; //TODO: this is unsafe if more than one function holds a ref
+                    console.log(entry_func);
                     this.exec_func(entry_func);
                 }//if the thing assigned to exports is the entry method
             }//if the assignment is to exports.VARNAME
@@ -180,8 +181,8 @@ class CallgraphVisitor extends AbstractVisitor {
     visitFuncCall(call_stmt) {
         let cg = CallGraph.instance;
         let func_resolutions = resolveField(this.scope, call_stmt.callee);
-        if (func_resolutions !== null) {//TODO: all, not just first
-            let called_func = func_resolutions.possibilities[0];
+        if (func_resolutions !== null && func_resolutions.possibilities.length > 0) {
+            let called_func = func_resolutions.possibilities[0];//TODO: all, not just first
             if (called_func instanceof AnalysisDBUpdate) {
                 let config_obj = call_stmt.params[0];
                 if (config_obj instanceof VariableNode) config_obj = this.scope.find(config_obj.name).possibilities[0];
@@ -210,6 +211,7 @@ class CallgraphVisitor extends AbstractVisitor {
             }//
             else {
                 if (this.coming_from) {
+                    console.log(called_func);
                     cg.add_edge(new GraphEdge(this.coming_from, called_func.node));
                     cg.add_node(called_func.node);
                 }//if we're not in global scope when making this call

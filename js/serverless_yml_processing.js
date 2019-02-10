@@ -54,7 +54,6 @@ function cloudformation_config_function_to_graph(fn, ctx) {
 }
 
 let process_cloudformation = function(config, ctx) {
-    console.log(ctx);
     return Object.keys(config.Resources)
         .map((r) => config.Resources[r])
         .filter((r) => r.Type === "AWS::Serverless::Function")

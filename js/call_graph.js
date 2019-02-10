@@ -15,7 +15,7 @@ class GraphNode {
     }
 
     get value() {
-        return this.type + ",,," + + this.file + "." + this.label;
+        return this.type + ",,," + this.context + "." + this.file + "." + this.label;
     }
 }
 
