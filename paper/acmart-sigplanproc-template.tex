@@ -153,31 +153,19 @@ Serverless computing represents a new paradigm for web development in which appl
 
 This model, while offering many advantages for applications which require elastic scalability, creates a gap in tooling for debugging and program analysis. Because containers are reused across different applications to maximize performance, the current generation of serverless platforms are inherently stateless, requiring data that is used in more than one lambda function to be passed directly or persisted and retrieved between each lambda. Existing commercial serverless platforms such as AWS Lambda place strict bounds on the running time and available memory for each individual lambda, encouraging developers to create flows that chain several lambdas together to complete a single task \cite{trends}. As each stage of this pipeline is a separate context that may even execute on a different machine, stack information that would normally serve a primary mechanism for a developer to identify defective paths does not exist. Likewise, classic methods of static analysis will fail to associate writes to a data store with events that trigger off of that data store, losing critical information about the flow of data between parts of an application. \par
 
-However, such information remains an invaluable tool for developers. This has prompted platform providers to release products such as Amazon X-Ray\footnote{https://docs.aws.amazon.com/xray/latest/devguide/aws-xray.html}, which seek to fill this gap by collecting runtime traces on Lambda applications that have already been deployed, then aggregating these traces to generate visualizations that detail runtime performance and graph flows from lambdas to supporting backend services. Though X-Ray and similar tools provide some insight into the structure of Lambda applications, they crucially lack the ability to capture events triggered by these backend services and map a complete path that data may take from initial input. \par
+However, such information remains an invaluable tool for developers \cite{chatbot}. This has prompted platform providers to release products such as Amazon X-Ray\footnote{https://docs.aws.amazon.com/xray/latest/devguide/aws-xray.html}, which seek to fill this gap by collecting runtime traces on Lambda applications that have already been deployed, then aggregating these traces to generate visualizations that detail runtime performance and graph flows from lambdas to supporting backend services. Though X-Ray and similar tools provide some insight into the structure of Lambda applications, they crucially lack the ability to capture events triggered by these backend services and map a complete path that data may take from initial input. \par
 
 In response, a tracing-based solution that augments X-Ray with implicit identifiers that are injected into inputs to allow tracing across event triggers has been explored in GammaRay \cite{causalorder}. This work was further generalized in Lowgo to support serverless clouds outside the AWS ecosystem \cite{lowgo}. While these solutions offer a more complete view of causal dependencies in a serverless application, the dynamic nature of the analysis they perform means that infrequently traversed paths may be missed in the service call graph they construct. Additionally, both GammaRay and Lowgo colocate their instrumentation directly in the cloud. This makes obtaining call graph information impractical during the implementation of an application, when this data is most useful to developers who wish to understand the scope of potential changes to an individual lambda. Colocation of runtime instrumentation also has an adverse effect on application performance, introducing as much as 43\% overhead in the case of GammaRay \cite{causalorder}, which may be unacceptable in performance critical contexts or at the massive scales serverless is designed to accommodate.  \par
 
-These drawbacks may be mitigated by using a fully static analysis. However, attempts to implement such an analysis are nontrivial, as serverless applications are highly asynchronous given their event-driven design, often leading to numerous dissociated entrypoints. Extensions to static call graph construction to support event listeners for general NodeJS programs have been proposed previously in Radar \cite{nodejscallgraph}, but these techniques are insufficiently well-defined for the declarative configuration of event triggers common to serverless platforms. \par
+These drawbacks may be mitigated by using a fully static analysis. However, attempts to implement such an analysis are nontrivial, as serverless applications are highly asynchronous given their event-driven design, often leading to numerous dissociated entrypoints. Extensions to static call graph construction to support event listeners for general NodeJS programs have been proposed previously in Radar \cite{nodejscallgraph}, but these techniques are insufficiently well-defined for the declarative configuration of event triggers common to serverless platforms.\par
+
+In developing \_\_\_\_\_, we implement a model for static call graph construction more suited to the needs of serverless applications. Specifically, we contribute static semantics for generating a service call graph that incorporates flow to and from common backend services used by Javascript applications on the Lambda platform without the use of program traces. We thus extend traditional call graph analysis by providing a means for multiple programs that may even be running in separate execution environments to be integrated into a single extended call graph that provides information about the limited interfaces between which the constituent programs may share state.
+
+\section{Motivating Examples}
+
+To quantify the set of features commonly used in serverless applications, we analyzed publicly available lambda programs submitted by real users to the AWS Serverless Application Repository\footnote{https://serverlessrepo.aws.amazon.com/applications}. We found
 
 
-
-
-%% Acknowledgments
-%\begin{acks}                            %% acks environment is optional
-%                                        %% contents suppressed with 'anonymous'
-%  %% Commands \grantsponsor{<sponsorID>}{<name>}{<url>} and
-%  %% \grantnum[<url>]{<sponsorID>}{<number>} should be used to
-%  %% acknowledge financial support and will be used by metadata
-%  %% extraction tools.
-%  This material is based upon work supported by the
-%  \grantsponsor{GS100000001}{National Science
-%    Foundation}{http://dx.doi.org/10.13039/100000001} under Grant
-%  No.~\grantnum{GS100000001}{nnnnnnn} and Grant
-%  No.~\grantnum{GS100000001}{mmmmmmm}.  Any opinions, findings, and
-%  conclusions or recommendations expressed in this material are those
-%  of the author and do not necessarily reflect the views of the
-%  National Science Foundation.
-%\end{acks}
 
 
 %% Bibliography

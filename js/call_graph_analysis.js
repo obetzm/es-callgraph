@@ -73,7 +73,7 @@ class DatabaseUpdateFunc {
 class AnalysisValue {
     constructor(init) { this.possibilities = []; if (init) { this.add(init); }}
     add(possibility) { this.possibilities.push(possibility); }
-    concat(other) { if (other !== null) this.possibilities = this.possibilities.concat(other.possibilities); return this; }
+    concat(other) { if (other !== null && other !== undefined) this.possibilities = this.possibilities.concat(other.possibilities); return this; }
     clone() { return this.possibilities.reduce((a,n) => a.add(n), new AnalysisValue()); }
 }
 /*

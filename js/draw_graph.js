@@ -8,16 +8,17 @@ let renderer = cytosnap();
 function convert_callgraph_to_cytoscape(cg) {
     return [...cg.nodes]
         .map((n) => ({ data: {
-            id: n.label,
+            id: n.value,
+            label: n.label,
             parent: (n.type === "lambda") ? `lambda_${n.group}` : undefined,
             type: n.type
         }}))
         .concat(
             [...cg.edges]
                 .map((e) => ({ data: {
-                    id: e.from.label+"->"+e.to.label,
-                    source: e.from.label,
-                    target: e.to.label,
+                    id: e.from.value+"->"+e.to.value,
+                    source: e.from.value,
+                    target: e.to.value,
                     type: e.type || "plain"
                 }}))
         )
@@ -41,7 +42,7 @@ function draw_graph(call_graph) {
         style: [{
                 selector: 'node',
                 style: {
-                    'label': 'data(id)',
+                    'label': 'data(label)',
                     'text-rotation': 'autorotate'
                 }
             },

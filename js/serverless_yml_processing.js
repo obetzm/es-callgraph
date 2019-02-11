@@ -40,9 +40,9 @@ function cf_event_to_node(e) {
     return new GraphNode(cf_event_to_serverless_event[e.Type], label, isEntry);
 }
 
-function cloudformation_config_function_to_graph(fn, ctx) {
+function cloudformation_config_function_to_graph(id, fn, ctx) {
     let [fn_file,fn_name] = fn.Properties.Handler.split(".");
-    let lambda_node = new GraphNode("lambda", fn_name, false).set_context(ctx, fn_file);
+    let lambda_node = new GraphNode("lambda", fn_name, false, `${fn_file}.${id}`).set_context(ctx, fn_file);
     if (fn.Properties.Events === undefined )  { fn.Properties.Events=[]; }
     return Object.keys(fn.Properties.Events)
         .map((e) => fn.Properties.Events[e])
@@ -55,9 +55,9 @@ function cloudformation_config_function_to_graph(fn, ctx) {
 
 let process_cloudformation = function(config, ctx) {
     return Object.keys(config.Resources)
-        .map((r) => config.Resources[r])
-        .filter((r) => r.Type === "AWS::Serverless::Function")
-        .map((fn) => cloudformation_config_function_to_graph(fn, ctx))
+        .map((r) => ({name: r, dat: config.Resources[r]}))
+        .filter((r) => r.dat.Type === "AWS::Serverless::Function")
+        .map((fn) => cloudformation_config_function_to_graph(fn.name, fn.dat, ctx))
         .reduce((a, n) => a.union_graphs(n), new CallGraph());
 
 };

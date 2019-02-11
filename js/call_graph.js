@@ -4,7 +4,7 @@ class GraphNode {
         this.type = type;
         this.label = label;
         this.isEntry = entry;
-        this.group = group || label;
+        this.group = group;
         this.rep = rep;
     }
 
@@ -70,6 +70,14 @@ class CallGraph {
         let dynamo_node = this.get_external_node("stream", identifier);
         if (dynamo_node.length === 0) {
             dynamo_node = new GraphNode("stream", `aws:dynamodb:us-east-1:xxxxxx:table/${identifier}`, false);
+            CallGraph.instance.add_node(dynamo_node);
+        } else dynamo_node = dynamo_node[0];
+        return dynamo_node;
+    }
+    find_or_create_s3_node(identifier) {
+        let dynamo_node = this.get_external_node("stream", identifier);
+        if (dynamo_node.length === 0) {
+            dynamo_node = new GraphNode("stream", `http://s3.amazonaws.com/${identifier}`, false);
             CallGraph.instance.add_node(dynamo_node);
         } else dynamo_node = dynamo_node[0];
         return dynamo_node;

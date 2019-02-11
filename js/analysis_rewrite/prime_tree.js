@@ -62,7 +62,7 @@ class AbstractNode {
             return new FunctionNode(group, ast_node.id, ast_node.params, ast_node.body.body);
         }
         else if (ast_node.type === "ArrowFunctionExpression") {
-            let body = (ast_node.body.type === "BlockStatement") ? ast_node.body.body : [AbstractNode.flattenExpression(ast_node.body)];
+            let body = (ast_node.body.type === "BlockStatement") ? ast_node.body.body : [{type: "ExpressionStatement", expression: ast_node.body}];
             return new FunctionNode(group, ast_node.id, ast_node.params, body);
         }
         else if (ast_node.type === "ObjectExpression") {
@@ -101,7 +101,10 @@ class AbstractNode {
         }
         else if (ast_node.type === "AssignmentPattern") {//TODO: default values in func parameters
         }
-        else {throw new Error("unknown type: " + ast_node.type);}
+        else if (ast_node.type === "AwaitExpression") {
+            return AbstractNode.flattenExpression(ast_node.argument, group);
+        }
+        else {console.log(ast_node); throw new Error("unknown type: " + ast_node.type);}
     }//flattenExpression
 
     static make(ast_node, group) {
@@ -139,7 +142,10 @@ class AbstractNode {
                                         AbstractNode.flattenExpression(ast_node.update, group),
                                         AbstractNode.make(ast_node.body, group));
         }
-        else {console.log(ast_node.params[1]); throw new Error("unknown type: " + ast_node.type);}
+        else if (ast_node.type === "TryStatement") {
+            return new BlockNode(group, ast_node.block.body.reduce((a,n) => a.concat(AbstractNode.make(n, group)), []));
+        }
+        else { throw new Error("unknown type: " + ast_node.type);}
     }//make
 }//AbstractNode
 

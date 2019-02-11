@@ -5,7 +5,7 @@ const s3 = new aws.S3({
 });
         
 var srcBucket = "citizen-dispatch-client-dist";
-var destBucket = process.env.TARGET_BUCKET || "citizen-dispatch-client-dist-test";
+var destBucket = process.env.TARGET_BUCKET; //|| "citizen-dispatch-client-dist-test";
 
 //Main function
 exports.handler = (event, context, callback) => {

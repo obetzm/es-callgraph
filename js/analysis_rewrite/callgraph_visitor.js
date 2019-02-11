@@ -10,7 +10,8 @@ class AnalysisAmazonNode extends ObjectNode {
     }
     find(property) {
         return (property === "DynamoDB") ? new AnalysisValue(new AnalysisDynamoNode()) :
-            (property === "SES") ? new AnalysisValue(new AnalysisEmailerNode()) : null;
+            (property === "SES") ? new AnalysisValue(new AnalysisEmailerNode()) :
+                (property === "S3") ? new AnalysisValue(new AnalysisS3Node()) : null;
     }
 }
 
@@ -21,6 +22,30 @@ class AnalysisDynamoNode extends ObjectNode {
     find(property) {
         return (property === "DocumentClient") ? new AnalysisValue(new AnalysisDBClientNode()) : null;
     }
+}
+
+class AnalysisS3Node extends ObjectNode {
+    constructor () {
+        super("", []);
+    }
+    find(property) {
+        if (property === "getObject" || property === "listObjectsV2") return new AnalysisValue(new AnalysisS3ReadNode());
+            else if (property === "putObject") return new AnalysisValue(new AnalysisS3WriteNode());
+                else if (property === "copyObject") return new AnalysisValue(new AnalysisS3CopyNode());
+    }
+}
+
+class AnalysisS3ReadNode {
+    constructor() {}
+    exec(params) {}
+}
+class AnalysisS3WriteNode {
+    constructor() {}
+    exec(params) {}
+}
+class AnalysisS3CopyNode {
+    constructor() {}
+    exec(params) {}
 }
 
 class AnalysisDBClientNode extends ObjectNode {
@@ -124,9 +149,12 @@ class CallgraphVisitor extends AbstractVisitor {
                 let func_name = assgn_stmt.lhs.field.name;
                 if (func_name === entry_method_name) {
                     let entry_func = assgn_stmt.rhs;
+                    if (entry_func instanceof VariableNode) {
+                        console.log(entry_func);
+                        entry_func = this.scope.find(entry_func.name);
+                    }
                     CallGraph.instance.merge_nodes(this.entrypoints[0], entry_func.node);
                     entry_func.node = this.entrypoints[0]; //TODO: this is unsafe if more than one function holds a ref
-                    console.log(entry_func);
                     this.exec_func(entry_func);
                 }//if the thing assigned to exports is the entry method
             }//if the assignment is to exports.VARNAME
@@ -200,7 +228,7 @@ class CallgraphVisitor extends AbstractVisitor {
                 let from_node = cg.find_or_create_dynamo_node(table_name);//TODO: same problem as AnalysisDBUpdate
                 cg.add_edge(new GraphEdge(from_node, to_node, "dashed"));
                 call_stmt.params[1].exec(this);//TODO: when func is a ref
-            }//if it's a special call with implicit flow
+            }
             else if (called_func instanceof AnalysisOutgoingEmail) {
                 let to_node = cg.get_external_node("email", "");
                 if (to_node.length === 0) {
@@ -209,9 +237,31 @@ class CallgraphVisitor extends AbstractVisitor {
                 } else to_node = to_node[0];
                 cg.add_edge(new GraphEdge(this.coming_from, to_node));
             }//
+            else if (called_func instanceof AnalysisS3ReadNode) {
+                let to_node = this.coming_from;
+                let config_obj = call_stmt.params[0];
+                if (config_obj instanceof VariableNode) config_obj = this.scope.find(config_obj.name).possibilities[0];
+                let bucket_name = config_obj.properties["Bucket"];
+                if (bucket_name instanceof VariableNode) bucket_name = this.scope.find(bucket_name.name).possibilities[0].value;
+                let from_node = cg.find_or_create_s3_node(bucket_name);//TODO: same problem as AnalysisDBUpdate
+                cg.add_edge(new GraphEdge(from_node, to_node, "dashed"));
+                call_stmt.params[1].exec(this);//TODO: when func is a ref
+            }
+            else if (called_func instanceof AnalysisS3WriteNode) {
+                let config_obj = call_stmt.params[0];
+                if (config_obj instanceof VariableNode) config_obj = this.scope.find(config_obj.name).possibilities[0];
+                let bucket_name = config_obj.properties["Bucket"];
+                console.log(this.scope.find(bucket_name.name).possibilities[0]);
+                if (bucket_name instanceof VariableNode) bucket_name = this.scope.find(bucket_name.name).possibilities[0].value;
+                let to_node = cg.find_or_create_s3_node(bucket_name);//TODO: same problem as AnalysisDBUpdate
+                cg.add_edge(new GraphEdge(this.coming_from, to_node));
+                call_stmt.params[1].exec(this);//TODO: when func is a ref
+            }
+            else if (called_func instanceof AnalysisS3CopyNode) {
+                //TODO S3 copies
+            }
             else {
                 if (this.coming_from) {
-                    console.log(called_func);
                     cg.add_edge(new GraphEdge(this.coming_from, called_func.node));
                     cg.add_node(called_func.node);
                 }//if we're not in global scope when making this call

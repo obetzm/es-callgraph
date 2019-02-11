@@ -20,7 +20,6 @@ Resources:
   QueryFunction:
     Type: AWS::Serverless::Function 
     Properties:
-      CodeUri: .
       Handler: server/handlers/query.handler
       Runtime: nodejs8.10
       Events:
@@ -33,7 +32,6 @@ Resources:
   ReportLocationFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: .
       Handler: server/handlers/reportLocation.handler
       Runtime: nodejs8.10
       Events:
@@ -53,16 +51,17 @@ Resources:
         API_ENDPOINT:
           Sub: "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/dev"
     Properties:
-      CodeUri: server/handlers
-      Handler: copyWebsiteBucket.handler
+      Handler: server/handlers/copyWebsiteBucket.handler
       Runtime: nodejs8.10
+      Events:
+         Schedule:
+            Type: Schedule
+            Rate: (1 minute)
     Policies:
       S3CrudPolicy:
         BucketName:
           Ref: ClientS3BucketName
-    Events:
-      Schedule:
-        Rate: (1 minute)
+
 
   # Not allowed in SAR
   # SNSRole:

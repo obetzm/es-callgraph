@@ -2,100 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2f10d784-2592-49e8-b3bd-f55f905252d5" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/.bin/esparse" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/.bin/esvalidate" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/.bin/js-yaml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/CHANGELOG.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/LICENSE" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/index.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/action.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/action/append.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/action/append/constant.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/action/count.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/action/help.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/action/store.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/action/store/constant.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/action/store/false.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/action/store/true.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/action/subparsers.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/action/version.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/action_container.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/argparse.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/argument/error.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/argument/exclusive.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/argument/group.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/argument_parser.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/const.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/help/added_formatters.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/help/formatter.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/namespace.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/lib/utils.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/argparse/package.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/esprima/ChangeLog" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/esprima/LICENSE.BSD" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/esprima/README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/esprima/bin/esparse.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/esprima/bin/esvalidate.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/esprima/dist/esprima.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/esprima/package.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/CHANGELOG.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/LICENSE" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/bin/js-yaml.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/dist/js-yaml.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/dist/js-yaml.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/index.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/common.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/dumper.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/exception.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/loader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/mark.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/schema.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/schema/core.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/schema/default_full.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/schema/default_safe.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/schema/failsafe.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/schema/json.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/type.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/type/binary.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/type/bool.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/type/float.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/type/int.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/type/js/function.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/type/js/regexp.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/type/js/undefined.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/type/map.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/type/merge.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/type/null.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/type/omap.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/type/pairs.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/type/seq.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/type/set.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/type/str.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/lib/js-yaml/type/timestamp.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/js-yaml/package.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/sprintf-js/.npmignore" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/sprintf-js/LICENSE" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/sprintf-js/README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/sprintf-js/bower.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/sprintf-js/demo/angular.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/sprintf-js/dist/angular-sprintf.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/sprintf-js/dist/angular-sprintf.min.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/sprintf-js/dist/angular-sprintf.min.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/sprintf-js/dist/sprintf.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/sprintf-js/dist/sprintf.min.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/sprintf-js/dist/sprintf.min.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/sprintf-js/gruntfile.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/sprintf-js/package.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/sprintf-js/src/angular-sprintf.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/sprintf-js/src/sprintf.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/sprintf-js/test/test.js" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/generateCGAst.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/output.png" afterPath="$PROJECT_DIR$/output.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/targets/galleria" afterPath="$PROJECT_DIR$/targets/galleria" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/ESPRIMA-serverless.iml" afterPath="$PROJECT_DIR$/.idea/ESPRIMA-serverless.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package-lock.json" afterPath="$PROJECT_DIR$/package-lock.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/analysis_rewrite/callgraph_visitor.js" afterPath="$PROJECT_DIR$/js/analysis_rewrite/callgraph_visitor.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/analysis_rewrite/prime_tree.js" afterPath="$PROJECT_DIR$/js/analysis_rewrite/prime_tree.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/call_graph.js" afterPath="$PROJECT_DIR$/js/call_graph.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/call_graph_analysis.js" afterPath="$PROJECT_DIR$/js/call_graph_analysis.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/draw_graph.js" afterPath="$PROJECT_DIR$/js/draw_graph.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/serverless_yml_processing.js" afterPath="$PROJECT_DIR$/js/serverless_yml_processing.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/targets/CitizenDispatch/server/handlers/copyWebsiteBucket.js" afterPath="$PROJECT_DIR$/targets/CitizenDispatch/server/handlers/copyWebsiteBucket.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/targets/CitizenDispatch/template.yml" afterPath="$PROJECT_DIR$/targets/CitizenDispatch/template.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/targets/dummies/simple.js" afterPath="$PROJECT_DIR$/targets/dummies/simple.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -106,31 +27,61 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="call_graph_analysis.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/js/call_graph_analysis.js">
+      <file leaf-file-name="createUser.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/handlers/createUser.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="206">
-              <caret line="64" column="39" lean-forward="false" selection-start-line="64" selection-start-column="39" selection-end-line="64" selection-end-column="39" />
+            <state relative-caret-position="255">
+              <caret line="15" column="1" lean-forward="false" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/package.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" column="4" lean-forward="false" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="generateAst.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/generateAst.js">
+      <file leaf-file-name="copyWebsiteBucket.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/handlers/copyWebsiteBucket.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="119">
-              <caret line="7" column="2" lean-forward="false" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="2" />
+              <caret line="7" column="43" lean-forward="false" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="query.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/handlers/query.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="13" lean-forward="true" selection-start-line="0" selection-start-column="13" selection-end-line="0" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="schema.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/src/schema.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-4573">
+              <caret line="3" column="15" lean-forward="false" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="15" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="resolvers.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/src/resolvers.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1491">
+              <caret line="12" column="17" lean-forward="false" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dynamoDbLib.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/src/dynamoDbLib.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" column="12" lean-forward="false" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -139,68 +90,28 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="595">
-              <caret line="35" column="32" lean-forward="false" selection-start-line="35" selection-start-column="32" selection-end-line="35" selection-end-column="32" />
+            <state relative-caret-position="425">
+              <caret line="40" column="21" lean-forward="true" selection-start-line="40" selection-start-column="21" selection-end-line="40" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="serverless_yml_processing.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/serverless_yml_processing.js">
+      <file leaf-file-name="callgraph_visitor.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/analysis_rewrite/callgraph_visitor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="36" lean-forward="false" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
+            <state relative-caret-position="348">
+              <caret line="253" column="80" lean-forward="false" selection-start-line="253" selection-start-column="80" selection-end-line="253" selection-end-column="80" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="call_graph.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/call_graph.js">
+      <file leaf-file-name="abstract_visitor.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/analysis_rewrite/abstract_visitor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1088">
-              <caret line="64" column="15" lean-forward="false" selection-start-line="64" selection-start-column="15" selection-end-line="64" selection-end-column="15" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="cart.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/targets/babel-retail/cart/builder/cart.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1479">
-              <caret line="87" column="30" lean-forward="false" selection-start-line="87" selection-start-column="18" selection-end-line="87" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="eventWriterApi.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/targets/babel-retail/event-writer/eventWriterApi.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="697">
-              <caret line="41" column="21" lean-forward="false" selection-start-line="41" selection-start-column="14" selection-end-line="41" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="simple.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/targets/dummies/simple.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="229">
+              <caret line="36" column="17" lean-forward="false" selection-start-line="36" selection-start-column="17" selection-end-line="36" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -208,39 +119,53 @@
       </file>
     </leaf>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>functionexp</find>
-      <find>log</find>
-      <find>System.out.print</find>
-      <find>handlere</find>
-      <find>handlerec</find>
-      <find>handle</find>
-      <find>dynamo.</find>
-      <find>dynamo</find>
-      <find>consta</find>
-      <find>constants</find>
-      <find>env</find>
-      <find>constants</find>
-      <find>graph_rep</find>
-      <find>walk_ast</find>
-      <find>new callgrap</find>
-      <find>addcart</find>
-      <find>kh.</find>
-      <find>write</find>
-      <find>valueof</find>
-      <find>new graphnode</find>
-      <find>add_edge</find>
-      <find>analysisfunc</find>
+      <find>createu</find>
+      <find>source</find>
+      <find>console.log\(ctx</find>
+      <find>set_context</find>
+      <find>isbase64e</find>
+      <find>= null</find>
+      <find>id = null</find>
+      <find>body =</find>
+      <find>callback(</find>
+      <find>callback</find>
+      <find>statuscode: 200</find>
+      <find>console.log\(bod</find>
+      <find>millise</find>
+      <find>analysisval</find>
+      <find>tryst</find>
+      <find>console.lo</find>
+      <find>for</find>
       <find>console.log</find>
-      <find>exec_fn</find>
-      <find>dynamo.up</find>
-      <find>analysisFunc</find>
-      <find>set_cont</find>
-      <find>unroll_mem</find>
-      <find>parse_assignment</find>
-      <find>retv</find>
+      <find>copywebsitebu</find>
+      <find>function main</find>
+      <find>new graphnode</find>
+      <find>\.group</find>
+      <find>codeuri</find>
+      <find>handler</find>
+      <find>group</find>
+      <find>s3</find>
+      <find>resolvers</find>
+      <find>dynamoDbLib</find>
+      <find>dynamoDb</find>
+      <find>console.l</find>
     </findStrings>
+    <replaceStrings>
+      <replace />
+    </replaceStrings>
+    <dirStrings>
+      <dir>C:\Users\mwobey\Desktop\serverless\targets\CitizenDispatch</dir>
+      <dir>C:\Users\mwobey\Desktop\serverless\targets\galleria</dir>
+    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -253,47 +178,55 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/js/analysis.js" />
-        <option value="$PROJECT_DIR$/targets/dummy/simple.js" />
-        <option value="$PROJECT_DIR$/test.js" />
-        <option value="P:/00046_kameip/4/src/Site.java" />
-        <option value="$PROJECT_DIR$/js/serverless_yml_processing.js" />
-        <option value="$PROJECT_DIR$/js/main.js" />
-        <option value="$PROJECT_DIR$/js/call_graph.js" />
-        <option value="$PROJECT_DIR$/targets/dummies/simple.js" />
-        <option value="$PROJECT_DIR$/test/generate_ast.js" />
-        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/js/analysis_rewrite/visitor.js" />
+        <option value="$PROJECT_DIR$/targets/galleria/README.md" />
+        <option value="$PROJECT_DIR$/targets/dummies/serverless.yml" />
         <option value="$PROJECT_DIR$/test/generateAst.js" />
+        <option value="$PROJECT_DIR$/test/cubic_example.js" />
+        <option value="$PROJECT_DIR$/test/cubic_test.js" />
+        <option value="$PROJECT_DIR$/js/analysis_rewrite/cubic_visitor.js" />
+        <option value="$PROJECT_DIR$/js/analysis_rewrite/cubic_solver.js" />
+        <option value="$PROJECT_DIR$/targets/dummies/fcalls.js" />
+        <option value="$PROJECT_DIR$/js/analysis_rewrite/abstract_visitor.js" />
+        <option value="$PROJECT_DIR$/targets/dummies/trigger.js" />
+        <option value="$PROJECT_DIR$/targets/lending-app-nodejs6/indexbatch.js" />
+        <option value="$PROJECT_DIR$/js/analysis_rewrite/prime_tree.js" />
+        <option value="$PROJECT_DIR$/targets/dummies/simple.js" />
+        <option value="$PROJECT_DIR$/test/generateCGAst.js" />
+        <option value="$PROJECT_DIR$/targets/galleria/galleria/src/index.js" />
+        <option value="$PROJECT_DIR$/targets/galleria/uploader/src/index.js" />
+        <option value="$PROJECT_DIR$/js/draw_graph.js" />
+        <option value="$PROJECT_DIR$/js/serverless_yml_processing.js" />
         <option value="$PROJECT_DIR$/js/call_graph_analysis.js" />
+        <option value="$PROJECT_DIR$/targets/CitizenDispatch/template.yml" />
+        <option value="$PROJECT_DIR$/js/call_graph.js" />
+        <option value="$PROJECT_DIR$/js/main.js" />
+        <option value="$PROJECT_DIR$/js/analysis_rewrite/callgraph_visitor.js" />
+        <option value="$PROJECT_DIR$/targets/CitizenDispatch/server/handlers/copyWebsiteBucket.js" />
       </list>
     </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsFlowSettings">
-    <service-enabled>true</service-enabled>
-    <exe-path />
-    <annotation-enable>false</annotation-enable>
-    <other-services-enabled>true</other-services-enabled>
-    <auto-save>true</auto-save>
-  </component>
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="NodeModulesDirectoryManager">
     <handled-path value="$PROJECT_DIR$/node_modules" />
+    <handled-path value="$PROJECT_DIR$/scraper/node_modules" />
+    <handled-path value="$PROJECT_DIR$/scraper/potentials/CitizenDispatch/node_modules" />
   </component>
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths>
       <path value="$PROJECT_DIR$/js/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="308" />
+    <option name="y" value="190" />
+    <option name="width" value="1345" />
+    <option name="height" value="1047" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -325,13 +258,48 @@
             <path>
               <item name="serverless" type="b2602c69:ProjectViewProjectNode" />
               <item name="serverless" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="analysis_rewrite" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="serverless" type="b2602c69:ProjectViewProjectNode" />
+              <item name="serverless" type="462c0819:PsiDirectoryNode" />
               <item name="targets" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="serverless" type="b2602c69:ProjectViewProjectNode" />
               <item name="serverless" type="462c0819:PsiDirectoryNode" />
               <item name="targets" type="462c0819:PsiDirectoryNode" />
-              <item name="dummies" type="462c0819:PsiDirectoryNode" />
+              <item name="CitizenDispatch" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="serverless" type="b2602c69:ProjectViewProjectNode" />
+              <item name="serverless" type="462c0819:PsiDirectoryNode" />
+              <item name="targets" type="462c0819:PsiDirectoryNode" />
+              <item name="CitizenDispatch" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="serverless" type="b2602c69:ProjectViewProjectNode" />
+              <item name="serverless" type="462c0819:PsiDirectoryNode" />
+              <item name="targets" type="462c0819:PsiDirectoryNode" />
+              <item name="CitizenDispatch" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="handlers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="serverless" type="b2602c69:ProjectViewProjectNode" />
+              <item name="serverless" type="462c0819:PsiDirectoryNode" />
+              <item name="targets" type="462c0819:PsiDirectoryNode" />
+              <item name="CitizenDispatch" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="serverless" type="b2602c69:ProjectViewProjectNode" />
+              <item name="serverless" type="462c0819:PsiDirectoryNode" />
+              <item name="targets" type="462c0819:PsiDirectoryNode" />
+              <item name="lending-app-nodejs6" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="serverless" type="b2602c69:ProjectViewProjectNode" />
@@ -343,30 +311,31 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
+      <pane id="AndroidView" />
       <pane id="PackagesPane" />
       <pane id="Scope" />
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/test/generateAst.js" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/targets/CitizenDispatch" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
-    <property name="javascript.nodejs.core.library.configured.version" value="10.7.0" />
-    <property name="jdk.selected.JAVA_MODULE" value="1.7" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.15527344" />
-    <property name="project.structure.side.proportion" value="0.45202312" />
-    <property name="settings.editor.selected.configurable" value="settings.nodejs" />
+    <property name="org.rust.cargo.project.model.PROJECT_DISCOVERY" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\mwobey\Desktop\serverless" />
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\mwobey\Desktop\serverless\test" />
+      <recent name="C:\Users\mwobey\Desktop\serverless\targets" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\mwobey\Desktop\serverless\scraper\potentials" />
+      <recent name="C:\Users\mwobey\Desktop\serverless\scraper\repos" />
+      <recent name="C:\Users\mwobey\Desktop\serverless\js" />
+      <recent name="C:\Users\mwobey\Desktop\serverless\targets" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -381,28 +350,58 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="npm.Analyze Dummy">
-    <configuration name="Analyze Babel-Retail" type="js.build_tools.npm" factoryName="npm">
+  <component name="RunManager" selected="npm.Analyze CitizenDispatch">
+    <configuration name="Analyze CitizenDispatch" type="js.build_tools.npm" factoryName="npm" singleton="false">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="start" />
-      <arguments value="targets/babel-retail" />
+      <arguments value="./targets/CitizenDispatch" />
       <node-interpreter value="project" />
       <envs />
     </configuration>
-    <configuration name="Analyze Dummy" type="js.build_tools.npm" factoryName="npm" singleton="false">
+    <configuration name="Analyze Dummies" type="js.build_tools.npm" factoryName="npm" singleton="false">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="start" />
-      <arguments value="targets/dummies" />
+      <arguments value="./targets/dummies" />
       <node-interpreter value="project" />
       <envs />
     </configuration>
-    <configuration name="Show Reference AST (dummies)" type="NodeunitConfigurationType" factoryName="Nodeunit">
+    <configuration name="Analyze Galleria" type="js.build_tools.npm" factoryName="npm" singleton="false">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="start" />
+      <arguments value="./targets/galleria" />
+      <node-interpreter value="project" />
+      <envs />
+    </configuration>
+    <configuration name="Analyze Lending" type="js.build_tools.npm" factoryName="npm" singleton="false">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="start" />
+      <arguments value="./targets/lending-app-nodejs6" />
+      <node-interpreter value="project" />
+      <envs />
+    </configuration>
+    <configuration name="Cubic Visitor Test" type="NodeunitConfigurationType" factoryName="Nodeunit">
+      <setting name="nodePath" value="project" />
+      <envs />
+      <setting name="nodeunitModuleDir" value="$PROJECT_DIR$/node_modules/nodeunit" />
+      <setting name="workingDirectory" value="$PROJECT_DIR$" />
+      <setting name="testType" value="JS_FILE" />
+      <setting name="jsFile" value="test/cubic_test.js" />
+    </configuration>
+    <configuration name="View AST simple.js" type="NodeunitConfigurationType" factoryName="Nodeunit">
       <setting name="nodePath" value="project" />
       <envs />
       <setting name="nodeunitModuleDir" value="$PROJECT_DIR$/node_modules/nodeunit" />
       <setting name="workingDirectory" value="$PROJECT_DIR$" />
       <setting name="testType" value="JS_FILE" />
       <setting name="jsFile" value="test/generateAst.js" />
+    </configuration>
+    <configuration name="View VISITOR simple.js" type="NodeunitConfigurationType" factoryName="Nodeunit">
+      <setting name="nodePath" value="project" />
+      <envs />
+      <setting name="nodeunitModuleDir" value="$PROJECT_DIR$/node_modules/nodeunit" />
+      <setting name="workingDirectory" value="$PROJECT_DIR$" />
+      <setting name="testType" value="JS_FILE" />
+      <setting name="jsFile" value="test/generateCGAst.js" />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
@@ -465,10 +464,14 @@
       <properties />
       <listeners />
     </configuration>
-    <list size="3">
-      <item index="0" class="java.lang.String" itemvalue="Nodeunit.Show Reference AST (dummies)" />
-      <item index="1" class="java.lang.String" itemvalue="npm.Analyze Babel-Retail" />
-      <item index="2" class="java.lang.String" itemvalue="npm.Analyze Dummy" />
+    <list size="7">
+      <item index="0" class="java.lang.String" itemvalue="Nodeunit.View AST simple.js" />
+      <item index="1" class="java.lang.String" itemvalue="Nodeunit.View VISITOR simple.js" />
+      <item index="2" class="java.lang.String" itemvalue="Nodeunit.Cubic Visitor Test" />
+      <item index="3" class="java.lang.String" itemvalue="npm.Analyze Dummies" />
+      <item index="4" class="java.lang.String" itemvalue="npm.Analyze Galleria" />
+      <item index="5" class="java.lang.String" itemvalue="npm.Analyze CitizenDispatch" />
+      <item index="6" class="java.lang.String" itemvalue="npm.Analyze Lending" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
@@ -486,80 +489,97 @@
       <updated>1540991383260</updated>
       <workItem from="1540991384900" duration="312000" />
       <workItem from="1540991744299" duration="3856000" />
-      <workItem from="1541000869210" duration="9936000" />
-      <workItem from="1541077657910" duration="4974000" />
-      <workItem from="1541868954216" duration="757000" />
-      <workItem from="1541869805614" duration="17391000" />
-      <workItem from="1541940931567" duration="512000" />
+      <workItem from="1542227752626" duration="3123000" />
+      <workItem from="1542287478441" duration="5038000" />
+      <workItem from="1543169116618" duration="10346000" />
+      <workItem from="1543844060250" duration="9500000" />
+      <workItem from="1544284571154" duration="7681000" />
+      <workItem from="1544374614340" duration="18821000" />
+      <workItem from="1547425538586" duration="861000" />
+      <workItem from="1547670028775" duration="4761000" />
+      <workItem from="1548344750816" duration="6503000" />
+      <workItem from="1548453406961" duration="4750000" />
+      <workItem from="1548513890859" duration="16151000" />
+      <workItem from="1548600719152" duration="21655000" />
+      <workItem from="1548685383011" duration="7078000" />
+      <workItem from="1548856330318" duration="13800000" />
+      <workItem from="1549130802120" duration="7103000" />
+      <workItem from="1549202847034" duration="2600000" />
+      <workItem from="1549217619247" duration="14341000" />
+      <workItem from="1549242553299" duration="2121000" />
+      <workItem from="1549304685833" duration="1726000" />
+      <workItem from="1549561019118" duration="13310000" />
+      <workItem from="1549810418088" duration="23102000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Show_Reference_AST_(dummies) - 2018.11.10 at 17h 35m 51s.xml">
-      <configuration name="Show Reference AST (dummies)" configurationId="NodeunitConfigurationType" />
+    <history-entry file="View_AST_simple_js - 2019.02.03 at 18h 33m 53s.xml">
+      <configuration name="View AST simple.js" configurationId="NodeunitConfigurationType" />
     </history-entry>
-    <history-entry file="Show_Reference_AST_(dummies) - 2018.11.10 at 17h 37m 31s.xml">
-      <configuration name="Show Reference AST (dummies)" configurationId="NodeunitConfigurationType" />
+    <history-entry file="View_AST_simple_js - 2019.02.03 at 18h 34m 00s.xml">
+      <configuration name="View AST simple.js" configurationId="NodeunitConfigurationType" />
     </history-entry>
-    <history-entry file="Show_Reference_AST_(dummies) - 2018.11.10 at 17h 37m 39s.xml">
-      <configuration name="Show Reference AST (dummies)" configurationId="NodeunitConfigurationType" />
+    <history-entry file="View_AST_simple_js - 2019.02.03 at 18h 37m 36s.xml">
+      <configuration name="View AST simple.js" configurationId="NodeunitConfigurationType" />
     </history-entry>
-    <history-entry file="Show_Reference_AST_(dummies) - 2018.11.10 at 17h 38m 06s.xml">
-      <configuration name="Show Reference AST (dummies)" configurationId="NodeunitConfigurationType" />
+    <history-entry file="View_AST_simple_js - 2019.02.07 at 18h 09m 19s.xml">
+      <configuration name="View AST simple.js" configurationId="NodeunitConfigurationType" />
     </history-entry>
-    <history-entry file="Show_Reference_AST_(dummies) - 2018.11.10 at 17h 38m 37s.xml">
-      <configuration name="Show Reference AST (dummies)" configurationId="NodeunitConfigurationType" />
+    <history-entry file="View_AST_simple_js - 2019.02.07 at 18h 26m 49s.xml">
+      <configuration name="View AST simple.js" configurationId="NodeunitConfigurationType" />
     </history-entry>
-    <history-entry file="Show_Reference_AST_(dummies) - 2018.11.10 at 17h 39m 10s.xml">
-      <configuration name="Show Reference AST (dummies)" configurationId="NodeunitConfigurationType" />
+    <history-entry file="View_AST_simple_js - 2019.02.10 at 12h 12m 03s.xml">
+      <configuration name="View AST simple.js" configurationId="NodeunitConfigurationType" />
     </history-entry>
-    <history-entry file="Unnamed - 2018.11.10 at 17h 34m 37s.xml">
-      <configuration name="Unnamed" configurationId="NodeunitConfigurationType" />
+    <history-entry file="View_VISITOR_simple_js - 2019.02.10 at 12h 15m 47s.xml">
+      <configuration name="View VISITOR simple.js" configurationId="NodeunitConfigurationType" />
     </history-entry>
-    <history-entry file="Unnamed - 2018.11.10 at 17h 35m 05s.xml">
-      <configuration name="Unnamed" configurationId="NodeunitConfigurationType" />
+    <history-entry file="View_VISITOR_simple_js - 2019.02.10 at 12h 16m 08s.xml">
+      <configuration name="View VISITOR simple.js" configurationId="NodeunitConfigurationType" />
     </history-entry>
-    <history-entry file="Unnamed - 2018.11.10 at 17h 35m 12s.xml">
-      <configuration name="Unnamed" configurationId="NodeunitConfigurationType" />
+    <history-entry file="View_VISITOR_simple_js - 2019.02.10 at 12h 16m 33s.xml">
+      <configuration name="View VISITOR simple.js" configurationId="NodeunitConfigurationType" />
     </history-entry>
-    <history-entry file="Unnamed - 2018.11.10 at 17h 35m 24s.xml">
-      <configuration name="Unnamed" configurationId="NodeunitConfigurationType" />
+    <history-entry file="View_VISITOR_simple_js - 2019.02.10 at 12h 53m 06s.xml">
+      <configuration name="View VISITOR simple.js" configurationId="NodeunitConfigurationType" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="37738000" />
+    <option name="totallyTimeSpent" value="198539000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <editor active="true" />
     <layout>
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Cargo" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32934782" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2553305" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cargo" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20108695" sideWeight="0.5021322" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18695652" sideWeight="0.4978678" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16577825" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32934782" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -573,7 +593,7 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/js/call_graph_analysis.js">
+    <entry file="file://$PROJECT_DIR$/js/analysis_rewrite/cubic_solver.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -581,227 +601,179 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
+    <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/src/filterEmptyValues.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="4" lean-forward="false" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/src/generateId.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/src/responseLib.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/src/removeTypename.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/galleria/uploader/template.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="8" lean-forward="false" selection-start-line="3" selection-start-column="2" selection-end-line="3" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/node_modules/@babel/parser/lib/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="492">
+          <caret line="9658" column="10" lean-forward="false" selection-start-line="9658" selection-start-column="10" selection-end-line="9658" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/analysis_rewrite/cubic_visitor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/handlers/reportLocation.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="634">
+          <caret line="39" column="39" lean-forward="true" selection-start-line="39" selection-start-column="39" selection-end-line="39" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/handlers/autoLogin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="2" lean-forward="true" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/galleria/blur/template.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="32" lean-forward="false" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/galleria/diagrams/uploader.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/galleria/diagrams/galleria.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/galleria/crop/gulpfile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/galleria/blur/src/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="3" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="17" selection-end-column="3" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/generateAst.js">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/generateCGAst.js">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
-          <caret line="7" column="2" lean-forward="true" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="35" column="32" lean-forward="true" selection-start-line="35" selection-start-column="32" selection-end-line="35" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/serverless_yml_processing.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="36" lean-forward="false" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/targets/babel-retail/cart/builder/cart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1479">
-          <caret line="87" column="30" lean-forward="false" selection-start-line="87" selection-start-column="18" selection-end-line="87" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/call_graph.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1088">
-          <caret line="64" column="15" lean-forward="false" selection-start-line="64" selection-start-column="15" selection-end-line="64" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/targets/babel-retail/event-writer/eventWriterApi.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="697">
-          <caret line="41" column="21" lean-forward="false" selection-start-line="41" selection-start-column="14" selection-end-line="41" selection-end-column="21" />
+          <caret line="7" column="41" lean-forward="false" selection-start-line="7" selection-start-column="41" selection-end-line="7" selection-end-column="41" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/targets/dummies/simple.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+        <state relative-caret-position="187">
+          <caret line="11" column="1" lean-forward="false" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://P:/00046_kameip/4/src/Main.java" />
-    <entry file="file://P:/00046_kameip/4/src/EventRecord.java" />
-    <entry file="file://P:/00046_kameip/4/src/Meeting.java" />
-    <entry file="file://P:/00046_kameip/4/src/Site.java" />
-    <entry file="file://P:/00046_kameip/4/src/Main.java" />
-    <entry file="file://P:/00046_kameip/4/src/Meeting.java" />
-    <entry file="file://P:/00046_kameip/4/src/EventRecord.java" />
-    <entry file="file://P:/00046_kameip/4/src/Site.java" />
-    <entry file="file://$PROJECT_DIR$/js/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/targets/babel-retail/cart/builder/cart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2414">
-          <caret line="142" column="25" lean-forward="false" selection-start-line="142" selection-start-column="23" selection-end-line="142" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/call_graph.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1003">
-          <caret line="59" column="51" lean-forward="false" selection-start-line="59" selection-start-column="51" selection-end-line="59" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/serverless_yml_processing.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1037">
-          <caret line="61" column="7" lean-forward="false" selection-start-line="61" selection-start-column="7" selection-end-line="61" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="45" column="0" lean-forward="true" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/call_graph.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1003">
-          <caret line="59" column="51" lean-forward="false" selection-start-line="59" selection-start-column="51" selection-end-line="59" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/serverless_yml_processing.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="26" lean-forward="false" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/serverless_yml_processing.js">
+    <entry file="file://$PROJECT_DIR$/targets/galleria/galleria/src/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
-          <caret line="9" column="21" lean-forward="false" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/analysis.js" />
-    <entry file="file://$PROJECT_DIR$/test/test.js" />
-    <entry file="file://$PROJECT_DIR$/targets/dummy/simple.js" />
-    <entry file="file://$PROJECT_DIR$/../00046_kameip/4/src/Site.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3315">
-          <caret line="197" column="40" lean-forward="true" selection-start-line="197" selection-start-column="40" selection-end-line="197" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://P:/00046_kameip/4/src/Meeting.java" />
-    <entry file="file://P:/00046_kameip/4/src/EventRecord.java" />
-    <entry file="file://P:/00046_kameip/4/src/Main.java" />
-    <entry file="file://P:/00046_kameip/4/src/Site.java" />
-    <entry file="file://$PROJECT_DIR$/targets/babel-retail/cart/builder/serverless.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1029">
-          <caret line="18" column="20" lean-forward="true" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/targets/babel-retail/cart/api/cartApi.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-35">
-          <caret line="91" column="16" lean-forward="false" selection-start-line="91" selection-start-column="16" selection-end-line="91" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/targets/babel-retail/event-writer/eventWriterApi.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="697">
-          <caret line="41" column="21" lean-forward="false" selection-start-line="41" selection-start-column="14" selection-end-line="41" selection-end-column="21" />
+          <caret line="9" column="18" lean-forward="false" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/targets/babel-retail/cart/builder/cart.js">
+    <entry file="file://$PROJECT_DIR$/targets/galleria/uploader/src/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1479">
-          <caret line="87" column="30" lean-forward="false" selection-start-line="87" selection-start-column="18" selection-end-line="87" selection-end-column="30" />
+        <state relative-caret-position="136">
+          <caret line="8" column="18" lean-forward="false" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/call_graph.js">
+    <entry file="file://$PROJECT_DIR$/js/analysis_rewrite/prime_tree.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1088">
-          <caret line="64" column="15" lean-forward="false" selection-start-line="64" selection-start-column="15" selection-end-line="64" selection-end-column="15" />
+        <state relative-caret-position="219">
+          <caret line="106" column="24" lean-forward="false" selection-start-line="106" selection-start-column="14" selection-end-line="106" selection-end-column="24" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/serverless_yml_processing.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="36" lean-forward="false" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/generate_ast.js" />
-    <entry file="file://$PROJECT_DIR$/package.json">
+    <entry file="file://$PROJECT_DIR$/targets/galleria/crop/src/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
-          <caret line="10" column="4" lean-forward="false" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/targets/dummies/simple.js">
+    <entry file="file://$PROJECT_DIR$/targets/galleria/compress/src/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+        <state relative-caret-position="170">
+          <caret line="10" column="15" lean-forward="false" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="15" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/targets/galleria/crop/template.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -809,26 +781,194 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/generateAst.js">
+    <entry file="file://$PROJECT_DIR$/targets/galleria/compress/SAR_README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/galleria/compress/template.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="2" lean-forward="false" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="2" />
+        <state relative-caret-position="136">
+          <caret line="8" column="32" lean-forward="true" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/main.js">
+    <entry file="file://$PROJECT_DIR$/targets/galleria/galleria/template.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="35" column="32" lean-forward="false" selection-start-line="35" selection-start-column="32" selection-end-line="35" selection-end-column="32" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/draw_graph.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="52" lean-forward="false" selection-start-line="12" selection-start-column="45" selection-end-line="12" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/galleria/sepia/template.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/galleria/rotate/src/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/galleria/rotate/template.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="32" lean-forward="false" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/galleria/resize/template.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="29" lean-forward="false" selection-start-line="18" selection-start-column="19" selection-end-line="18" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/galleria/resize/src/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="8" lean-forward="false" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/lending-app-nodejs6/template.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="115" column="33" lean-forward="true" selection-start-line="115" selection-start-column="33" selection-end-line="115" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/template.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="274">
+          <caret line="58" column="12" lean-forward="false" selection-start-line="58" selection-start-column="12" selection-end-line="58" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/call_graph.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="79" column="39" lean-forward="false" selection-start-line="79" selection-start-column="30" selection-end-line="79" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/serverless_yml_processing.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/call_graph_analysis.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="64" column="39" lean-forward="false" selection-start-line="64" selection-start-column="39" selection-end-line="64" selection-end-column="39" />
+        <state relative-caret-position="-388">
+          <caret line="69" column="1" lean-forward="true" selection-start-line="69" selection-start-column="1" selection-end-line="69" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/analysis_rewrite/callgraph_visitor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="253" column="80" lean-forward="false" selection-start-line="253" selection-start-column="80" selection-end-line="253" selection-end-column="80" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/handlers/copyWebsiteBucket.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="43" lean-forward="false" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/handlers/createUser.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="1" lean-forward="false" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/handlers/query.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="13" lean-forward="true" selection-start-line="0" selection-start-column="13" selection-end-line="0" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/src/schema.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4573">
+          <caret line="3" column="15" lean-forward="false" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/src/resolvers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1491">
+          <caret line="12" column="17" lean-forward="false" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/targets/CitizenDispatch/server/src/dynamoDbLib.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="12" lean-forward="false" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="40" column="21" lean-forward="true" selection-start-line="40" selection-start-column="21" selection-end-line="40" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/output.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/analysis_rewrite/abstract_visitor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="36" column="17" lean-forward="false" selection-start-line="36" selection-start-column="17" selection-end-line="36" selection-end-column="17" />
           <folding />
         </state>
       </provider>
@@ -836,81 +976,9 @@
   </component>
   <component name="masterDetails">
     <states>
-      <state key="ArtifactsStructureConfigurable.UI">
-        <settings>
-          <artifact-editor />
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="FacetStructureConfigurable.UI">
-        <settings>
-          <last-edited>No facets are configured</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="GlobalLibrariesConfigurable.UI">
-        <settings>
-          <last-edited>alasql</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.45202312" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="JdkListConfigurable.UI">
-        <settings>
-          <last-edited>1.8</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.45202312" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ModuleStructureConfigurable.UI">
-        <settings>
-          <last-edited>ESPRIMA-serverless</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.45202312" />
-                <option value="0.6" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
       <state key="ProjectJDKs.UI">
         <settings>
           <last-edited>1.8</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectLibrariesConfigurable.UI">
-        <settings>
           <splitter-proportions>
             <option name="proportions">
               <list>

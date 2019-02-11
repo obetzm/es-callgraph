@@ -2,7 +2,7 @@
 %%% Do NOT edit. File created by BibTeX with style
 %%% ACM-Reference-Format-Journals [18-Jan-2012].
 
-\begin{thebibliography}{4}
+\begin{thebibliography}{5}
 
 %%% ====================================================================
 %%% NOTE TO THE USER: you can override these defaults by providing
@@ -86,6 +86,18 @@
   {and} \bibinfo{person}{Ondrej Lhot{\'a}k}.} \bibinfo{year}{2015}\natexlab{}.
 \newblock \showarticletitle{Static analysis of event-driven Node.js JavaScript
   applications}. In \bibinfo{booktitle}{\emph{OOPSLA}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Yan, Castro, Cheng, and Ishakian}{Yan
+  et~al\mbox{.}}{2016}]%
+        {chatbot}
+\bibfield{author}{\bibinfo{person}{Mengting Yan}, \bibinfo{person}{Paul
+  Castro}, \bibinfo{person}{Perry Cheng}, {and} \bibinfo{person}{Vatche
+  Ishakian}.} \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{Building a chatbot with serverless computing}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 1st International Workshop on
+  Mashups of Things and APIs}}. ACM, \bibinfo{pages}{5}.
 \newblock
 
 
