@@ -1,0 +1,191 @@
+%% For double-blind review submission, w/o CCS and ACM Reference (max submission space)
+%\documentclass[sigplan,review,anonymous]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For double-blind review submission, w/ CCS and ACM Reference
+%\documentclass[sigplan,review,anonymous]{acmart}\settopmatter{printfolios=true}
+%% For single-blind review submission, w/o CCS and ACM Reference (max submission space)
+%\documentclass[sigplan,review]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For single-blind review submission, w/ CCS and ACM Reference
+%\documentclass[sigplan,review]{acmart}\settopmatter{printfolios=true}
+%% For final camera-ready submission, w/ required CCS and ACM Reference
+\documentclass[sigplan]{acmart}\settopmatter{}
+
+
+
+%% Conference information
+%% Supplied to authors by publisher for camera-ready submission;
+%% use defaults for review submission.
+%\acmConference[PL'18]{ACM SIGPLAN Conference on Programming Languages}{January 01--03, 2018}{New York, NY, USA}
+\acmYear{2018}
+\acmISBN{} % \acmISBN{978-x-xxxx-xxxx-x/YY/MM}
+\acmDOI{} % \acmDOI{10.1145/nnnnnnn.nnnnnnn}
+\startPage{1}
+
+%% Copyright information
+%% Supplied to authors (based on authors' rights management selection;
+%% see authors.acm.org) by publisher for camera-ready submission;
+%% use 'none' for review submission.
+\setcopyright{none}
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\copyrightyear{2018}           %% If different from \acmYear
+
+%% Bibliography style
+\bibliographystyle{ACM-Reference-Format}
+%% Citation style
+%\citestyle{acmauthoryear}  %% For author/year citations
+%\citestyle{acmnumeric}     %% For numeric citations
+%\setcitestyle{nosort}      %% With 'acmnumeric', to disable automatic
+                            %% sorting of references within a single citation;
+                            %% e.g., \cite{Smith99,Carpenter05,Baker12}
+                            %% rendered as [14,5,2] rather than [2,5,14].
+%\setcitesyle{nocompress}   %% With 'acmnumeric', to disable automatic
+                            %% compression of sequential references within a
+                            %% single citation;
+                            %% e.g., \cite{Baker12,Baker14,Baker16}
+                            %% rendered as [2,3,4] rather than [2-4].
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Note: Authors migrating a paper from traditional SIGPLAN
+%% proceedings format to PACMPL format must update the
+%% '\documentclass' and topmatter commands above; see
+%% 'acmart-pacmpl-template.tex'.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% Some recommended packages.
+\usepackage{booktabs}   %% For formal tables:
+                        %% http://ctan.org/pkg/booktabs
+\usepackage{subcaption} %% For complex figures with subfigures/subcaptions
+                        %% http://ctan.org/pkg/subcaption
+
+
+\begin{document}
+
+%% Title information
+\title{Static Call Graph Construction in AWS Lambda Serverless Applications}         %% [Short Title] is optional;
+                                        %% when present, will be used in
+                                        %% header instead of Full Title.
+%\titlenote{with title note}             %% \titlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+%\subtitle{Subtitle}                     %% \subtitle is optional
+%\subtitlenote{with subtitle note}       %% \subtitlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+
+
+%% Author information
+%% Contents and number of authors suppressed with 'anonymous'.
+%% Each author should be introduced by \author, followed by
+%% \authornote (optional), \orcid (optional), \affiliation, and
+%% \email.
+%% An author may have multiple affiliations and/or emails; repeat the
+%% appropriate command.
+%% Many elements are not rendered, but should be provided for metadata
+%% extraction tools.
+
+%% Author with single affiliation.
+\author{Matthew Obetz}
+\orcid{0000-0001-6102-8136}             %% \orcid is optional
+\affiliation{
+  \institution{Rensselaer Polytechnic Institute}            %% \institution is required
+}
+\email{obetzm@rpi.edu}          %% \email is recommended
+
+
+\author{Ana Milanova}
+%\orcid{nnnn-nnnn-nnnn-nnnn}             %% \orcid is optional
+\affiliation{
+	\institution{Rensselaer Polytechnic Institute}            %% \institution is required
+}
+\email{milanova@cs.rpi.edu}          %% \email is recommended
+
+\author{Stacy Patterson}
+%\authornote{with author1 note}          %% \authornote is optional;
+%% can be repeated if necessary
+\orcid{0000-0001-7711-6018}             %% \orcid is optional
+\affiliation{
+	\institution{Rensselaer Polytechnic Institute}            %% \institution is required
+}
+\email{sep@cs.rpi.edu}          %% \email is recommended
+
+%% Abstract
+%% Note: \begin{abstract}...\end{abstract} environment must come
+%% before \maketitle command
+\begin{abstract}
+ This paper discusses challenges to statically constructing call graphs for applications that execute in a serverless cloud. We consider the specific problem of capturing program flows where state passes between lambda functions through event triggers associated with external data stores. To implement our discovered techniques we present \_\_\_\_\_, a tool for statically constructing call graphs on AWS Lambda applications written in Javascript.
+\end{abstract}
+
+
+%% 2012 ACM Computing Classification System (CSS) concepts
+%% Generate at 'http://dl.acm.org/ccs/ccs.cfm'.
+%\begin{CCSXML}
+%<ccs2012>
+%<concept>
+%<concept_id>10011007.10011006.10011008</concept_id>
+%<concept_desc>Software and its engineering~General programming languages</concept_desc>
+%<concept_significance>500</concept_significance>
+%</concept>
+%<concept>
+%<concept_id>10003456.10003457.10003521.10003525</concept_id>
+%<concept_desc>Social and professional topics~History of programming languages</concept_desc>
+%<concept_significance>300</concept_significance>
+%</concept>
+%</ccs2012>
+%\end{CCSXML}
+%
+%\ccsdesc[500]{Software and its engineering~General programming languages}
+%\ccsdesc[300]{Social and professional topics~History of programming languages}
+%% End of generated code
+
+\keywords{serverless, static analysis, AWS Lambda}  %% \keywords are mandatory in final camera-ready submission
+%% Note: \maketitle command must come after title commands, author
+%% commands, abstract environment, Computing Classification System
+%% environment and commands, and keywords command.
+\maketitle
+
+
+\section{Introduction}
+
+Serverless computing represents a new paradigm for web development in which application logic is divided among lambda functions that can be dynamically distributed across containers in a host-managed cloud. This powerful abstraction delivers an opportunity for software engineers to design applications without consideration for the context in which they will be executed. Instead, programmers write short functions against high-level APIs that expose mechanisms for long term storage and interaction with the serverless environment. These functions, often packaged as small libraries of Python or Javascript, are then assigned events which specify the conditions under which they will execute. Commonly, these events will specify the address of a web gateway or database which is also managed by the host and will accept a subscription that triggers when the associated resource receives new data. \par
+
+This model, while offering many advantages for applications which require elastic scalability, creates a gap in tooling for debugging and program analysis. Because containers are reused across different applications to maximize performance, the current generation of serverless platforms are inherently stateless, requiring data that is used in more than one lambda function to be passed directly or persisted and retrieved between each lambda. Existing commercial serverless platforms such as AWS Lambda place strict bounds on the running time and available memory for each individual lambda, encouraging developers to create flows that chain several lambdas together to complete a single task \cite{trends}. As each stage of this pipeline is a separate context that may even execute on a different machine, stack information that would normally serve a primary mechanism for a developer to identify defective paths does not exist. Likewise, classic methods of static analysis will fail to associate writes to a data store with events that trigger off of that data store, losing critical information about the flow of data between parts of an application. \par
+
+However, such information remains an invaluable tool for developers. This has prompted platform providers to release products such as Amazon X-Ray\footnote{https://docs.aws.amazon.com/xray/latest/devguide/aws-xray.html}, which seek to fill this gap by collecting runtime traces on Lambda applications that have already been deployed, then aggregating these traces to generate visualizations that detail runtime performance and graph flows from lambdas to supporting backend services. Though X-Ray and similar tools provide some insight into the structure of Lambda applications, they crucially lack the ability to capture events triggered by these backend services and map a complete path that data may take from initial input. \par
+
+In response, a tracing-based solution that augments X-Ray with implicit identifiers that are injected into inputs to allow tracing across event triggers has been explored in GammaRay \cite{causalorder}. This work was further generalized in Lowgo to support serverless clouds outside the AWS ecosystem \cite{lowgo}. While these solutions offer a more complete view of causal dependencies in a serverless application, the dynamic nature of the analysis they perform means that infrequently traversed paths may be missed in the service call graph they construct. Additionally, both GammaRay and Lowgo colocate their instrumentation directly in the cloud. This makes obtaining call graph information impractical during the implementation of an application, when this data is most useful to developers who wish to understand the scope of potential changes to an individual lambda. Colocation of runtime instrumentation also has an adverse effect on application performance, introducing as much as 43\% overhead in the case of GammaRay \cite{causalorder}, which may be unacceptable in performance critical contexts or at the massive scales serverless is designed to accommodate.  \par
+
+These drawbacks may be mitigated by using a fully static analysis. However, attempts to implement such an analysis are nontrivial, as serverless applications are highly asynchronous given their event-driven design, often leading to numerous dissociated entrypoints. Extensions to static call graph construction to support event listeners for general NodeJS programs have been proposed previously in Radar \cite{nodejscallgraph}, but these techniques are insufficiently well-defined for the declarative configuration of event triggers common to serverless platforms. \par
+
+
+%% Acknowledgments
+%\begin{acks}                            %% acks environment is optional
+%                                        %% contents suppressed with 'anonymous'
+%  %% Commands \grantsponsor{<sponsorID>}{<name>}{<url>} and
+%  %% \grantnum[<url>]{<sponsorID>}{<number>} should be used to
+%  %% acknowledge financial support and will be used by metadata
+%  %% extraction tools.
+%  This material is based upon work supported by the
+%  \grantsponsor{GS100000001}{National Science
+%    Foundation}{http://dx.doi.org/10.13039/100000001} under Grant
+%  No.~\grantnum{GS100000001}{nnnnnnn} and Grant
+%  No.~\grantnum{GS100000001}{mmmmmmm}.  Any opinions, findings, and
+%  conclusions or recommendations expressed in this material are those
+%  of the author and do not necessarily reflect the views of the
+%  National Science Foundation.
+%\end{acks}
+
+
+%% Bibliography
+\bibliography{bibfile}
+
+
+%% Appendix
+\appendix
+%\section{Appendix}
+%
+%Text of appendix \ldots
+
+\end{document}
