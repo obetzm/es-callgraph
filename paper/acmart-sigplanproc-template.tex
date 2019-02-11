@@ -160,6 +160,8 @@ In response, a tracing-based solution that augments X-Ray with implicit identifi
 These drawbacks may be mitigated by using a fully static analysis. However, attempts to implement such an analysis are nontrivial, as serverless applications are highly asynchronous given their event-driven design, often leading to numerous dissociated entrypoints. Extensions to static call graph construction to support event listeners for general NodeJS programs have been proposed previously in Radar \cite{nodejscallgraph}, but these techniques are insufficiently well-defined for the declarative configuration of event triggers common to serverless platforms. \par
 
 
+
+
 %% Acknowledgments
 %\begin{acks}                            %% acks environment is optional
 %                                        %% contents suppressed with 'anonymous'

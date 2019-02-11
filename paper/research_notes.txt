@@ -1,0 +1,10 @@
+- Deltas over traditional callgraph construction
+   -- incorporating multiple applications into a single callgraph
+       --- combining functions that may be running in different environments with limited shared state
+   -- flow through services via triggers/events
+       --- statically resolvable tables, level of granularity for analysis
+       --- approach for considering libraries (summaries of library calls instead of importing)
+           --- statelessness improving ability to reason about (lack of) globally stored state
+   -- services as sources/sinks
+           --- Potential for analysis of "risky" behaviors (e.g writing to disk on a shared container)
+- Language agnostic framework for considering serverless callgraphs
