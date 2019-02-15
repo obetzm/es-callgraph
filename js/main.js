@@ -18,7 +18,6 @@ function main(directories) {
 
     let initial_files = [...graph.nodes].filter((n) => n.type === "lambda");
 
-
     while (initial_files.length > 0 ) {
         let next_method = initial_files.shift();
         let lambda_filename = next_method.context.slice(0, next_method.context.lastIndexOf("/")) + "/" + next_method.file;

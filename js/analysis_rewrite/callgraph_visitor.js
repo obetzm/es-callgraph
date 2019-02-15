@@ -3,6 +3,9 @@ let {FunctionNode,FieldAccessNode,VariableNode, FuncCallNode, ObjectNode, NewNod
 let {AbstractVisitor} = require("./abstract_visitor");
 let {AnalysisScope, AnalysisValue} = require("../call_graph_analysis");
 
+let fs = require("fs");
+let parser = require("esprima");
+let {rewrite_ast} = require("./prime_tree");
 
 class AnalysisAmazonNode extends ObjectNode {
     constructor () {
@@ -143,6 +146,8 @@ class CallgraphVisitor extends AbstractVisitor {
                         });
                     }//if entry method was found
                 }//if the entry function is not declared in module.exports
+
+                this.scope.set("exports", assgn_stmt.rhs);
             }//if the assignment is to module.exports
             else if (assgn_stmt.lhs.obj.name === "exports") {
                 let entry_method_name = this.entrypoints[0].label;
@@ -179,6 +184,29 @@ class CallgraphVisitor extends AbstractVisitor {
                 if (assgn_stmt.rhs.params[0].value === "aws-sdk") {//if we're importing the Amazon SDK
                     this.scope.set(assgn_stmt.lhs.name, new AnalysisValue(new AnalysisAmazonNode()))
                 }//if require("amazon-sdk")
+                else if (assgn_stmt.rhs.params[0].value.startsWith(".")) {
+                    console.log("FOUND LOCAL LIBRARY: " + assgn_stmt.rhs.params[0].value);
+                    let current_path = this.entrypoints[0].context.split("/");
+                    current_path.pop();
+                    current_path = current_path.concat(this.entrypoints[0].file.split("/"));
+                    current_path.pop();
+                    let
+                        import_path = assgn_stmt.rhs.params[0].value.split("/");
+                    while (import_path[0] === "..") {
+                        import_path.shift();
+                        current_path.pop();
+                    }
+                    current_path = current_path.concat(import_path);
+                    let target_path = current_path.join("/") + ".js";
+
+                    let entry_file = fs.readFileSync(target_path, 'utf8');
+                    let import_ast = parser.parseModule(entry_file);
+                    let lhs_func = new GraphNode("lambda", assgn_stmt.lhs.name, true, assgn_stmt.group);
+                    lhs_func.set_context('.', target_path);
+                    let CGA = new CallgraphVisitor([lhs_func]);
+                    let visitor_import_ast = rewrite_ast(import_ast, assgn_stmt.group);
+                    visitor_import_ast.apply(CGA);
+                }
             }//if require
             else {//NOTE: this is necessary to store dynamo.update, but should eventually store all values
                 let resolved_func = resolveField(this.scope, assgn_stmt.rhs.callee);
