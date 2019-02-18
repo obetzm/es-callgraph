@@ -108,8 +108,10 @@ let resolveField = (scope, access_node) => {
     if (access_node instanceof FieldAccessNode) {
         let parent_obj = resolveField(scope, access_node.obj);
         if (parent_obj === null ) return null;
-        else if (parent_obj.possibilities.length === 0) { console.log(`Warning: resolved ${access_node.obj.name}, but unable to determine possible refs.`); return null; }
-        else return parent_obj.possibilities.reduce((a,n) => a.concat(n.find(access_node.field.name)), new AnalysisValue());
+        else if (parent_obj instanceof AnalysisValue) {
+            if (parent_obj.possibilities && parent_obj.possibilities.length === 0) { console.log(`Warning: resolved ${access_node.obj.name}, but unable to determine possible refs.`); return null; }
+            else return parent_obj.possibilities.reduce((a, n) => a.concat(n.find(access_node.field.name)), new AnalysisValue());
+        } else throw new Error("Warning: Field Access Node cannot be resolved.")
     } else return scope.find(access_node.name);
 };
 
@@ -156,13 +158,20 @@ class CallgraphVisitor extends AbstractVisitor {
                 if (func_name === entry_method_name) {
                     let entry_func = assgn_stmt.rhs;
                     if (entry_func instanceof VariableNode) {
-                        console.log(entry_func);
                         entry_func = this.scope.find(entry_func.name);
                     }
                     CallGraph.instance.merge_nodes(this.entrypoints[0], entry_func.node);
                     entry_func.node = this.entrypoints[0]; //TODO: this is unsafe if more than one function holds a ref
                     this.exec_func(entry_func);
                 }//if the thing assigned to exports is the entry method
+                let export_obj = this.scope.find("exports");
+                if (export_obj === null) {
+                    export_obj = new AnalysisValue(new ObjectNode(assgn_stmt.group, []));
+                    this.scope.set("exports", export_obj);
+                }
+                export_obj.possibilities[0].properties[assgn_stmt.lhs.field.name] = assgn_stmt.rhs;
+                assgn_stmt.rhs.node.label = assgn_stmt.rhs.node.label || assgn_stmt.lhs.field.name;
+
             }//if the assignment is to exports.VARNAME
         }//if the assignment is a field write
 
@@ -207,6 +216,18 @@ class CallgraphVisitor extends AbstractVisitor {
                     let CGA = new CallgraphVisitor([lhs_func]);
                     let visitor_import_ast = rewrite_ast(import_ast, assgn_stmt.group);
                     visitor_import_ast.apply(CGA);
+                    let lib_exports = CGA.scope.find("exports");
+                    if (assgn_stmt.lhs.name) {
+                        this.scope.set(assgn_stmt.lhs.name, lib_exports);
+                    } else if (assgn_stmt.lhs instanceof ObjectNode) {
+                        Object.keys(assgn_stmt.lhs.properties).forEach((req) => {
+                            let assignment = lib_exports.possibilities[0].find(req);
+                            this.scope.set(req, new AnalysisValue(assignment));
+                        })
+                    }else {
+                        console.log(assgn_stmt.lhs);
+                        throw new Error("Require used with unsupported assignment expression.")
+                    }
                 }
             }//if require
             else {//NOTE: this is necessary to store dynamo.update, but should eventually store all values
@@ -238,6 +259,10 @@ class CallgraphVisitor extends AbstractVisitor {
     visitFuncCall(call_stmt) {
         let cg = CallGraph.instance;
         let func_resolutions = resolveField(this.scope, call_stmt.callee);
+        if (call_stmt.callee.obj && call_stmt.callee.obj.name === "dynamoDbLib") {
+            console.log(call_stmt);
+            console.log(func_resolutions);
+        }
         if (func_resolutions !== null && func_resolutions.possibilities.length > 0) {
             let called_func = func_resolutions.possibilities[0];//TODO: all, not just first
             if (called_func instanceof AnalysisDBUpdate) {

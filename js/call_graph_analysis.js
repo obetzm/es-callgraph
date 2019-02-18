@@ -1,5 +1,6 @@
 
 let {GraphNode,GraphEdge,CallGraph} = require("./call_graph.js");
+let {ObjectNode} = require("./analysis_rewrite/prime_tree");
 
 class AnalysisScope {
     constructor(parent_scope){
@@ -73,7 +74,10 @@ class DatabaseUpdateFunc {
 class AnalysisValue {
     constructor(init) { this.possibilities = []; if (init) { this.add(init); }}
     add(possibility) { this.possibilities.push(possibility); }
-    concat(other) { if (other !== null && other !== undefined) this.possibilities = this.possibilities.concat(other.possibilities); return this; }
+    concat(other) {
+        if (other instanceof AnalysisValue) this.possibilities = this.possibilities.concat(other.possibilities);
+        else if (other !== null) this.add(other);
+        return this; }
     clone() { return this.possibilities.reduce((a,n) => a.add(n), new AnalysisValue()); }
 }
 /*
