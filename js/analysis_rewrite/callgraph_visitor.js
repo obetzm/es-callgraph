@@ -106,11 +106,14 @@ class AnalysisOutgoingEmail {
 let resolveField = (scope, access_node) => {
     if (access_node === null) return null;
     if (access_node instanceof FieldAccessNode) {
+        let field_obj = (access_node.doLookup) ? scope.find(access_node.field.name).possibilities[0].value : access_node.field.name;
         let parent_obj = resolveField(scope, access_node.obj);
         if (parent_obj === null ) return null;
         else if (parent_obj instanceof AnalysisValue) {
             if (parent_obj.possibilities && parent_obj.possibilities.length === 0) { console.log(`Warning: resolved ${access_node.obj.name}, but unable to determine possible refs.`); return null; }
-            else return parent_obj.possibilities.reduce((a, n) => a.concat(n.find(access_node.field.name)), new AnalysisValue());
+            else {
+                return parent_obj.possibilities.reduce((a, n) => a.concat(n.find(field_obj)), new AnalysisValue());
+            }
         } else throw new Error("Warning: Field Access Node cannot be resolved.")
     } else if (access_node instanceof FuncCallNode) {
         let inner_func = resolveField(scope, access_node.callee);//TODO: need access to exec_func here
@@ -240,6 +243,10 @@ class CallgraphVisitor extends AbstractVisitor {
             }//if require
             else {//NOTE: this is necessary to store dynamo.update, but should eventually store all values
                 let resolved_func = resolveField(this.scope, assgn_stmt.rhs.callee);
+                if (this.scope.declarations.action) {
+                    console.log(assgn_stmt.rhs);
+                    console.log(resolved_func);
+                }
                 this.scope.set(assgn_stmt.lhs.name, resolved_func);
             }
         } else if (assgn_stmt.rhs instanceof NewNode ) {//if we're storing the result of an object initialization
@@ -268,20 +275,20 @@ class CallgraphVisitor extends AbstractVisitor {
     visitFuncCall(call_stmt) {
         let cg = CallGraph.instance;
         let func_resolutions = resolveField(this.scope, call_stmt.callee);
-        if (call_stmt.callee.name === "promise") {
-            console.log(call_stmt);
-            console.log(func_resolutions);
-        }
         if (func_resolutions !== null && func_resolutions.possibilities.length > 0) {
             let called_func = func_resolutions.possibilities[0];//TODO: all, not just first
             if (called_func instanceof AnalysisDBUpdate) {
                 let config_obj = call_stmt.params[0];
                 if (config_obj instanceof VariableNode) config_obj = this.scope.find(config_obj.name).possibilities[0];
+                console.log(config_obj);
                 let table_name = config_obj.properties["TableName"];
                 if (table_name instanceof VariableNode) table_name = this.scope.find(table_name.name).possibilities[0].value;
+                else if (table_name instanceof LiteralNode) table_name = table_name.value;
                 let to_node = cg.find_or_create_dynamo_node(table_name);//TODO: more robust way to do this
                 cg.add_edge(new GraphEdge(this.coming_from, to_node));
-                call_stmt.params[1].exec(this);//TODO: when func is a ref
+                if ( call_stmt.params[1]) {
+                    call_stmt.params[1].exec(this);//TODO: when func is a ref
+                }
             } else if (called_func instanceof AnalysisDBRead) {
                 let to_node = this.coming_from;
                 let config_obj = call_stmt.params[0];
@@ -327,7 +334,7 @@ class CallgraphVisitor extends AbstractVisitor {
                     cg.add_edge(new GraphEdge(this.coming_from, called_func.node));
                     cg.add_node(called_func.node);
                 }//if we're not in global scope when making this call
-                this.exec_func(called_func);
+                this.exec_func(called_func, call_stmt.params);
             }//if it is a normal function call
         }//if the function can be resolved
         else if (call_stmt.callee instanceof FieldAccessNode) {
@@ -340,11 +347,26 @@ class CallgraphVisitor extends AbstractVisitor {
         }
     }//visitFuncCall
 
-    exec_func(called_func) {
+    exec_func(called_func, params) {
         let stack_frame = this.coming_from;
         let stack_scope = this.scope;
         this.scope = new AnalysisScope(called_func.scope);
         this.coming_from = called_func.node;
+
+        //Wire up passed in arguments to variable declarations inside the scope of the called function
+        if (params) {
+            params = params.map((p) => {
+                if (p instanceof LiteralNode) return new AnalysisValue(p);
+                else return resolveField(stack_scope, p);
+            });
+            let i=0;
+            while(i<called_func.params.length && i<params.length) {
+                this.scope.set(called_func.params[i].name, params[i]);
+                i++;
+            }//for each param that is passed in and exists in the function def
+        }//if params were explicitly passed in
+
+
         called_func.exec(this);
         this.scope = stack_scope;
         this.coming_from = stack_frame;

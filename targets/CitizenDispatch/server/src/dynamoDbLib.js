@@ -25,8 +25,7 @@ if (process.env.STAGE === 'local') {
 const tableFor = (tableName) => "citizen-dispatch-dev-" + tableName
 
 exports.call = (action, params) => {
-  let ret = dynamoDb[action](params);
-  return ret.promise();
+  dynamoDb[action](params);
 }
 
 exports.upsert = (tableName, keyName, keyValue, fields) => {

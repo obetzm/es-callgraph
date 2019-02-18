@@ -32,7 +32,7 @@ class AbstractNode {
         else if (ast_node.type === "MemberExpression") {
             let obj = AbstractNode.flattenExpression(ast_node.object, group);
             let field = AbstractNode.flattenExpression(ast_node.property, group);
-            return new FieldAccessNode(group, obj, field);
+            return new FieldAccessNode(group, obj, field, ast_node.computed);
         }
         else if (ast_node.type === "AssignmentExpression") {
             /*if (ast_node.left.type === "Identifier") {
@@ -371,10 +371,11 @@ class FuncCallNode extends AbstractNode {
 }
 
 class FieldAccessNode extends AbstractNode {
-    constructor(group, obj, field) {
+    constructor(group, obj, field, doLookup) {
         super(group);
         this.obj = obj;
         this.field = field;
+        this.doLookup = doLookup;
     }
 
     apply(visitor) {//TODO: recursion for obj.subobj.field
