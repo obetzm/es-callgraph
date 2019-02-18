@@ -130,23 +130,24 @@ class CallgraphVisitor extends AbstractVisitor {
 
                 let entry_method_name = this.entrypoints[0].label;
                 console.log("Entry method is:" + entry_method_name);
-                let entry_func = assgn_stmt.rhs.properties[entry_method_name];
-                if (entry_func instanceof FunctionNode) {
-                    CallGraph.instance.merge_nodes(this.entrypoints[0], entry_func.node);
-                    entry_func.node = this.entrypoints[0]; //TODO: this is unsafe if more than one function holds a ref
-                    this.exec_func(entry_func);
-                }
-                else if (entry_func instanceof VariableNode) {
-                    let entry_methods = this.scope.find(entry_func.name);
-                    if (entry_methods) {
-                        entry_methods.possibilities.forEach((p) => {
-                            CallGraph.instance.merge_nodes(this.entrypoints[0], p.node);
-                            p.node = this.entrypoints[0]; //TODO: this is unsafe if more than one function holds a ref
-                            this.exec_func(p)
-                        });
-                    }//if entry method was found
-                }//if the entry function is not declared in module.exports
-
+                if (assgn_stmt instanceof ObjectNode) {
+                    let entry_func = assgn_stmt.rhs.properties[entry_method_name];
+                    if (entry_func instanceof FunctionNode) {
+                        CallGraph.instance.merge_nodes(this.entrypoints[0], entry_func.node);
+                        entry_func.node = this.entrypoints[0]; //TODO: this is unsafe if more than one function holds a ref
+                        this.exec_func(entry_func);
+                    }
+                    else if (entry_func instanceof VariableNode) {
+                        let entry_methods = this.scope.find(entry_func.name);
+                        if (entry_methods) {
+                            entry_methods.possibilities.forEach((p) => {
+                                CallGraph.instance.merge_nodes(this.entrypoints[0], p.node);
+                                p.node = this.entrypoints[0]; //TODO: this is unsafe if more than one function holds a ref
+                                this.exec_func(p)
+                            });
+                        }//if entry method was found
+                    }//if the entry function is not declared in module.exports
+                }//if the assigned export is an object
                 this.scope.set("exports", assgn_stmt.rhs);
             }//if the assignment is to module.exports
             else if (assgn_stmt.lhs.obj.name === "exports") {

@@ -10,7 +10,7 @@ const dynamodbUpdateExpression = require('dynamodb-update-expression');
 const geolib = require('geolib');
 
 // The new, better way to make ddb requests (instead of promisify)
-const dynamoDbLib = require('../src/dynamoDbLib');
+const dynamoDbLib = require('./dynamoDbLib');
 
 let dynamoDb;
 
@@ -32,7 +32,7 @@ if (process.env.STAGE === 'local') {
   dynamoDb = new AWS.DynamoDB.DocumentClient();
 }
 
-const tableFor = (tableName) => `citizen-dispatch-dev-${tableName}`
+const tableFor = (tableName) => "citizen-dispatch-dev-" + tableName
 
 const promisify = foo => new Promise((resolve, reject) => {
   foo((error, result) => {

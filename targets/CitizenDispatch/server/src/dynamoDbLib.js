@@ -22,7 +22,7 @@ if (process.env.STAGE === 'local') {
   dynamoDb = new AWS.DynamoDB.DocumentClient();
 }
 
-const tableFor = (tableName) => `citizen-dispatch-dev-${tableName}`
+const tableFor = (tableName) => "citizen-dispatch-dev-" + tableName
 
 exports.call = (action, params) => {
   return dynamoDb[action](params).promise();
