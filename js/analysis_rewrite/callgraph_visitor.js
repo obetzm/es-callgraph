@@ -112,6 +112,10 @@ let resolveField = (scope, access_node) => {
             if (parent_obj.possibilities && parent_obj.possibilities.length === 0) { console.log(`Warning: resolved ${access_node.obj.name}, but unable to determine possible refs.`); return null; }
             else return parent_obj.possibilities.reduce((a, n) => a.concat(n.find(access_node.field.name)), new AnalysisValue());
         } else throw new Error("Warning: Field Access Node cannot be resolved.")
+    } else if (access_node instanceof FuncCallNode) {
+        let inner_func = resolveField(scope, access_node.callee);//TODO: need access to exec_func here
+        console.log("Warning: Chained function calls not currently supported.");
+        return null;
     } else return scope.find(access_node.name);
 };
 
@@ -137,6 +141,7 @@ class CallgraphVisitor extends AbstractVisitor {
                     if (entry_func instanceof FunctionNode) {
                         CallGraph.instance.merge_nodes(this.entrypoints[0], entry_func.node);
                         entry_func.node = this.entrypoints[0]; //TODO: this is unsafe if more than one function holds a ref
+                        entry_func.scope = this.scope;
                         this.exec_func(entry_func);
                     }
                     else if (entry_func instanceof VariableNode) {
@@ -162,6 +167,7 @@ class CallgraphVisitor extends AbstractVisitor {
                     }
                     CallGraph.instance.merge_nodes(this.entrypoints[0], entry_func.node);
                     entry_func.node = this.entrypoints[0]; //TODO: this is unsafe if more than one function holds a ref
+                    entry_func.scope = this.scope;
                     this.exec_func(entry_func);
                 }//if the thing assigned to exports is the entry method
                 let export_obj = this.scope.find("exports");
@@ -169,6 +175,7 @@ class CallgraphVisitor extends AbstractVisitor {
                     export_obj = new AnalysisValue(new ObjectNode(assgn_stmt.group, []));
                     this.scope.set("exports", export_obj);
                 }
+                assgn_stmt.rhs.scope = this.scope;
                 export_obj.possibilities[0].properties[assgn_stmt.lhs.field.name] = assgn_stmt.rhs;
                 assgn_stmt.rhs.node.label = assgn_stmt.rhs.node.label || assgn_stmt.lhs.field.name;
 
@@ -177,6 +184,7 @@ class CallgraphVisitor extends AbstractVisitor {
 
 
         else if (assgn_stmt.rhs instanceof FunctionNode) {
+            assgn_stmt.rhs.scope = this.scope;
             let lhs = assgn_stmt.lhs.name;
             let assigned_to = this.scope.find(lhs);
             if (assigned_to === null) {
@@ -254,12 +262,13 @@ class CallgraphVisitor extends AbstractVisitor {
                 this.scope.find(lhs).add(func_stmt);
             } else this.scope.set(lhs, new AnalysisValue(func_stmt));
         }
+        func_stmt.scope = this.scope;
     }
 
     visitFuncCall(call_stmt) {
         let cg = CallGraph.instance;
         let func_resolutions = resolveField(this.scope, call_stmt.callee);
-        if (call_stmt.callee.obj && call_stmt.callee.obj.name === "dynamoDbLib") {
+        if (call_stmt.callee.name === "promise") {
             console.log(call_stmt);
             console.log(func_resolutions);
         }
@@ -305,7 +314,6 @@ class CallgraphVisitor extends AbstractVisitor {
                 let config_obj = call_stmt.params[0];
                 if (config_obj instanceof VariableNode) config_obj = this.scope.find(config_obj.name).possibilities[0];
                 let bucket_name = config_obj.properties["Bucket"];
-                console.log(this.scope.find(bucket_name.name).possibilities[0]);
                 if (bucket_name instanceof VariableNode) bucket_name = this.scope.find(bucket_name.name).possibilities[0].value;
                 let to_node = cg.find_or_create_s3_node(bucket_name);//TODO: same problem as AnalysisDBUpdate
                 cg.add_edge(new GraphEdge(this.coming_from, to_node));
@@ -334,11 +342,11 @@ class CallgraphVisitor extends AbstractVisitor {
 
     exec_func(called_func) {
         let stack_frame = this.coming_from;
-        let stack_scope = this.AnalysisScope;
-        this.AnalysisScope = new AnalysisScope(this.AnalysisScope);
+        let stack_scope = this.scope;
+        this.scope = new AnalysisScope(called_func.scope);
         this.coming_from = called_func.node;
         called_func.exec(this);
-        this.AnalysisScope = stack_scope;
+        this.scope = stack_scope;
         this.coming_from = stack_frame;
     }
 }//CallGraphVisitor

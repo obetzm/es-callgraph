@@ -325,6 +325,7 @@ class FunctionNode extends AbstractNode {
         this.params = params.map((a)=>AbstractNode.flattenExpression(a, group));
         this.body = flatten_array(body.map((n) => AbstractNode.make(n, group)));
         this.node = new GraphNode("lambda", name, false, group, this);
+        this.scope = null;
     }
 
     set name(nv) {
@@ -335,6 +336,7 @@ class FunctionNode extends AbstractNode {
     get name() {
         return this._name;
     }
+
 
     exec(visitor) { //TODO: return
         this.body.forEach((n) => n.apply(visitor));
