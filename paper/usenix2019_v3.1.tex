@@ -1,0 +1,125 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Template for USENIX papers.
+%Lists are sometimes quite handy. If you want to itemize things, feel
+%free:
+%
+%
+%\begin{description}
+%  
+%\item[fread] a function that reads from a \texttt{stream} into the
+%  array \texttt{ptr} at most \texttt{nobj} objects of size
+%  \texttt{size}, returning returns the number of objects read.
+%
+%\item[Fred] a person's name, e.g., there once was a dude named Fred
+%  who separated usenix.sty from this file to allow for easy
+%  inclusion.
+%\end{description}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[letterpaper,twocolumn,10pt]{article}
+\usepackage{usenix2019_v3}
+
+%-------------------------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------------------------
+
+%don't want date printed
+\date{}
+
+% make title bold and 14 pt font (Latex default is non-bold, 16 pt)
+\title{\Large \bf Static Call Graph Construction in AWS Lambda Serverless Applications}
+
+%for single author (just remove % characters)
+\author{
+{\rm Your N.\ Here}\\
+Your Institution
+\and
+{\rm Second Name}\\
+Second Institution
+\and
+{\rm Third Name}\\
+Third Institution
+} % end author
+
+\maketitle
+
+%-------------------------------------------------------------------------------
+\begin{abstract}
+%-------------------------------------------------------------------------------
+ This paper describes an approach for statically constructing call graphs for applications that execute in a serverless cloud. We briefly introduce static analysis and explain the role of a call graph in performing such analyses, then discuss the benefits of using such an approach over existing dynamic techniques like those that employ program traces. We then explore the challenges associated with capturing complete program flows in a serverless environment, where state passes between lambda functions through event triggers associated with external data stores. To implement our discovered techniques we present \_\_\_\_\_, a tool for statically constructing call graphs on AWS Lambda applications written in Javascript.
+\end{abstract}
+
+
+%-------------------------------------------------------------------------------
+\section{Introduction}
+%-------------------------------------------------------------------------------
+
+%Paragraph 1: Introduce the unfamiliar
+A call graph is a directed graph where each node represents some unit of code, usually a function, and each edge represents a path through the program where a given piece of code may cause another to execute, such as a call site where one function invokes another~\cite{introcallgraph}. Closely related to the more detailed interprocedural control flow graph, this intermediate representation of a program has numerous benefits beyond its instinctive use as an aid for manually inspecting the general structure of a program. Call graph construction is an instrumental step in many static analyses, such as those for identifying and optimizing away unused code~\cite{deadcode} and those for detecting potential software vulnerabilities~\cite{vulns} or malicious behavior~\cite{malicious}. As such, constructing a call graph for serverless programs is an integral first step in being able to reason about the safety and performance of their operation in abstract terms. \par
+
+%Paragraph 2: Identify the gap
+However, classical methods of call graph construction are unable to generate complete call graphs for serverless programs. These methods typically rely on traversal of the program from an identified entrypoint, generating summaries of encountered blocks of code and then resolving potential calls between blocks using a predefined set of rules that may make simplifying assumptions about context or flow~\cite{partialcallgraph}. By contrast, serverless programs are fundamentally event-driven~\cite{serverlessoverview}. This means that an accurate call graph must be able to resolve not only function calls, but also implicit state transfer that occurs when a lambda writes to a message queue or database that has an associated event. Attempts at classic call graph construction are further confounded by an inability to detect these events, which are often configured in a declarative style specific to a given serverless provider~\cite{frameworkoverview}, though deployment tools such as the Serverless Framework have begun to present platform-agnostic file-based solutions to this configuration~\cite{serverlessframework}. \par
+
+
+%Paragraph 3: Dismiss the alternatives
+Without access to techniques for reasoning statically about serverless programs, some have opted to consider runtime analyses to visualize program structure~\cite{lowgo,causalorder}, track the flow of sensitive information~\cite{ifc}, or measure resource costs~\cite{curtain}. However, in the absence of information collected from the source code itself, these tools must instead instrument monitoring that also runs in the serverless cloud. This additional code introduces significant overhead, both in terms of impact on scalability~\cite{SOMETHING}, and in monetary cost to execute the analysis code in the cloud~\cite{serverlesscost}. Furthermore, these techniques suffer from limitations inherent to constructing views of a program from path profiling, such as potentially missing infrequently traversed paths like those used for error handling~\cite{SOMETHING}. Together, these limitations significantly restrict the utility of the tools produced and the ability to author tools that are useful for developers at the time they are authoring applications. \par
+%Paragraph 4: Declare the contribution
+In order to address this gap, we have begun building \_\_\_\_\_, a tool for constructing call graphs statically with special consideration for the needs of serverless applications. Specifically, we contribute a language-agnostic algorithm for generating service call graphs that incorporate flow to and from common backend services without the use of program traces, and consider implementation details for NodeJS applications on the AWS Lambda platform. To do so, we extend traditional call graph semantics with novel techniques for considering virtual nodes in the call graph which represent platform events and the actions that trigger them. We thus advance call graph analysis by providing a means for multiple programs that may even be running in separate execution environments to be integrated into a single extended call graph that provides information about the limited interfaces between which the constituent programs may share state. \par
+
+
+
+
+
+\section{Design}
+%  -- interpreted languages, function pointers \cite{nodejscallgraph}
+%  -- against the AST, produced by ESPRIMA
+%  -- flow-sensitive, but smaller programs inside each lambda makes this okay
+%\subsection{Event Triggers}
+%  -- all code modules, identifying which triggers are entrypoints
+%  -- serverless.yml vs cloudformation.yml
+%  -- statically resolvable tables in code
+%\subsection{Implicit Calls}
+%  -- 
+%\subsection{External Libraries}
+%   -- conservative assumption that callback functions are always called on some path
+%   -- unsoundness from assuming no global state in libraries, but short running lambas w/ no shared memory makes this safer
+%
+%\section{Results}
+%\subsection{Target Programs}
+%  -- AWS Serverless Application Repository
+%  -- program count, division of languages
+%\subsection{Common Features}
+%  -- complex flows
+%
+%\section{Discussion}
+%\subsection{Applications}
+%  -- security, leaking of private data
+%  -- documentation
+%  -- 
+%\subsection{Limitations}
+%\subsection{Future Direction}
+%  -- 
+%
+%\section{Related Work}
+
+%
+%
+%%-------------------------------------------------------------------------------
+%\section*{Availability}
+%%-------------------------------------------------------------------------------
+%
+%USENIX program committees give extra points to submissions that are
+%backed by artifacts that are publicly available. If you made your code
+%or data available, it's worth mentioning this fact in a dedicated
+%section.
+
+%-------------------------------------------------------------------------------
+\bibliographystyle{plainurl}
+\bibliography{bibfile}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%  LocalWords:  endnotes includegraphics fread ptr nobj noindent
+%%  LocalWords:  pdflatex acks
