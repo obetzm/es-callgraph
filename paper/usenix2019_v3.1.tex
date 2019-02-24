@@ -66,12 +66,15 @@ Without access to techniques for reasoning statically about serverless programs,
 %Paragraph 4: Declare the contribution
 In order to address this gap, we have begun building \_\_\_\_\_, a tool for constructing call graphs statically with special consideration for the needs of serverless applications. Specifically, we contribute a language-agnostic algorithm for generating service call graphs that incorporate flow to and from common backend services without the use of program traces, and consider implementation details for NodeJS applications on the AWS Lambda platform. To do so, we extend traditional call graph semantics with novel techniques for considering virtual nodes in the call graph which represent platform events and the actions that trigger them. We thus advance call graph analysis by providing a means for multiple programs that may even be running in separate execution environments to be integrated into a single extended call graph that provides information about the limited interfaces between which the constituent programs may share state. \par
 
+\section{Lambda Characteristics}
+AWS Lambda programs have several common characteristics which inform the design of a static analysis. Most notably, serverless programs tend to be written in interpreted scripting languages such as Python and NodeJS~\cite{trends}. These programs heavily feature abstract constructs that have historically confounded static analyses, such as first-class functions, untyped objects, and file imports that are resolved at runtime~\cite{scriptingchallenges}. Consequently, an analysis designed for serverless applications must be able to support these constructs to be able to detect the full set of possible invocations from a given function. This limits the ability to use existing tools for Javascript analysis \cite{WALA,JSSAFE}, as these tools tend to not to support the full set of modern Javascript features.\par
 
-
+Additionally, the event-driven 
+%events \cite{nodejscallgraph}
 
 
 \section{Design}
-%  -- interpreted languages, function pointers \cite{nodejscallgraph}
+
 %  -- against the AST, produced by ESPRIMA
 %  -- flow-sensitive, but smaller programs inside each lambda makes this okay
 %\subsection{Event Triggers}
@@ -86,8 +89,8 @@ In order to address this gap, we have begun building \_\_\_\_\_, a tool for cons
 %
 %\section{Results}
 %\subsection{Target Programs}
-%  -- AWS Serverless Application Repository
-%  -- program count, division of languages
+%  -- AWS Serverless Application Repository \cite{awsrepo}
+%  -- program count, division of languages 
 %\subsection{Common Features}
 %  -- complex flows
 %
