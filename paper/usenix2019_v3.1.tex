@@ -1,19 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Template for USENIX papers.
-%Lists are sometimes quite handy. If you want to itemize things, feel
-%free:
-%
-%
-%\begin{description}
-%  
-%\item[fread] a function that reads from a \texttt{stream} into the
-%  array \texttt{ptr} at most \texttt{nobj} objects of size
-%  \texttt{size}, returning returns the number of objects read.
-%
-%\item[Fred] a person's name, e.g., there once was a dude named Fred
-%  who separated usenix.sty from this file to allow for easy
-%  inclusion.
-%\end{description}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[letterpaper,twocolumn,10pt]{article}
@@ -29,7 +15,7 @@
 % make title bold and 14 pt font (Latex default is non-bold, 16 pt)
 \title{\Large \bf Static Call Graph Construction in AWS Lambda Serverless Applications}
 
-%for single author (just remove % characters)
+%author
 \author{
 {\rm Your N.\ Here}\\
 Your Institution
@@ -60,50 +46,70 @@ A call graph is a directed graph where each node represents some unit of code, u
 %Paragraph 2: Identify the gap
 However, classical methods of call graph construction are unable to generate complete call graphs for serverless programs. These methods typically rely on traversal of the program from an identified entrypoint, generating summaries of encountered blocks of code and then resolving potential calls between blocks using a predefined set of rules that may make simplifying assumptions about context or flow~\cite{partialcallgraph}. By contrast, serverless programs are fundamentally event-driven~\cite{serverlessoverview}. This means that an accurate call graph must be able to resolve not only function calls, but also implicit state transfer that occurs when a lambda writes to a message queue or database that has an associated event. Attempts at classic call graph construction are further confounded by an inability to detect these events, which are often configured in a declarative style specific to a given serverless provider~\cite{frameworkoverview}, though deployment tools such as the Serverless Framework have begun to present platform-agnostic file-based solutions to this configuration~\cite{serverlessframework}. \par
 
-
 %Paragraph 3: Dismiss the alternatives
-Without access to techniques for reasoning statically about serverless programs, some have opted to consider runtime analyses to visualize program structure~\cite{lowgo,causalorder}, track the flow of sensitive information~\cite{ifc}, or measure resource costs~\cite{curtain}. However, in the absence of information collected from the source code itself, these tools must instead instrument monitoring that also runs in the serverless cloud. This additional code introduces significant overhead, both in terms of impact on scalability~\cite{SOMETHING}, and in monetary cost to execute the analysis code in the cloud~\cite{serverlesscost}. Furthermore, these techniques suffer from limitations inherent to constructing views of a program from path profiling, such as potentially missing infrequently traversed paths like those used for error handling~\cite{SOMETHING}. Together, these limitations significantly restrict the utility of the tools produced and the ability to author tools that are useful for developers at the time they are authoring applications. \par
+Without access to techniques for reasoning statically about serverless programs, some have opted to consider runtime analyses to visualize program structure~\cite{lowgo,causalorder}, track the flow of sensitive information~\cite{ifc}, or measure resource costs~\cite{curtain}. However, in the absence of information collected from the source code itself, these tools must instead instrument monitoring that also runs in the serverless cloud. This additional code introduces significant overhead, both in terms of impact on scalability~\cite{causalorder}, and in monetary cost to execute the analysis code in the cloud~\cite{serverlesscost}. Furthermore, these techniques suffer from limitations inherent to constructing views of a program from path profiling, such as potentially missing infrequently traversed paths like those used for error handling~\cite{selectivepaths}. Together, these limitations significantly restrict the types of questions an analysis is suited to answer and hamper the development of tools that are useful to programmers at the time they are authoring applications. \par
+
 %Paragraph 4: Declare the contribution
-In order to address this gap, we have begun building \_\_\_\_\_, a tool for constructing call graphs statically with special consideration for the needs of serverless applications. Specifically, we contribute a language-agnostic algorithm for generating service call graphs that incorporate flow to and from common backend services without the use of program traces, and consider implementation details for NodeJS applications on the AWS Lambda platform. To do so, we extend traditional call graph semantics with novel techniques for considering virtual nodes in the call graph which represent platform events and the actions that trigger them. We thus advance call graph analysis by providing a means for multiple programs that may even be running in separate execution environments to be integrated into a single extended call graph that provides information about the limited interfaces between which the constituent programs may share state. \par
+In order to address this gap, we have begun building \_\_\_\_\_, a tool for constructing call graphs statically with special consideration for the needs of serverless applications. Specifically, we contribute a language-agnostic procedure for generating service call graphs that incorporate flow to and from common backend services without the use of program traces, and consider implementation details for NodeJS applications on the AWS Lambda platform. To do so, we extend traditional call graph semantics with novel techniques for considering virtual nodes in the call graph which represent platform services and the actions that cause them to trigger lambda functions. We thus advance call graph analysis by providing a means for multiple programs that may even be running in separate execution environments to be integrated into a single extended call graph that provides information about the limited interfaces between which the constituent programs may share state. \par
 
-\section{Lambda Characteristics}
-AWS Lambda programs have several common characteristics which inform the design of a static analysis. Most notably, serverless programs tend to be written in interpreted scripting languages such as Python and NodeJS~\cite{trends}. These programs heavily feature abstract constructs that have historically confounded static analyses, such as first-class functions, untyped objects, and file imports that are resolved at runtime~\cite{scriptingchallenges}. Consequently, an analysis designed for serverless applications must be able to support these constructs to be able to detect the full set of possible invocations from a given function. This limits the ability to use existing tools for Javascript analysis \cite{WALA,JSSAFE}, as these tools tend to not to support the full set of modern Javascript features.\par
 
-Additionally, the event-driven 
+\section{Characteristics of Lambdas}
+%Interpreted languages
+AWS Lambda programs have several common characteristics which inform the design of a static analysis. Most notably, serverless programs tend to be written in interpreted scripting languages such as Python and NodeJS~\cite{trends}. These programs heavily feature abstract constructs that have historically confounded static analyses, such as first-class functions, untyped objects, and file imports that are resolved at runtime~\cite{scriptingchallenges}. Consequently, an analysis designed for serverless applications must be able to support these constructs to be able to detect the full set of possible invocations from a given function. This limits the ability to use existing tools for Javascript analysis~\cite{WALA,jssafe,arctarus}, as these tools tend to have difficulty scaling to large programs or do not support the full set of modern Javascript features.\par
+
 %events \cite{nodejscallgraph}
+Additionally, the event-driven design of the serverless architecture suggests that traditional means of considering dependency between lambda invocations may be impractical. An effective tool for resolving events statically must be able to filter messages which potentially trigger events on content in order to consider precisely which events may be triggered~\cite{debs}. Previous work has been performedto design event-aware semantics for static analysis in NodeJS~\cite{nodejscallgraph}. However, this approach relies on explicit subscription to and emission of events, while Lambda event triggers are described declaratively, and a write to a platform service may or may not have an associated event. \par
+
 
 
 \section{Design}
 
-%  -- against the AST, produced by ESPRIMA
+%  -- implemented against the AST
+Because of the limitations for existing Javascript analysis tools, we elect to implement our analysis directly against the abstract syntax tree (AST). An AST converts a concrete program into a nested structure of tokens that describe the syntax of a language formally~\cite{ast}. To produce this AST, we use the ESPRIMA library~\cite{esprima}, which supports translation of even modern and experimental language features. The AST it produces conforms to the ESTree standard~\cite{estree}, which allows the Javascript parser to be easily replaced in the future. \par
+
 %  -- flow-sensitive, but smaller programs inside each lambda makes this okay
-%\subsection{Event Triggers}
-%  -- all code modules, identifying which triggers are entrypoints
-%  -- serverless.yml vs cloudformation.yml
-%  -- statically resolvable tables in code
-%\subsection{Implicit Calls}
-%  -- 
-%\subsection{External Libraries}
-%   -- conservative assumption that callback functions are always called on some path
+We also opt to use flow-sensitive tracking of program state when resolving possible function calls to build the call graph. Though flow-sensitive analyses tend to give a minor improvement in precision of their results, they are often impractical for analysis of real programs, as tracking the values that can reach any particular program point often does not scale~\cite{flowsensitivity}. However, we find that for AWS Lambda programs, if externally included libraries can be conservatively abstracted away, each individual lambda is of manageable scope. This makes flow-sensitive call graph construction tractable even in spite of the path explosion problem it typically faces. \par
+
+
+\subsection{Configuration Detection}
+%  -- code written in modules, triggered by config.
+Serverless applications are organized as a set of libraries, supported by a configuration file that identifies specific functions inside these libraries that act as handlers for one or more events~\cite{cloudparadigms}. The first step in constructing a call graph is identifying which source files contain code that acts as an entrypoint into the serverless application. For AWS Lambda applications, two common formats for this configuration are CloudFormation templates~\cite{cloudformation} and Serverless Framework templates~\cite{serverlessframework}, both of which are YAML files that list a collection of resources that should be packaged for deployment. By recursing the source tree and identifying all YAML files that conform to either the CloudFormation or Serverless format then filtering the resources defined in those configuration files, we may immediately identify all non-lambda nodes in the service call graph that contain edges to functions inside a lambda, as well as the information needed to locate the triggered source code. \par
+
+%  -- statically resolvable tables in code/configs
+Significantly, the content of this YAML file also provides additional information that informs the design of the analysis. In the case of AWS Lambda programs, platform services such as AWS Simple Queue Service and DynamoDB are identified by Amazon Resource Names (ARNs) which describe the data center and a unique identifier for the associated table or bucket~\cite{arn}. Empirically, we also observe that writes to these resources from within the source code of Lambda programs tends to identify the target resource with a statically resolvable string constant from within the program, rather than through indeterminate user input. This allows us to precisely capture which tables are being accessed from each lambda, and surface this information to the nodes created in the service call graph.
+
+%  -- Identifying which triggers are "entrypoints", sources and sinks
+The configuration YAML also explicitly declares typing for each event trigger, which affords us an opportunity to further differentiate events when defining our static analysis. For call graph analysis in particular, a central question is identifying which events may serve as entry points into the program~\cite{androidcallgraph}. These entry points define the set of reachable methods from which the analysis should begin traversing code to build the full call graph~\cite{introcallgraph}. By contrast, some event types, such as those attached to a DynamoDB table, may be assumed to only fire in response to a write which has occurred in another lambda that executed as the result of a different originating event. For our tool we make such an assumption for updates to DynamoDB tables, S3 buckets, and SQS buckets, as we observe that in most AWS Lambda applications writes to the same resources can be found in other lambdas triggered by web requests made to Amazon API Gateway endpoints, suggesting that HTTP traffic is the primary driver for most lambda applications. However, we note that this behavior may warrant tuning on a per-program basis in order to achieve maximally precise results.
+
+
+\subsection{External Libraries}
+%   -- assumption that callback functions are always called on some path
+Summarizing the effects of language libraries and third party code is a recurring concern of static analysis, particularly in scripting languages where highly dynamic features and a lack of typing information make reasoning about the effects of function calls difficult~\cite{bigjs}. During the construction of a lambda service call graph, this manifests in uncertainty about libraries making unexpected calls to platform services or to other application code for which the library has obtained a reference, as these actions create new edges in the graph that are not readily apparent. We make the assumption that any callback which has been passed in to external code will be called on some branch in the invoked function, but that there will otherwise be no effect on the call graph. This allows us to roughly summarize libraries without directly analyzing them.
+
 %   -- unsoundness from assuming no global state in libraries, but short running lambas w/ no shared memory makes this safer
-%
+We note that this abstraction is a source of unsoundness in our call graph construction, as it is possible for imported code to store a reference to a callback and then execute that callback in another function, even if it is not provided again. While this pattern is common for event subscription frameworks and some object-oriented paradigms, in practice we find that it is generally not the case for most Javascript libraries used in serverless applications. The design and billing scheme of AWS Lambda highly encourages use of a microservice paradigm when writing applications, with runtimes for individual lambdas often measured in milliseconds~\cite{microservice}. We suggest that the stateless nature of lambda functions coupled with these short runtimes may be at least partially responsible for the lack of stateful library calls, making this assumption somewhat safer.
+
+%\subsection{Implicit Calls}
+%  -- treat require("aws-sdk") library as special variable, track method calls on it
+%  -- parse input params to find possible table names etc.
+
+
 %\section{Results}
 %\subsection{Target Programs}
 %  -- AWS Serverless Application Repository \cite{awsrepo}
 %  -- program count, division of languages 
 %\subsection{Common Features}
-%  -- complex flows
+%  -- single lambda repositories vs. complex flows
 %
 %\section{Discussion}
-%\subsection{Applications}
-%  -- security, leaking of private data
+%\subsection{Future Applications}
+%  -- leaking of private data, security
 %  -- documentation
-%  -- 
+%  -- resource estimation
 %\subsection{Limitations}
-%\subsection{Future Direction}
-%  -- 
-%
-%\section{Related Work}
+%  -- closed world assumption
+%  -- having access to all parts of source code in single repository
+%  -- libraries which abstract aws-sdk APIs (GraphQL)
 
 %
 %

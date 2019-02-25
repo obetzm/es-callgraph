@@ -1,0 +1,190 @@
+\begin{thebibliography}{10}
+
+\bibitem{partialcallgraph}
+Karim Ali and Ond{\v{r}}ej Lhot{\'a}k.
+\newblock Application-only call graph construction.
+\newblock In {\em European Conference on Object-Oriented Programming}, pages
+  688--712. Springer, 2012.
+
+\bibitem{ifc}
+Kalev Alpernas, Cormac Flanagan, Sadjad Fouladi, Leonid Ryzhyk, Mooly Sagiv,
+  Thomas Schmitz, and Keith Winstein.
+\newblock Secure serverless computing using dynamic information flow control.
+\newblock {\em arXiv preprint arXiv:1802.08984}, 2018.
+
+\bibitem{selectivepaths}
+Taweesup Apiwattanapong and Mary~Jean Harrold.
+\newblock Selective path profiling.
+\newblock In {\em ACM SIGSOFT Software Engineering Notes}, volume~28, pages
+  35--42. ACM, 2002.
+
+\bibitem{trends}
+Ioana Baldini, Paul Castro, Kerry Chang, Perry Cheng, Stephen Fink, Vatche
+  Ishakian, Nick Mitchell, Vinod Muthusamy, Rodric Rabbah, Aleksander
+  Slominski, et~al.
+\newblock Serverless computing: Current trends and open problems.
+\newblock In {\em Research Advances in Cloud Computing}, pages 1--20. Springer,
+  2017.
+
+\bibitem{malicious}
+Mihai Christodorescu and Somesh Jha.
+\newblock Static analysis of executables to detect malicious patterns.
+\newblock Technical report, Wisconsin University-Madison, 2006.
+
+\bibitem{serverlesscost}
+Adam Eivy.
+\newblock Be wary of the economics of "serverless" cloud computing.
+\newblock {\em IEEE Cloud Computing}, 4(2):6--12, 2017.
+
+\bibitem{bigjs}
+Asger Feldthaus, Max Sch{\"a}fer, Manu Sridharan, Julian Dolby, and Frank Tip.
+\newblock Efficient construction of approximate call graphs for javascript ide
+  services.
+\newblock In {\em 2013 35th International Conference on Software Engineering
+  (ICSE)}, pages 752--761. IEEE, 2013.
+
+\bibitem{scriptingchallenges}
+Michael Furr, Jong-hoon~David An, and Jeffrey~S Foster.
+\newblock Profile-guided static typing for dynamic scripting languages.
+\newblock In {\em ACM SIGPLAN Notices}, volume~44, pages 283--300. ACM, 2009.
+
+\bibitem{introcallgraph}
+David Grove, Greg DeFouw, Jeffrey Dean, and Craig Chambers.
+\newblock Call graph construction in object-oriented languages.
+\newblock {\em ACM SIGPLAN Notices}, 32(10):108--124, 1997.
+
+\bibitem{arctarus}
+Salvatore Guarnieri, Marco Pistoia, Omer Tripp, Julian Dolby, Stephen Teilhet,
+  and Ryan Berg.
+\newblock Saving the world wide web from vulnerable javascript.
+\newblock In {\em Proceedings of the 2011 International Symposium on Software
+  Testing and Analysis}, pages 177--187. ACM, 2011.
+
+\bibitem{estree}
+David Herman, Ingvar Stepanyan, Nicholas Zakas, Ariya Hidayat, Henry Ficarra,
+  Michael~Zhu, Logan Smyth, and Daniel Tschinder.
+\newblock Estree, 2019.
+\newblock URL: \url{https://github.com/estree/estree}.
+
+\bibitem{esprima}
+Ariya Hidayat.
+\newblock Ecmascript parsing infrastructure for multipurpose analysis, 2019.
+\newblock URL: \url{http://esprima.org/}.
+
+\bibitem{flowsensitivity}
+Michael Hind and Anthony Pioli.
+\newblock Which pointer analysis should i use?
+\newblock In {\em ACM SIGSOFT Software Engineering Notes}, volume~25, pages
+  113--123. ACM, 2000.
+
+\bibitem{WALA}
+IBM.
+\newblock T.j. watson libraries for analysis (wala), 2019.
+\newblock URL: \url{http://wala.sourceforge.net/wiki/index.php/Main_Page}.
+
+\bibitem{cloudformation}
+Amazon Web~Services Inc.
+\newblock Aws cloudformation template formats, 2019.
+\newblock URL:
+  \url{https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-formats.html}.
+
+\bibitem{serverlessframework}
+Serverless Inc.
+\newblock Why serverless?, 2019.
+\newblock URL: \url{https://serverless.com/learn/overview/}.
+
+\bibitem{deadcode}
+Jens Knoop, Oliver R{\"u}thing, and Bernhard Steffen.
+\newblock Partial dead code elimination.
+\newblock {\em ACM SIGPLAN Notices}, 29(6):147--158, 1994.
+
+\bibitem{jssafe}
+Yoonseok Ko, Hongki Lee, Julian Dolby, and Sukyoung Ryu.
+\newblock Practically tunable static analysis framework for large-scale
+  javascript applications (t).
+\newblock In {\em 2015 30th IEEE/ACM International Conference on Automated
+  Software Engineering (ASE)}, pages 541--551. IEEE, 2015.
+
+\bibitem{frameworkoverview}
+Kyriakos Kritikos and Pawe{\l} Skrzypek.
+\newblock A review of serverless frameworks.
+\newblock In {\em 2018 IEEE/ACM International Conference on Utility and Cloud
+  Computing Companion (UCC Companion)}, pages 161--168. IEEE, 2018.
+
+\bibitem{lowgo}
+Wei-Tsung Lin, Chandra Krintz, and Rich Wolski.
+\newblock Tracing function dependencies across clouds.
+\newblock In {\em 2018 IEEE 11th International Conference on Cloud Computing
+  (CLOUD)}, pages 253--260. IEEE, 2018.
+
+\bibitem{causalorder}
+Wei-Tsung Lin, Chandra Krintz, Rich Wolski, Michael Zhang, Xiaogang Cai,
+  Tongjun Li, and Weijin Xu.
+\newblock Tracking causal order in aws lambda applications.
+\newblock In {\em Cloud Engineering (IC2E), 2018 IEEE International Conference
+  on}, pages 50--60. IEEE, 2018.
+
+\bibitem{nodejscallgraph}
+Magnus Madsen, Frank Tip, and Ondrej Lhot{\'a}k.
+\newblock Static analysis of event-driven node.js javascript applications.
+\newblock In {\em OOPSLA}, 2015.
+
+\bibitem{serverlessoverview}
+Garrett McGrath and Paul~R Brenner.
+\newblock Serverless computing: Design, implementation, and performance.
+\newblock In {\em 2017 IEEE 37th International Conference on Distributed
+  Computing Systems Workshops (ICDCSW)}, pages 405--410. IEEE, 2017.
+
+\bibitem{cloudparadigms}
+Garrett McGrath, Jared Short, Stephen Ennis, Brenden Judson, and Paul Brenner.
+\newblock Cloud event programming paradigms: Applications and analysis.
+\newblock In {\em 2016 IEEE 9th International Conference on Cloud Computing
+  (CLOUD)}, pages 400--406. IEEE, 2016.
+
+\bibitem{vulns}
+Marco Pistoia, Satish Chandra, Stephen~J Fink, and Eran Yahav.
+\newblock A survey of static analysis methods for identifying security
+  vulnerabilities in software systems.
+\newblock {\em IBM Systems Journal}, 46(2):265--288, 2007.
+
+\bibitem{debs}
+Daniel Popescu, Joshua Garcia, Kevin Bierhoff, and Nenad Medvidovic.
+\newblock Impact analysis for distributed event-based systems.
+\newblock In {\em Proceedings of the 6th ACM International Conference on
+  Distributed Event-Based Systems}, pages 241--251. ACM, 2012.
+
+\bibitem{arn}
+AWS Serverless~Application Repository.
+\newblock Amazon resource names (arns) and aws service namespaces, 2019.
+\newblock URL:
+  \url{https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html}.
+
+\bibitem{microservice}
+Mario Villamizar, Oscar Garces, Lina Ochoa, Harold Castro, Lorena Salamanca,
+  Mauricio Verano, Rubby Casallas, Santiago Gil, Carlos Valencia, Angee
+  Zambrano, et~al.
+\newblock Infrastructure cost comparison of running web applications in the
+  cloud using aws lambda and monolithic and microservice architectures.
+\newblock In {\em 2016 16th IEEE/ACM International Symposium on Cluster, Cloud
+  and Grid Computing (CCGrid)}, pages 179--182. IEEE, 2016.
+
+\bibitem{curtain}
+Liang Wang, Mengyuan Li, Yinqian Zhang, Thomas Ristenpart, and Michael Swift.
+\newblock Peeking behind the curtains of serverless platforms.
+\newblock In {\em 2018 $\{$USENIX$\}$ Annual Technical Conference
+  ($\{$USENIX$\}$$\{$ATC$\}$ 18)}, pages 133--146, 2018.
+
+\bibitem{ast}
+David~S Wile.
+\newblock Abstract syntax from concrete syntax.
+\newblock In {\em Proceedings of the (19th) International Conference on
+  Software Engineering}, pages 472--480. IEEE, 1997.
+
+\bibitem{androidcallgraph}
+Shengqian Yang, Dacong Yan, Haowei Wu, Yan Wang, and Atanas Rountev.
+\newblock Static control-flow analysis of user-driven callbacks in android
+  applications.
+\newblock In {\em 2015 IEEE/ACM 37th IEEE International Conference on Software
+  Engineering}, volume~1, pages 89--99. IEEE, 2015.
+
+\end{thebibliography}
