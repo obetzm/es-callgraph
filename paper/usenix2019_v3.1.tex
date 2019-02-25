@@ -49,10 +49,62 @@ However, classical methods of call graph construction are unable to generate com
 %Paragraph 3: Dismiss the alternatives
 Without access to techniques for reasoning statically about serverless programs, some have opted to consider runtime analyses to visualize program structure~\cite{lowgo,causalorder}, track the flow of sensitive information~\cite{ifc}, or measure resource costs~\cite{curtain}. However, in the absence of information collected from the source code itself, these tools must instead instrument monitoring that also runs in the serverless cloud. This additional code introduces significant overhead, both in terms of impact on scalability~\cite{causalorder}, and in monetary cost to execute the analysis code in the cloud~\cite{serverlesscost}. Furthermore, these techniques suffer from limitations inherent to constructing views of a program from path profiling, such as potentially missing infrequently traversed paths like those used for error handling~\cite{selectivepaths}. Together, these limitations significantly restrict the types of questions an analysis is suited to answer and hamper the development of tools that are useful to programmers at the time they are authoring applications. \par
 
-%Paragraph 4: Declare the contribution
+%Paragraph 4: Map the paper
 In order to address this gap, we have begun building \_\_\_\_\_, a tool for constructing call graphs statically with special consideration for the needs of serverless applications. Specifically, we contribute a language-agnostic procedure for generating service call graphs that incorporate flow to and from common backend services without the use of program traces, and consider implementation details for NodeJS applications on the AWS Lambda platform. To do so, we extend traditional call graph semantics with novel techniques for considering virtual nodes in the call graph which represent platform services and the actions that cause them to trigger lambda functions. We thus advance call graph analysis by providing a means for multiple programs that may even be running in separate execution environments to be integrated into a single extended call graph that provides information about the limited interfaces between which the constituent programs may share state. \par
 
 
+%Objectives paragraph
+% -- definition of a callgraph in this domain
+% -- classes of nodes
+
+
+%Motivations
+% -- why do we want to use static
+% -- why do we want an automatic tool
+% -- why can't we use existing tools
+% ---- characteristics of lambdas
+% ---- configuration files
+
+
+%Contributions
+% -- defining call graph for serverless
+% -- identifying things you can do with this call graph 
+% -- building infrastructure for future analyis
+% -- preliminary results
+
+%Risks
+% -- serverless could collapse
+% -- very dynamic programs that make analysis impractical
+% -- 
+
+%Requested Feedback
+% -- is static analysis appropriate in this domain
+% -- what questions would serverless developers want to ask/what analyses should we design
+
+
+
+
+%\section{Results}
+%\subsection{Target Programs}
+%  -- AWS Serverless Application Repository \cite{awsrepo}
+%  -- program count, division of languages 
+%\subsection{Common Features}
+%  -- single lambda repositories vs. complex flows
+
+%
+%\section{Discussion}
+%\subsection{Future Applications}
+%  -- leaking of private data, security
+%  -- dead code
+%  -- documentation
+%  -- resource estimation
+%\subsection{Limitations}
+%  -- closed world assumption
+%  -- having access to all parts of source code in single repository
+%  -- libraries which abstract aws-sdk APIs (GraphQL)
+
+%
+%
 \section{Characteristics of Lambdas}
 %Interpreted languages
 AWS Lambda programs have several common characteristics which inform the design of a static analysis. Most notably, serverless programs tend to be written in interpreted scripting languages such as Python and NodeJS~\cite{trends}. These programs heavily feature abstract constructs that have historically confounded static analyses, such as first-class functions, untyped objects, and file imports that are resolved at runtime~\cite{scriptingchallenges}. Consequently, an analysis designed for serverless applications must be able to support these constructs to be able to detect the full set of possible invocations from a given function. This limits the ability to use existing tools for Javascript analysis~\cite{WALA,jssafe,arctarus}, as these tools tend to have difficulty scaling to large programs or do not support the full set of modern Javascript features.\par
@@ -62,7 +114,10 @@ Additionally, the event-driven design of the serverless architecture suggests th
 
 
 
-\section{Design}
+% Collapse this down!
+
+
+\section{Scope of Analysis}
 
 %  -- implemented against the AST
 Because of the limitations for existing Javascript analysis tools, we elect to implement our analysis directly against the abstract syntax tree (AST). An AST converts a concrete program into a nested structure of tokens that describe the syntax of a language formally~\cite{ast}. To produce this AST, we use the ESPRIMA library~\cite{esprima}, which supports translation of even modern and experimental language features. The AST it produces conforms to the ESTree standard~\cite{estree}, which allows the Javascript parser to be easily replaced in the future. \par
@@ -93,26 +148,6 @@ We note that this abstraction is a source of unsoundness in our call graph const
 %  -- treat require("aws-sdk") library as special variable, track method calls on it
 %  -- parse input params to find possible table names etc.
 
-
-%\section{Results}
-%\subsection{Target Programs}
-%  -- AWS Serverless Application Repository \cite{awsrepo}
-%  -- program count, division of languages 
-%\subsection{Common Features}
-%  -- single lambda repositories vs. complex flows
-%
-%\section{Discussion}
-%\subsection{Future Applications}
-%  -- leaking of private data, security
-%  -- documentation
-%  -- resource estimation
-%\subsection{Limitations}
-%  -- closed world assumption
-%  -- having access to all parts of source code in single repository
-%  -- libraries which abstract aws-sdk APIs (GraphQL)
-
-%
-%
 %%-------------------------------------------------------------------------------
 %\section*{Availability}
 %%-------------------------------------------------------------------------------
