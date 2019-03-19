@@ -145,7 +145,7 @@ class AbstractNode {
         else if (ast_node.type === "TryStatement") {
             return new BlockNode(group, ast_node.block.body.reduce((a,n) => a.concat(AbstractNode.make(n, group)), []));
         }
-        else { throw new Error("unknown type: " + ast_node.type);}
+        else { throw new Error("unknown type: " + JSON.stringify(ast_node));  }
     }//make
 }//AbstractNode
 

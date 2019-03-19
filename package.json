@@ -6,11 +6,15 @@
     "start": "node ./js/main.js"
   },
   "dependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "babel-loader": "^8.0.5",
     "cytoscape": "^3.2.20",
     "cytoscape-cose-bilkent": "^4.0.0",
-    "cytosnap": "^3.0.0",
+    "cytosnap": "^3.1.0",
     "esprima": "*",
-    "js-yaml": "*"
+    "js-yaml": "*",
+    "webpack": "^4.0.0"
   },
   "devDependencies": {
     "nodeunit": "*"

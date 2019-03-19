@@ -64,7 +64,7 @@ function draw_graph(call_graph) {
             ],
         height: 600,
         width: 800
-    }));
+    })).then((img) => { renderer.stop(); return img; });
 }
 
 
