@@ -4,10 +4,9 @@ let fs = require("fs");
 let {process_yaml, find_serverless_files, load_yaml_from_filename} = require("./serverless_yml_processing");
 let {CallGraph} = require("./call_graph");
 let {draw_graph} = require("./draw_graph");
-let {rewrite_ast} = require("./analysis_rewrite/prime_tree");
-let {CallGraphVisitor} = require("./analysis_rewrite/callgraph_visitor");
 let babel = require("@babel/core");
-
+let traverse = require("@babel/traverse");
+let cg_visitor = require("./babel_visitor");
 
 function main(directories) {
     let files = find_serverless_files(directories);
@@ -22,16 +21,19 @@ function main(directories) {
         let next_method = initial_files.shift();
         let lambda_filename = next_method.context.slice(0, next_method.context.lastIndexOf("/")) + "/" + next_method.file;
 
-        let ast = babel.transformFileSync(lambda_filename, { ast: true, presets: [
+        let transformed_file = babel.transformFileSync(lambda_filename, { ast: true, presets: [
             ["@babel/preset-env",
             {"targets": {"ie": "9"}}]
         ]});
         //walk_ast(ast, next_method, null);
 
 
-        let CGA = new CallGraphVisitor([next_method]);
-        let visitor_ast = rewrite_ast(ast, next_method.group);
-        visitor_ast.apply(CGA);
+        //let CGA = new CallGraphVisitor([next_method]);
+        //let visitor_ast = rewrite_ast(ast, next_method.group);
+        //visitor_ast.apply(CGA);
+
+        traverse.default(transformed_file.ast, cg_visitor)
+
     }//while we have files to process
     console.log("Produced graph:\n");
     console.log("Nodes");
