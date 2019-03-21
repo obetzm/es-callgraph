@@ -25,14 +25,12 @@ function main(directories) {
             ["@babel/preset-env",
             {"targets": {"ie": "9"}}]
         ]});
-        //walk_ast(ast, next_method, null);
 
-
-        //let CGA = new CallGraphVisitor([next_method]);
-        //let visitor_ast = rewrite_ast(ast, next_method.group);
-        //visitor_ast.apply(CGA);
-
-        traverse.default(transformed_file.ast, cg_visitor)
+        let id = transformed_file.options.filename.replace(transformed_file.options.cwd, '.');
+        let toplevel_scope = [{id: id, scope: {"exports": {}}}];
+        traverse.default(transformed_file.ast, cg_visitor, undefined, toplevel_scope);
+        console.log("FINAL SCOPE FOR " + id + ": ");
+        console.log(toplevel_scope)
 
     }//while we have files to process
     console.log("Produced graph:\n");
