@@ -66,6 +66,10 @@ class CallGraph {
         return [...this.nodes].filter((n) => n.type === type && n.label.includes(identifier));
     }
 
+    find_node_by_babel_ref(ref) {
+        return [...this.nodes].find((n) => n.rep === ref);
+    }
+
     find_or_create_dynamo_node(identifier) {
         let dynamo_node = this.get_external_node("stream", identifier);
         if (dynamo_node.length === 0) {

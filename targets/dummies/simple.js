@@ -1,1 +1,4 @@
-let ret = dynamoDb[action](params).promise()
+
+module.exports = {
+    main: myfunc
+}

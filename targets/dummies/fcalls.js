@@ -2,18 +2,23 @@
 var a;
 a = myvar.myfield;
 
+var importedFunc = require("./third.js")
 var aws =  require("aws-sdk")
 var dynamo = new aws.DynamoDB.DocumentClient();
 
-
-var subMethod = function () { updateMethod() };
 
 function updateMethod() {
     dynamo.update({ TableName: "someTable"}, callback);
 }
 
+var subMethod = function () {
+    function innerFunc() { updateMethod() }
+    innerFunc()
+};
+
+
 function deadEndMethod() {
-    //no further function calls here
+    importedFunc()
 }
 
 function mainMethod(a) {
