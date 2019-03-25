@@ -17,15 +17,14 @@ function main(directories) {
 
     let event_list = [...graph.nodes];
 
-    console.log(event_list);
     while (event_list.length > 0 ) {
         let next_event = event_list.shift();
         let next_file = next_event.rep.file;
+        console.log("Starting analysis of: " + next_file);
         let transformed_file = babel.transformFileSync(next_file, { ast: true, presets: [
             ["@babel/preset-env",
             {"targets": {"ie": "9"}}]
         ]});
-        console.log()
 
         let id = transformed_file.options.filename.replace(transformed_file.options.cwd, '.');
         let toplevel_scope = [{id: id, scope: {"exports": {}}}];
