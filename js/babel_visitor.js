@@ -4,12 +4,33 @@ let path = require("path");
 let babel = require("@babel/core");
 let traverse = require("@babel/traverse");
 
+function create_serverless_edge(state, from_func, call_expr) {
+    let config_obj = call_expr.arguments[0];
+    let prepared_obj;
+    if (config_obj.type === "Identifier") prepared_obj = resolve(state, config_obj.name);
+    else if (config_obj.type === "ObjectExpression") prepared_obj = process_object(state, config_obj);
+    else throw new Error("unknown parameter passed into Serverless event trigger.");
+
+    console.log(prepared_obj);
+
+    let table_name = prepared_obj["TableName"];
+    if (table_name.type === "Identifier") table_name = resolve(state, table_name.name);
+    if (table_name.type === "StringLiteral") table_name = table_name.value;
+
+    let to_node = CallGraph.instance.find_or_create_dynamo_node(table_name);//TODO: more robust way to do this
+    CallGraph.instance.add_edge(new GraphEdge(from_func, to_node));
+    // if ( call_stmt.params[1]) {
+    //     call_stmt.params[1].exec(this);//TODO: when func is a ref
+    // }
+}
+
+
 let libraries = {
     "aws-sdk": {
         "DynamoDB": {
             "DocumentClient": {
-                "update": {},
-                "put": {},
+                "update": create_serverless_edge,
+                "put": create_serverless_edge,
                 "scan": {},
                 "get": {}
             }
@@ -56,7 +77,7 @@ function memberResolution(state, member_expr) {
         leftmost = leftmost.object;
     }
     let target = resolve(state, leftmost.name);
-    while (field_stack.length > 1 && target !== undefined) {
+    while (field_stack.length > 0 && target !== undefined) {
         let next_to_resolve = field_stack.pop();
         target = target[next_to_resolve.name]
         //TODO: if computed true
@@ -82,21 +103,27 @@ function callFunction(state, path) {
     let callee = path.node.callee;
     let called_func = resolveFunction(state, path.node);
 
+    let enclosing_scope = path.getFunctionParent();
+    let enclosing_node;
+    if (enclosing_scope) {
+        enclosing_node = CallGraph.instance.find_node_by_babel_ref(enclosing_scope.node);
+    }
+
     if ( called_func === undefined ) {
         console.log("Warning: Cannot resolve call of: " + exprToString(callee));
     }
-    else if (called_func instanceof GraphNode ) {
-        let enclosing_scope = path.getFunctionParent();
-        let enclosing_node = CallGraph.instance.find_node_by_babel_ref(enclosing_scope.node);
-        if (enclosing_scope === undefined || enclosing_node === undefined ) {
+    else if (called_func instanceof GraphNode) {
+        if (enclosing_node === undefined ) {
             console.log("Warning: cannot determine the function which called " + exprToString(callee))
         }
         else {
             let call_edge = new GraphEdge(enclosing_node, called_func);
             CallGraph.instance.add_edge(call_edge);
         }
+    } else if ((typeof called_func) === "function") {
+        called_func(state, enclosing_node, path.node)
     } else {
-        console.log("Warning: attempted to call something that doesn't appear to be a function: " + exprToString(callee));
+            console.log("Warning: attempted to call something that doesn't appear to be a function: " + exprToString(callee));
     }
 }
 
@@ -137,6 +164,23 @@ function performImport(state, call_expr) {
     }
     return returned_obj;
 }//performImport
+
+function process_object(state, obj_expr) {
+    let constructed_object = {};
+    obj_expr.properties.forEach((property) => {
+        //TODO: if value is an identifier, do lookup
+        let val = property.value;
+        if (val.type === "Identifier") {
+            val = resolve(state, val.name);
+        }
+        else if ( val.type === "FunctionExpression" ) {
+            val = defineFunction(val.id.name, state[0].id, val)
+        }
+        //TODO: if key is computed, do lookup
+        constructed_object[property.key.name] = val;
+    });
+    return constructed_object;
+}
 
 function performAssignment(state, left, right) {
     let assignee;
@@ -214,20 +258,7 @@ function performAssignment(state, left, right) {
         assignee[name] = right;
     }
     else if (right.type === "ObjectExpression") {
-        let constructed_object = {};
-        right.properties.forEach((property) => {
-            //TODO: if value is an identifier, do lookup
-            let val = property.value;
-            if (val.type === "Identifier") {
-                val = resolve(state, val.name);
-            }
-            else if ( val.type === "FunctionExpression" ) {
-                val = defineFunction(val.id.name, state[0].id, val)
-            }
-            //TODO: if key is computed, do lookup
-            constructed_object[property.key.name] = val;
-        });
-        assignee[name] = constructed_object;
+        assignee[name] = process_object(state, right);
     }
     else {
         throw new Error(`Unhandled Assignment FROM: ${right.type}`)
