@@ -3,6 +3,7 @@
 let {GraphNode, GraphEdge, CallGraph} = require("./call_graph");
 let yaml = require("js-yaml");
 let fs = require("fs");
+let path = require("path");
 
 
 const serverless_event_label_map = Object.freeze({
@@ -21,9 +22,15 @@ const cf_event_to_serverless_event = Object.freeze({
    "Api": "http",
    "S3": "s3",
    "Stream": "stream",
-   "Schedule": "Schedule"//TODO: serverless name for this?
+   "Schedule": "Schedule"
 });
 
+
+let create_filepath = function (ctx, rel_path) {
+    let cwd = ctx.split("/");
+    cwd.pop();
+    return cwd.join("/") + "/" + rel_path + ".js";
+}
 
 let process_yaml = function (config, ctx) {
     if (ctx.indexOf("serverless") === -1) {
@@ -34,22 +41,19 @@ let process_yaml = function (config, ctx) {
 
 };
 
-function cf_event_to_node(e) {
+function cf_event_to_node(e, fn_file, fn_name, ctx) {
     let isEntry = (e.Type === "Api");
     let label = cf_event_label_map[e.Type](e);
-    return new GraphNode(cf_event_to_serverless_event[e.Type], label, isEntry);
+    return new GraphNode(cf_event_to_serverless_event[e.Type], label, isEntry, undefined, {file: create_filepath(ctx, fn_file), func: fn_name});
 }
 
 function cloudformation_config_function_to_graph(id, fn, ctx) {
     let [fn_file,fn_name] = fn.Properties.Handler.split(".");
-    let lambda_node = new GraphNode("lambda", fn_name, false, `${fn_file}.${id}`).set_context(ctx, fn_file);
     if (fn.Properties.Events === undefined )  { fn.Properties.Events=[]; }
     return Object.keys(fn.Properties.Events)
         .map((e) => fn.Properties.Events[e])
-        .map(cf_event_to_node)
-        .map((n)=> n.set_context(ctx))
-        .map((event_node) => ({"node": event_node, "edge": new GraphEdge(event_node, lambda_node)}))
-        .reduce((g, n) => g.add_node(n.node).add_edge(n.edge), new CallGraph().add_node(lambda_node));
+        .map((e) => cf_event_to_node(e, fn_file, fn_name, ctx))
+        .map((n)=> n.set_context(ctx, fn_file));
 
 }
 
@@ -58,28 +62,24 @@ let process_cloudformation = function(config, ctx) {
         .map((r) => ({name: r, dat: config.Resources[r]}))
         .filter((r) => r.dat.Type === "AWS::Serverless::Function")
         .map((fn) => cloudformation_config_function_to_graph(fn.name, fn.dat, ctx))
-        .reduce((a, n) => a.union_graphs(n), new CallGraph());
-
+        .reduce((a,n) => a.concat(n), []);
 };
 
 
-function serverless_event_to_node(e) {
+function serverless_event_to_node(e, fn_file, fn_name, ctx) {
     let type = Object.keys(e)[0];
     let isEntry = (type === "http");
     let label = serverless_event_label_map[type](e[type]);
-    return new GraphNode(type, label, isEntry);
+    return new GraphNode(type, label, isEntry, undefined, {file: create_filepath(ctx, fn_file), func: fn_name});
 }
 
 
 function serverless_config_function_to_graph(fn, ctx) {
     let [fn_file,fn_name] = fn.handler.split(".");
-    let lambda_node = new GraphNode("lambda", fn_name, false).set_context(ctx, fn_file);
     if (fn.events === undefined )  { fn.events=[]; }
     return fn.events
-        .map(serverless_event_to_node)
-        .map((n)=> n.set_context(ctx))
-        .map((event_node) => ({"node": event_node, "edge": new GraphEdge(event_node, lambda_node)}))
-        .reduce((g, n) => g.add_node(n.node).add_edge(n.edge), new CallGraph().add_node(lambda_node));
+        .map((e) => serverless_event_to_node(e, fn_file, fn_name, ctx))
+        .map((n)=> n.set_context(ctx, fn_file));
 }
 
 
@@ -90,7 +90,7 @@ let process_serverless = function (config, ctx) {
         return Object.keys(config.functions)
             .map((f) => config.functions[f])
             .map((fn) => serverless_config_function_to_graph(fn, ctx))
-            .reduce((a, n) => a.union_graphs(n), new CallGraph());
+            .reduce((a,n) => a.concat(n), []);
 };
 
 

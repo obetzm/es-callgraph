@@ -2,7 +2,7 @@
 
 let fs = require("fs");
 let {process_yaml, find_serverless_files, load_yaml_from_filename} = require("./serverless_yml_processing");
-let {CallGraph} = require("./call_graph");
+let {CallGraph,GraphEdge} = require("./call_graph");
 let {draw_graph} = require("./draw_graph");
 let babel = require("@babel/core");
 let traverse = require("@babel/traverse");
@@ -13,24 +13,32 @@ function main(directories) {
     let graph = files
         .map(load_yaml_from_filename)
         .map(([f, y]) => process_yaml(y, f))
-        .reduce((a,n) => a.union_graphs(n), new CallGraph());
+        .reduce((a,n) => a.add_nodes(n), new CallGraph());
 
-    let initial_files = [...graph.nodes].filter((n) => n.type === "lambda");
+    let event_list = [...graph.nodes];
 
-    while (initial_files.length > 0 ) {
-        let next_method = initial_files.shift();
-        let lambda_filename = next_method.context.slice(0, next_method.context.lastIndexOf("/")) + "/" + next_method.file;
-
-        let transformed_file = babel.transformFileSync(lambda_filename, { ast: true, presets: [
+    console.log(event_list);
+    while (event_list.length > 0 ) {
+        let next_event = event_list.shift();
+        let next_file = next_event.rep.file;
+        let transformed_file = babel.transformFileSync(next_file, { ast: true, presets: [
             ["@babel/preset-env",
             {"targets": {"ie": "9"}}]
         ]});
+        console.log()
 
         let id = transformed_file.options.filename.replace(transformed_file.options.cwd, '.');
         let toplevel_scope = [{id: id, scope: {"exports": {}}}];
         traverse.default(transformed_file.ast, cg_visitor, undefined, toplevel_scope);
         console.log("FINAL SCOPE FOR " + id + ": ");
-        console.log(toplevel_scope)
+        console.log(toplevel_scope);
+        let entrypoint = toplevel_scope[0].scope.exports[next_event.rep.func];
+        if ( !entrypoint ) {
+            console.log("Warning: could not find entry function configured for this event.")
+        }
+        else {
+            graph.add_edge(new GraphEdge(next_event, entrypoint));
+        }
 
     }//while we have files to process
     console.log("Produced graph:\n");

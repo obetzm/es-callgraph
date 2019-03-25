@@ -1,11 +1,12 @@
 class GraphNode {
 
-    constructor(type, label, entry, group, rep) {
+    constructor(type, label, entry, group, rep, file) {
         this.type = type;
         this.label = label;
         this.isEntry = entry;
         this.group = group;
         this.rep = rep;
+        this.file = file;
     }
 
     set_context(context, file) {
@@ -47,6 +48,13 @@ class CallGraph {
         }
         return this;
     }
+
+
+    add_nodes(node_list) {
+        node_list.forEach((n) => this.add_node(n));
+        return this;
+    }
+
 
     merge_nodes(a,b) {//needed because of aliasing in module.exports
         [...this.edges].filter((e) => e.from === b).forEach((e) => e.from = a);

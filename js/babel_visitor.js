@@ -100,10 +100,10 @@ function callFunction(state, path) {
     }
 }
 
-function defineFunction(scope, name, group, node) {
-    let this_func = new GraphNode("lambda", name, false, group, node);
-    scope[name] = this_func;
-    CallGraph.instance.add_node(this_func)
+function defineFunction(name, group, node) {
+    let this_func = new GraphNode("lambda", name, false, group, node, group);
+    CallGraph.instance.add_node(this_func);
+    return this_func;
 }
 
 function performImport(state, call_expr) {
@@ -169,7 +169,7 @@ function performAssignment(state, left, right) {
         assignee[name] = resolve(state, right.name);
     }
     else if (right.type === "FunctionExpression") {
-        defineFunction(assignee, name, state[0].id, right)
+        assignee[name] = defineFunction(name, state[0].id, right)
     }
     else if (right.type === "CallExpression") {
         if (right.callee.name === "require") {
@@ -221,6 +221,9 @@ function performAssignment(state, left, right) {
             if (val.type === "Identifier") {
                 val = resolve(state, val.name);
             }
+            else if ( val.type === "FunctionExpression" ) {
+                val = defineFunction(val.id.name, state[0].id, val)
+            }
             //TODO: if key is computed, do lookup
             constructed_object[property.key.name] = val;
         });
@@ -235,8 +238,9 @@ function performAssignment(state, left, right) {
 module.exports = {
     /* Functions of the form: function name(args...) { }*/
     FunctionDeclaration(path, state) {
-        console.log("At: " + path.node.id.name);
-        defineFunction(state[state.length-1].scope, path.node.id.name, state[0].id, path.node)
+        let func_name = path.node.id.name;
+        console.log("At: " + func_name);
+        state[state.length-1].scope[func_name] = defineFunction(func_name, state[0].id, path.node)
     },
 
     /* Entering and leaving blocks */
