@@ -3,7 +3,7 @@
 const dynamoDbLib = require('../src/dynamoDbLib');
 const { success, failure } = require('../src/responseLib');
 
-exports.handler = async (event, context, callback) => {
+exports.handler = (event, context, callback) => {
 
   let id;
   const body = JSON.parse(event.body);
@@ -34,7 +34,7 @@ exports.handler = async (event, context, callback) => {
   };
 
   try {
-    await dynamoDbLib.call("put", params);
+    dynamoDbLib.call("put", params);
     callback(null, success(params.Item));
   } catch (e) {
     console.log("Error in DDB Put:", e)

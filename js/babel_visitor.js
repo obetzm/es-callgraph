@@ -69,7 +69,7 @@ function exprToString(member_expr) {
     return field_stack.reverse().join(".")
 }
 
-function memberResolution(state, member_expr) {
+function memberResolution(state, member_expr, is_lhs) {
     let field_stack = [];
     let leftmost = member_expr;
     while (leftmost !== undefined && leftmost.type === "MemberExpression") {
@@ -77,7 +77,8 @@ function memberResolution(state, member_expr) {
         leftmost = leftmost.object;
     }
     let target = resolve(state, leftmost.name);
-    while (field_stack.length > 0 && target !== undefined) {
+    let stopping_point = (is_lhs) ? 1 : 0;
+    while (field_stack.length > stopping_point && target !== undefined) {
         let next_to_resolve = field_stack.pop();
         target = target[next_to_resolve.name]
         //TODO: if computed true
@@ -195,7 +196,7 @@ function performAssignment(state, left, right) {
             name = "exports"
         }
         else {
-            assignee = memberResolution(state, left);
+            assignee = memberResolution(state, left, true);
             name = left.property.name;
         }
     }
