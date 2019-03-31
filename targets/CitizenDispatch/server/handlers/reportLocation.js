@@ -34,7 +34,7 @@ exports.handler = (event, context, callback) => {
   };
 
   try {
-    dynamoDbLib.call("put", params);
+    dynamoDbLib.put(params);
     callback(null, success(params.Item));
   } catch (e) {
     console.log("Error in DDB Put:", e)

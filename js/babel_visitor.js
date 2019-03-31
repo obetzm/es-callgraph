@@ -4,7 +4,7 @@ let path = require("path");
 let babel = require("@babel/core");
 let traverse = require("@babel/traverse");
 
-function create_serverless_edge(state, from_func, call_expr) {
+function process_dynamo_write(state, from_func, call_expr) {
     let config_obj = call_expr.arguments[0];
     let prepared_obj;
     if (config_obj.type === "Identifier") prepared_obj = resolve(state, config_obj.name);
@@ -24,13 +24,19 @@ function create_serverless_edge(state, from_func, call_expr) {
     // }
 }
 
+function process_graphql(state, from_func, call_expr) {
+    let schema = call_expr.arguments[0];
+    let query_obj = schema["query"];
+    console.log(query_obj);
+
+}
 
 let libraries = {
     "aws-sdk": {
         "DynamoDB": {
             "DocumentClient": {
-                "update": create_serverless_edge,
-                "put": create_serverless_edge,
+                "update": process_dynamo_write,
+                "put": process_dynamo_write,
                 "scan": {},
                 "get": {}
             }
@@ -44,6 +50,9 @@ let libraries = {
             "putObject": {},
             "copyObject": {},
         }
+    },
+    "graphql": {
+        "graphql": process_graphql
     }
 };
 
@@ -57,6 +66,18 @@ function resolve(state, target) {
         --i
     }
     return resolution;
+}
+
+function findScopeOf(state, target) {
+    let targetExistsIn = false;
+    let i = state.length - 1;
+    let scope = state;
+    while ( !targetExistsIn && i > -1) {
+        scope = state[i].scope;
+        targetExistsIn = scope.hasOwnProperty(target);
+        --i
+    }
+    return (targetExistsIn) ? scope : undefined;
 }
 
 function exprToString(member_expr) {
@@ -78,7 +99,7 @@ function memberResolution(state, member_expr, is_lhs) {
     }
     let target = resolve(state, leftmost.name);
     let stopping_point = (is_lhs) ? 1 : 0;
-    while (field_stack.length > stopping_point && target !== undefined) {
+    while (field_stack.length > stopping_point && target !== undefined && target !== null) {
         let next_to_resolve = field_stack.pop();
         target = target[next_to_resolve.name]
         //TODO: if computed true
@@ -124,7 +145,9 @@ function callFunction(state, path) {
     } else if ((typeof called_func) === "function") {
         called_func(state, enclosing_node, path.node)
     } else {
-            console.log("Warning: attempted to call something that doesn't appear to be a function: " + exprToString(callee));
+        console.log("DBPUT: " )
+        console.log(state);
+        console.log("Warning: attempted to call something that doesn't appear to be a function: " + exprToString(callee));
     }
 }
 
@@ -137,12 +160,18 @@ function defineFunction(name, group, node) {
 function performImport(state, call_expr) {
     let returned_obj;
     let import_path = call_expr.arguments[0].value;
-    if (import_path.startsWith("./")) { //local import
+    if (import_path.startsWith(".")) { //local import
         let current_filepath = state[0].id.split(path.sep);
-        current_filepath.pop();
+        current_filepath.pop(); //remove file at end of current filepath
         import_path = import_path.split('/');
-        import_path.shift();
+        while (import_path[0] === "..") {
+            import_path.shift();
+            current_filepath.pop();
+        }
+        if (import_path[0] === ".") import_path.shift();
+        if (import_path[import_path.length-1].indexOf(".") === -1 ) import_path[import_path.length-1] = import_path[import_path.length-1] + ".js";
         let import_location = current_filepath.concat(import_path).join("/");
+        console.log("Importing file: " + import_location);
         let import_ast = babel.transformFileSync(import_location, {
             ast: true, presets: [
                 ["@babel/preset-env",
@@ -153,7 +182,6 @@ function performImport(state, call_expr) {
         let import_id = import_ast.options.filename.replace(import_ast.options.cwd, '.');
         let import_scope = [{id: import_id, scope: {"exports": {}}}];
         traverse.default(import_ast.ast, module.exports, undefined, import_scope);
-        console.log("Imported file " + import_id);
         returned_obj = import_scope[0].scope.exports;
 
     }
@@ -187,7 +215,13 @@ function performAssignment(state, left, right) {
     let assignee;
     let name;
     if (left.type === "Identifier") {
-        assignee = state[state.length-1].scope;
+        let pre_existing_declaration_scope = findScopeOf(state, left.name);
+        if (pre_existing_declaration_scope ) {
+            assignee = pre_existing_declaration_scope;
+        }
+        else {
+            assignee = state[state.length - 1].scope;
+        }
         name = left.name;
     }
     else if (left.type === "MemberExpression") {
@@ -205,7 +239,7 @@ function performAssignment(state, left, right) {
     }
 
     if ( !assignee ) {
-        console.log("Warning: cannot determine assignment target for: " + JSON.stringify(left));
+        console.log("Warning: assigning to '" + exprToString(left) + "', which was never declared.");
     }
     else if (right === null) {
         assignee[name] = null;
@@ -232,7 +266,7 @@ function performAssignment(state, left, right) {
         }
     }
     else if (right.type === "MemberExpression") {
-        //TODO: resolve object, then resolve field
+        assignee[name] = memberResolution(state, right);
     }
     else if (right.type === "NewExpression") {
         if (right.callee.type === "MemberExpression") {

@@ -1,4 +1,2 @@
 
-module.exports = {
-    main: myfunc
-}
+let {graphql } = require("graphql")

@@ -2,7 +2,7 @@
 var a;
 a = myvar.myfield;
 
-var importedFunc = require("./third.js")
+var importedFunc = require("./third")
 var aws =  require("aws-sdk")
 var dynamo = new aws.DynamoDB.DocumentClient();
 

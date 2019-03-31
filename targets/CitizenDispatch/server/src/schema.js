@@ -426,7 +426,12 @@ MutationType = new GraphQLObjectType({
 // })
 
 // Schema
-module.exports = new GraphQLSchema({
+// module.exports = new GraphQLSchema({
+//   query: QueryType,
+//   mutation: MutationType,
+// })
+//
+module.exports = {
   query: QueryType,
   mutation: MutationType,
-})
+}

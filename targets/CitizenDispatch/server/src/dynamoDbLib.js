@@ -24,9 +24,19 @@ if (process.env.STAGE === 'local') {
 
 const tableFor = (tableName) => "citizen-dispatch-dev-" + tableName
 
-exports.call = (action, params) => {
-  dynamoDb[action](params);
+// exports.call = (action, params) => {
+//     dynamoDb[action](params);
+// }
+
+exports.put = (params) => {
+    dynamoDb.put(params);
 }
+
+exports.update = (params) => {
+    dynamoDb.update(params);
+}
+
+
 
 exports.upsert = (tableName, keyName, keyValue, fields) => {
   const params = Object.assign({
@@ -35,7 +45,7 @@ exports.upsert = (tableName, keyName, keyValue, fields) => {
     ReturnValues: 'ALL_NEW'
   }, dynamodbUpdateExpression.getUpdateExpression({}, fields))
   console.log('Upsert Params', params);
-  return exports.call('update', params)
+  return dynamoDb.update(params)
     .then(result => result.Attributes)
 }
 
@@ -47,7 +57,7 @@ exports.removeAttributes = (tableName, keyName, keyValue, fields) => {
     UpdateExpression: 'REMOVE ' + fields.join(', ')
   })
   console.log('RemoveAttributes params', params)
-  return exports.call('update', params)
+  return dynamoDb.update(params)
     .then(result => result.Attributes)
 }
 
@@ -56,7 +66,7 @@ exports.getOne = (tableName, keyObject) => {
         TableName: tableFor(tableName),
         Key: keyObject, // ie { 'id': id }
       }
-  return exports.call('get', params)
+  return dynamoDb.get(params)
       .then(result => result.Item);
 }
 
@@ -65,7 +75,7 @@ exports.getAll = (tableName) => {
         TableName: tableFor(tableName),
         Select: "ALL_ATTRIBUTES"
       }
-  return exports.call('scan', params)
+  return dynamoDb.scan(params)
     .then(result => result.Items);
 }
 
@@ -74,5 +84,5 @@ exports.delete = (tableName, keyObject) => {
         TableName: tableFor(tableName),
         Key: keyObject, // ie { 'id': id }
       };
-  return exports.call('delete', params);
+  return dynamoDb.delete(params);
 }
