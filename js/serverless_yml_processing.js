@@ -33,6 +33,7 @@ let create_filepath = function (ctx, rel_path) {
 }
 
 let process_yaml = function (config, ctx) {
+    console.log("Processing: " + ctx);
     if (ctx.indexOf("serverless") === -1) {
         return process_cloudformation(config, ctx);
     } else {

@@ -4,6 +4,12 @@ let path = require("path");
 let babel = require("@babel/core");
 let traverse = require("@babel/traverse");
 
+let declaration_constraints = [];
+let assignment_constraints = [];
+let call_constraints = [];
+let scope_ancestries = [];
+
+
 function process_dynamo_write(state, from_func, call_expr) {
     let config_obj = call_expr.arguments[0];
     let prepared_obj;
@@ -18,18 +24,27 @@ function process_dynamo_write(state, from_func, call_expr) {
     if (table_name.type === "StringLiteral") table_name = table_name.value;
 
     let to_node = CallGraph.instance.find_or_create_dynamo_node(table_name);//TODO: more robust way to do this
+    console.log("Edge from: " + from_func + " to: " + to_node);
     CallGraph.instance.add_edge(new GraphEdge(from_func, to_node));
-    // if ( call_stmt.params[1]) {
-    //     call_stmt.params[1].exec(this);//TODO: when func is a ref
-    // }
 }
 
-function process_graphql(state, from_func, call_expr) {
-    let schema = call_expr.arguments[0];
-    let query_obj = schema["query"];
-    console.log(query_obj);
+function process_dynamo_read(state, from_func, call_expr) {
+    let config_obj = call_expr.arguments[0];
+    let prepared_obj;
+    if (config_obj.type === "Identifier") prepared_obj = resolve(state, config_obj.name);
+    else if (config_obj.type === "ObjectExpression") prepared_obj = process_object(state, config_obj);
+    else throw new Error("unknown parameter passed into Serverless event trigger.");
 
+
+    let table_name = prepared_obj["TableName"];
+    if (table_name.type === "Identifier") table_name = resolve(state, table_name.name);
+    if (table_name.type === "StringLiteral") table_name = table_name.value;
+
+    let to_node = CallGraph.instance.find_or_create_dynamo_node(table_name);//TODO: more robust way to do this
+    console.log("Edge from: " + from_func + " to: " + to_node);
+    CallGraph.instance.add_edge(new GraphEdge(to_node, from_func, "dotted"));
 }
+
 
 let libraries = {
     "aws-sdk": {
@@ -37,8 +52,8 @@ let libraries = {
             "DocumentClient": {
                 "update": process_dynamo_write,
                 "put": process_dynamo_write,
-                "scan": {},
-                "get": {}
+                "scan": process_dynamo_read,
+                "get": process_dynamo_read
             }
         },
         "SES": {
@@ -50,9 +65,6 @@ let libraries = {
             "putObject": {},
             "copyObject": {},
         }
-    },
-    "graphql": {
-        "graphql": process_graphql
     }
 };
 
@@ -131,22 +143,20 @@ function callFunction(state, path) {
         enclosing_node = CallGraph.instance.find_node_by_babel_ref(enclosing_scope.node);
     }
 
-    if ( called_func === undefined ) {
+    if ( !called_func  ) {
         console.log("Warning: Cannot resolve call of: " + exprToString(callee));
     }
+    else if ( !enclosing_node ) {
+        throw new Error("Warning: cannot determine the function which called " + exprToString(callee))
+    }
     else if (called_func instanceof GraphNode) {
-        if (enclosing_node === undefined ) {
-            console.log("Warning: cannot determine the function which called " + exprToString(callee))
-        }
-        else {
-            let call_edge = new GraphEdge(enclosing_node, called_func);
-            CallGraph.instance.add_edge(call_edge);
-        }
+        let call_edge = new GraphEdge(enclosing_node, called_func);
+        CallGraph.instance.add_edge(call_edge);
     } else if ((typeof called_func) === "function") {
+         console.log("ENCLOSING:");
+        console.log(path.getFunctionParent().node);
         called_func(state, enclosing_node, path.node)
     } else {
-        console.log("DBPUT: " )
-        console.log(state);
         console.log("Warning: attempted to call something that doesn't appear to be a function: " + exprToString(callee));
     }
 }
@@ -172,17 +182,22 @@ function performImport(state, call_expr) {
         if (import_path[import_path.length-1].indexOf(".") === -1 ) import_path[import_path.length-1] = import_path[import_path.length-1] + ".js";
         let import_location = current_filepath.concat(import_path).join("/");
         console.log("Importing file: " + import_location);
-        let import_ast = babel.transformFileSync(import_location, {
-            ast: true, presets: [
-                ["@babel/preset-env",
-                    {"targets": {"ie": "9"}}]
-            ]
-        });
+        if (import_location.endsWith(".json")) {
+            returned_obj = require( "." + import_location);
+        }
+        else {
+            let import_ast = babel.transformFileSync(import_location, {
+                ast: true, presets: [
+                    ["@babel/preset-env",
+                        {"targets": {"ie": "9"}}]
+                ]
+            });
 
-        let import_id = import_ast.options.filename.replace(import_ast.options.cwd, '.');
-        let import_scope = [{id: import_id, scope: {"exports": {}}}];
-        traverse.default(import_ast.ast, module.exports, undefined, import_scope);
-        returned_obj = import_scope[0].scope.exports;
+            let import_id = import_ast.options.filename.replace(import_ast.options.cwd, '.');
+            let import_scope = [{id: import_id, scope: {"exports": {}}}];
+            traverse.default(import_ast.ast, module.exports, undefined, import_scope);
+            returned_obj = import_scope[0].scope.exports;
+        }
 
     }
     else if (Object.keys(libraries).includes(import_path)) {
@@ -270,8 +285,7 @@ function performAssignment(state, left, right) {
     }
     else if (right.type === "NewExpression") {
         if (right.callee.type === "MemberExpression") {
-            let called_func = memberResolution(state, right.callee);
-            assignee[name] = called_func;
+            assignee[name] =  memberResolution(state, right.callee);
         }
         else if (right.callee.type === "Identifier") {
             //TODO: to properly handle this. {} created, flows to 'this' of target, is assigned to left.
@@ -290,6 +304,9 @@ function performAssignment(state, left, right) {
         assignee[name] = right;
     }
     else if (right.type === "StringLiteral") {
+        assignee[name] = right;
+    }
+    else if (right.type === "BooleanLiteral") {
         assignee[name] = right;
     }
     else if (right.type === "ObjectExpression") {

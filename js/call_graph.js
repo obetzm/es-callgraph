@@ -102,6 +102,9 @@ module.exports = {
 
 "GraphEdge": class GraphEdge {
     constructor(from, to, type) {
+        if (!from || !to) {
+            throw new Error("Invalid graph edge.")
+        }
         this.from = from;
         this.to = to;
         this.type = type;
