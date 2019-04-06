@@ -11,6 +11,10 @@ class Possibilities {
     add(val) {
         this.push(val)
     }
+
+    get count() {
+        return this.values.length;
+    }
 }
 
 class FunctionScope {
@@ -35,19 +39,39 @@ class FunctionScope {
         return this.parent;
     }
 
+    lookup(identifier) {
+        let declared_in_this_scope = this.declarations.hasOwnProperty(identifier);
+        return (declared_in_this_scope) ? { "values": this.declarations[identifier], "scope": this } :
+            (this.parent) ? this.parent.lookup(identifier) : {"values": null, "scope": null };
+    }
 
+    /* An explicit declaration of a variable, always in the current scope.
+       E.g var x = 5;  function myfunc() {}... */
     define(identifier, init) {
+        let declared_in_this_scope = this.declarations.hasOwnProperty(identifier);
+        let values = (declared_in_this_scope) ? this.declarations[identifier] : new Possibilities();
+        if (init) values.push(init);
+        this.declarations[identifier] = values;
+    }
+
+
+    /* A normal assignment to a variable. In strict mode this must have already been declared with define(), but
+       otherwise may implicitly define in the global scope if no matching declaration exists.
+       E.g y = 4
+     */
+    assign(identifier, init) {
         let {values, scope} = this.lookup(identifier);
         values = values || new Possibilities();
-        scope = scope || this;
+        scope = scope || this.get_toplevel_scope();
         if (init) values.push(init);
         scope.declarations[identifier] = values;
     }
 
-    lookup(identifier) {
-        let declared_in_this_scope = this.declarations.hasOwnProperty(identifier);
-        return (declared_in_this_scope) ? { "values": this.declarations[identifier], "scope": this } :
-                              (this.parent) ? this.parent.lookup(identifier) : {"values": null, "scope": null };
+
+    get_toplevel_scope() {
+        let s = this;
+        while (s.parent) s = s.parent;
+        return s;
     }
 }
 
@@ -75,6 +99,6 @@ class ObjectScope {
 
 
 module.exports = {
-  FunctionScope: Scope,
+  FunctionScope: FunctionScope,
   ObjectScope: ObjectScope
 };

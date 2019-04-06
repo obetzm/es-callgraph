@@ -299,8 +299,18 @@ module.exports = {
 
 
     /* Functions of the form: function name(args...) { }*/
-    FunctionDeclaration: {
+    FunctionDeclaration: { //TODO: here and FuncExpr: params declared in inner scope
         enter(path, state) {
+            /* The function name behaves like any other identifier declaration in the current scope.
+               Declare the name as a new identifier and assign it a value representing the function that may be called.
+             */
+            let func_name = path.node.id.name;
+            let func_rep = new GraphNode("lambda", func_name, false, state.lambda_id, path.node, state.file);
+            state.current_scope.define(func_name, func_rep);
+
+            /* Until we leave this node in the AST, future declarations encountered are in the "body" of this function.
+               Setup this function body's internal scope now, and 'pop' it when we exit this node.
+             */
             let id = path.node.scope.uid;
             console.log("Defining new block with scope: " + id);
             state.current_scope = state.current_scope.create_subscope(id);
@@ -311,6 +321,11 @@ module.exports = {
     },
     FunctionExpression: {
         enter(path, state) {
+            /* Until we leave this node in the AST, future declarations encountered are in the "body" of this function.
+               Setup this function body's internal scope now, and 'pop' it when we exit this node.
+
+               Unlike Declarations, we don't know the node name here, so we'll handle that in the Assignment instead.
+             */
             let id = path.node.scope.uid;
             console.log("Defining new block with scope: " + id);
             state.current_scope = state.current_scope.create_subscope(id);
@@ -324,9 +339,9 @@ module.exports = {
 
     VariableDeclaration(path, state) {
         path.node.declarations.forEach((decl) => {
-            //TODO: decl.init is a node, needs to be unwrapped
-            let {scope, values} = state.current_scope.define(decl.id, decl.init);
-        })
+            //TODO: decl.init is a node, needs to be unwrapped in case it's an identifier/memberexpr/callexpr
+            state.current_scope.define(decl.id, decl.init);
+        });
     },
 
     AssignmentExpression(path, state) {

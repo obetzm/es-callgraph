@@ -34,6 +34,7 @@ function main(directories) {
             toplevel_scope: toplevel_scope,
             file: id,
             entrypoint: next_event.rep.func,
+            lambda_id: id + "." + next_event.rep.func,
             constraints: {
                 assignments: [],
                 calls: []
