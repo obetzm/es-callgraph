@@ -6,7 +6,8 @@ let {CallGraph,GraphEdge} = require("./call_graph");
 let {draw_graph} = require("./draw_graph");
 let babel = require("@babel/core");
 let traverse = require("@babel/traverse");
-let cg_visitor = require("./babel_visitor");
+let cg_visitor = require("./analysis_rewrite/babel_visitor");
+let {FunctionScope} = require("./scope");
 
 function main(directories) {
     let files = find_serverless_files(directories);
@@ -27,17 +28,27 @@ function main(directories) {
         ]});
 
         let id = transformed_file.options.filename.replace(transformed_file.options.cwd, '.');
-        let toplevel_scope = [{id: id, scope: {"exports": {}}}];
-        traverse.default(transformed_file.ast, cg_visitor, undefined, toplevel_scope);
+        let toplevel_scope = new FunctionScope(null, 0);
+        let state = {
+            current_scope: toplevel_scope,
+            toplevel_scope: toplevel_scope,
+            file: id,
+            entrypoint: next_event.rep.func,
+            constraints: {
+                assignments: [],
+                calls: []
+            }
+        };
+        traverse.default(transformed_file.ast, cg_visitor, undefined, state);
         console.log("FINAL SCOPE FOR " + id + ": ");
         console.log(toplevel_scope);
-        let entrypoint = toplevel_scope[0].scope.exports[next_event.rep.func];
-        if ( !entrypoint ) {
-            console.log("Warning: could not find entry function configured for this event.")
-        }
-        else {
-            graph.add_edge(new GraphEdge(next_event, entrypoint));
-        }
+        // let entrypoint = toplevel_scope[0].scope.exports[next_event.rep.func];
+        // if ( !entrypoint ) {
+        //     console.log("Warning: could not find entry function configured for this event.")
+        // }
+        // else {
+        //     graph.add_edge(new GraphEdge(next_event, entrypoint));
+        // }
 
     }//while we have files to process
     console.log("Produced graph:\n");

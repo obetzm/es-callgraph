@@ -1,5 +1,5 @@
 
-let {GraphNode, GraphEdge, CallGraph} = require("./call_graph");
+let {GraphNode, GraphEdge, CallGraph} = require("../call_graph");
 let path = require("path");
 let babel = require("@babel/core");
 let traverse = require("@babel/traverse");
@@ -19,6 +19,7 @@ function process_dynamo_write(state, from_func, call_expr) {
     if (table_name.type === "StringLiteral") table_name = table_name.value;
 
     let to_node = CallGraph.instance.find_or_create_dynamo_node(table_name);//TODO: more robust way to do this
+    console.log("Edge from: " + from_func + " to: " + to_node);
     CallGraph.instance.add_edge(new GraphEdge(from_func, to_node));
 }
 
@@ -29,22 +30,16 @@ function process_dynamo_read(state, from_func, call_expr) {
     else if (config_obj.type === "ObjectExpression") prepared_obj = process_object(state, config_obj);
     else throw new Error("unknown parameter passed into Serverless event trigger.");
 
-    console.log(prepared_obj);
 
     let table_name = prepared_obj["TableName"];
     if (table_name.type === "Identifier") table_name = resolve(state, table_name.name);
     if (table_name.type === "StringLiteral") table_name = table_name.value;
 
     let to_node = CallGraph.instance.find_or_create_dynamo_node(table_name);//TODO: more robust way to do this
+    console.log("Edge from: " + from_func + " to: " + to_node);
     CallGraph.instance.add_edge(new GraphEdge(to_node, from_func, "dotted"));
 }
 
-function process_graphql(state, from_func, call_expr) {
-    let schema = call_expr.arguments[0];
-    let query_obj = schema["query"];
-    console.log(query_obj);
-
-}
 
 let libraries = {
     "aws-sdk": {
@@ -65,9 +60,6 @@ let libraries = {
             "putObject": {},
             "copyObject": {},
         }
-    },
-    "graphql": {
-        "graphql": process_graphql
     }
 };
 
@@ -146,18 +138,18 @@ function callFunction(state, path) {
         enclosing_node = CallGraph.instance.find_node_by_babel_ref(enclosing_scope.node);
     }
 
-    if ( called_func === undefined ) {
+    if ( !called_func  ) {
         console.log("Warning: Cannot resolve call of: " + exprToString(callee));
     }
+    else if ( !enclosing_node ) {
+        throw new Error("Warning: cannot determine the function which called " + exprToString(callee))
+    }
     else if (called_func instanceof GraphNode) {
-        if (enclosing_node === undefined ) {
-            console.log("Warning: cannot determine the function which called " + exprToString(callee))
-        }
-        else {
-            let call_edge = new GraphEdge(enclosing_node, called_func);
-            CallGraph.instance.add_edge(call_edge);
-        }
+        let call_edge = new GraphEdge(enclosing_node, called_func);
+        CallGraph.instance.add_edge(call_edge);
     } else if ((typeof called_func) === "function") {
+         console.log("ENCLOSING:");
+        console.log(path.getFunctionParent().node);
         called_func(state, enclosing_node, path.node)
     } else {
         console.log("Warning: attempted to call something that doesn't appear to be a function: " + exprToString(callee));
@@ -185,17 +177,22 @@ function performImport(state, call_expr) {
         if (import_path[import_path.length-1].indexOf(".") === -1 ) import_path[import_path.length-1] = import_path[import_path.length-1] + ".js";
         let import_location = current_filepath.concat(import_path).join("/");
         console.log("Importing file: " + import_location);
-        let import_ast = babel.transformFileSync(import_location, {
-            ast: true, presets: [
-                ["@babel/preset-env",
-                    {"targets": {"ie": "9"}}]
-            ]
-        });
+        if (import_location.endsWith(".json")) {
+            returned_obj = require( "." + import_location);
+        }
+        else {
+            let import_ast = babel.transformFileSync(import_location, {
+                ast: true, presets: [
+                    ["@babel/preset-env",
+                        {"targets": {"ie": "9"}}]
+                ]
+            });
 
-        let import_id = import_ast.options.filename.replace(import_ast.options.cwd, '.');
-        let import_scope = [{id: import_id, scope: {"exports": {}}}];
-        traverse.default(import_ast.ast, module.exports, undefined, import_scope);
-        returned_obj = import_scope[0].scope.exports;
+            let import_id = import_ast.options.filename.replace(import_ast.options.cwd, '.');
+            let import_scope = [{id: import_id, scope: {"exports": {}}}];
+            traverse.default(import_ast.ast, module.exports, undefined, import_scope);
+            returned_obj = import_scope[0].scope.exports;
+        }
 
     }
     else if (Object.keys(libraries).includes(import_path)) {
@@ -225,15 +222,26 @@ function process_object(state, obj_expr) {
 }
 
 function performAssignment(state, left, right) {
+    let assignee;
+    let name;
     if (left.type === "Identifier") {
-
+        let pre_existing_declaration_scope = findScopeOf(state, left.name);
+        if (pre_existing_declaration_scope ) {
+            assignee = pre_existing_declaration_scope;
+        }
+        else {
+            assignee = state[state.length - 1].scope;
+        }
+        name = left.name;
     }
     else if (left.type === "MemberExpression") {
         if (left.object.name === "module" && left.property.name === "exports") {
-
+            assignee = state[0].scope;
+            name = "exports"
         }
         else {
-
+            assignee = memberResolution(state, left, true);
+            name = left.property.name;
         }
     }
     else {
@@ -244,31 +252,38 @@ function performAssignment(state, left, right) {
         console.log("Warning: assigning to '" + exprToString(left) + "', which was never declared.");
     }
     else if (right === null) {
-
+        assignee[name] = null;
     }
     else if (right.type === "Identifier") {
-
+        assignee[name] = resolve(state, right.name);
     }
     else if (right.type === "FunctionExpression") {
-
+        assignee[name] = defineFunction(name, state[0].id, right)
     }
     else if (right.type === "CallExpression") {
         if (right.callee.name === "require") {
-
+            assignee[name] = performImport(state, right);
         }
         else {
+            let called_func = resolveFunction(state, right);
 
+            if (called_func instanceof GraphNode) {
+                //TODO: returns flow to lhs, and a function handle could be returned. Making the edge is handled in CallExpression visitor
+            }
+            else { //if the call was to a placeholder (like a library)
+                assignee[name] = called_func;
+            }
         }
     }
     else if (right.type === "MemberExpression") {
-
+        assignee[name] = memberResolution(state, right);
     }
     else if (right.type === "NewExpression") {
         if (right.callee.type === "MemberExpression") {
-
+            assignee[name] =  memberResolution(state, right.callee);
         }
         else if (right.callee.type === "Identifier") {
-
+            //TODO: to properly handle this. {} created, flows to 'this' of target, is assigned to left.
         }
     }
     else if (right.type === "ArrayExpression") {
@@ -281,13 +296,16 @@ function performAssignment(state, left, right) {
 
     }
     else if (right.type === "NumericLiteral") {
-
+        assignee[name] = right;
     }
     else if (right.type === "StringLiteral") {
-
+        assignee[name] = right;
+    }
+    else if (right.type === "BooleanLiteral") {
+        assignee[name] = right;
     }
     else if (right.type === "ObjectExpression") {
-
+        assignee[name] = process_object(state, right);
     }
     else {
         throw new Error(`Unhandled Assignment FROM: ${right.type}`)
@@ -296,36 +314,26 @@ function performAssignment(state, left, right) {
 
 
 module.exports = {
-
-
     /* Functions of the form: function name(args...) { }*/
-    FunctionDeclaration: {
-        enter(path, state) {
-            let id = path.node.scope.uid;
-            console.log("Defining new block with scope: " + id);
-            state.current_scope = state.current_scope.create_subscope(id);
-        },
-        exit(path, state) {
-            state.current_scope = state.current_scope.close_scope();
-        }
-    },
-    FunctionExpression: {
-        enter(path, state) {
-            let id = path.node.scope.uid;
-            console.log("Defining new block with scope: " + id);
-            state.current_scope = state.current_scope.create_subscope(id);
-
-        },
-        exit(path, state) {
-            state.current_scope = state.current_scope.close_scope();
-        }
+    FunctionDeclaration(path, state) {
+        let func_name = path.node.id.name;
+        console.log("At: " + func_name);
+        state[state.length-1].scope[func_name] = defineFunction(func_name, state[0].id, path.node)
     },
 
+    /* Entering and leaving blocks */
+    BlockStatement: {
+      enter(path, state) {
+          state.push({id: path.scope.uid, scope: {}})
+      },
+      exit(path, state) {
+          state.pop()
+      }
+    },
 
     VariableDeclaration(path, state) {
         path.node.declarations.forEach((decl) => {
-            //TODO: decl.init is a node, needs to be unwrapped
-            let {scope, values} = state.current_scope.define(decl.id, decl.init);
+            performAssignment(state, decl.id, decl.init);
         })
     },
 
