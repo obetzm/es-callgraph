@@ -6,8 +6,10 @@ let {CallGraph,GraphEdge} = require("./call_graph");
 let {draw_graph} = require("./draw_graph");
 let babel = require("@babel/core");
 let traverse = require("@babel/traverse");
-let cg_visitor = require("./analysis_rewrite/babel_visitor");
+let cg_visitor = require("./babel_constraint_generator");
 let {FunctionScope} = require("./scope");
+let constraint_solver = require("./constraint_solver");
+
 
 function main(directories) {
     let files = find_serverless_files(directories);
@@ -40,16 +42,16 @@ function main(directories) {
                 calls: []
             }
         };
+        toplevel_scope.bootstrap_toplevel(state, transformed_file.ast);
+
         traverse.default(transformed_file.ast, cg_visitor, undefined, state);
+
+        constraint_solver(state);
+
         console.log("FINAL SCOPE FOR " + id + ": ");
-        console.log(toplevel_scope);
-        // let entrypoint = toplevel_scope[0].scope.exports[next_event.rep.func];
-        // if ( !entrypoint ) {
-        //     console.log("Warning: could not find entry function configured for this event.")
-        // }
-        // else {
-        //     graph.add_edge(new GraphEdge(next_event, entrypoint));
-        // }
+        console.log(state.toplevel_scope);
+
+
 
     }//while we have files to process
     console.log("Produced graph:\n");

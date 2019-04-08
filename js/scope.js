@@ -1,4 +1,5 @@
 
+let {GraphNode} = require("./call_graph");
 
 class Possibilities {
     constructor(...init) {
@@ -12,6 +13,24 @@ class Possibilities {
         this.push(val)
     }
 
+    receive_possibilities(b) {
+        let value_added = false;
+        if (b instanceof Possibilities) {
+            b.values.forEach((v) => {
+                if (this.values.indexOf(v) === -1) {
+                    this.values.push(v);
+                    value_added = true;
+                }
+            });
+        }
+        else if (this.values.indexOf(b) === -1) {
+            this.values.push(b);
+            value_added = true;
+        }
+
+        return value_added;
+    }
+
     get count() {
         return this.values.length;
     }
@@ -22,7 +41,8 @@ class FunctionScope {
         this.parent = par;
         this.id = id;
         this.children = [];
-        this.declarations = {}
+        this.declarations = {};
+        this.associated_funcs = null;
     }
 
     create_subscope(id) {
@@ -31,8 +51,10 @@ class FunctionScope {
         return new_scope;
     }
 
-    bootstrap_toplevel() {
-        define("exports", new ObjectScope(this, "exports"));
+    bootstrap_toplevel(state, node) {
+        this.associated_funcs = new Possibilities(new GraphNode("lambda", state.file + ".init", false, state.lambda_id, node, state.file));
+        this.define("exports", new ObjectScope(this, "exports"));
+        this.define("exports", new ObjectScope(this, "module"));
     }
 
     close_scope() {
@@ -52,6 +74,7 @@ class FunctionScope {
         let values = (declared_in_this_scope) ? this.declarations[identifier] : new Possibilities();
         if (init) values.push(init);
         this.declarations[identifier] = values;
+        return values;
     }
 
 
@@ -76,9 +99,7 @@ class FunctionScope {
 }
 
 class ObjectScope {
-    constructor(par, id) {
-        this.parent = par;
-        this.id = id;
+    constructor() {
         this.declarations = {}
     }
 
@@ -100,5 +121,6 @@ class ObjectScope {
 
 module.exports = {
   FunctionScope: FunctionScope,
-  ObjectScope: ObjectScope
+  ObjectScope: ObjectScope,
+  Possibilities: Possibilities
 };
