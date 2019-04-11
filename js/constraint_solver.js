@@ -1,7 +1,6 @@
 
 
 function solver(state) {
-    console.log(state.constraints.calls)
     let something_changed = true;
 
     while (something_changed) {

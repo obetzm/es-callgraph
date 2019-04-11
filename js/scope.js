@@ -53,8 +53,12 @@ class FunctionScope {
 
     bootstrap_toplevel(state, node) {
         this.associated_funcs = new Possibilities(new GraphNode("lambda", state.file + ".init", false, state.lambda_id, node, state.file));
-        this.define("exports", new ObjectScope(this, "exports"));
-        this.define("exports", new ObjectScope(this, "module"));
+
+        let export_obj = new ObjectScope();
+        let module_obj = new ObjectScope();
+        module_obj.define("exports", export_obj);
+        this.define("exports", export_obj);
+        this.define("module", module_obj);
     }
 
     close_scope() {
@@ -95,6 +99,10 @@ class FunctionScope {
         let s = this;
         while (s.parent) s = s.parent;
         return s;
+    }
+
+    generate_entrypoint_calls(state) {
+        console.log("Entrypoint is: ")
     }
 }
 

@@ -48,9 +48,9 @@ function main(directories) {
 
         constraint_solver(state);
 
-        console.log("FINAL SCOPE FOR " + id + ": ");
-        console.log(state.toplevel_scope);
+        toplevel_scope.generate_entrypoint_calls(state);
 
+        console.log("FINISHED " + id);
 
 
     }//while we have files to process

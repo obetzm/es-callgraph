@@ -43,8 +43,6 @@ function handle_assignment(state, left, right) {
 
 
 module.exports = {
-
-
     /* Functions of the form: function name(args...) { }*/
     FunctionDeclaration: { //TODO: here and FuncExpr: params declared in inner scope
         enter(path, state) {
@@ -123,6 +121,13 @@ module.exports = {
         let callee = path.node.callee;
         if (callee.type === "MemberExpression" || callee.type === "Identifier") {
             state.constraints.calls.push(new CallConstraint(state.current_scope, ConstraintTarget.make(state.current_scope, callee)));
+        }
+        else if (callee.type === "FunctionExpression") {
+            let func_name = "anonymous";
+            if (callee.id && callee.id.name) func_name = callee.id.name;
+            let this_func = new GraphNode("lambda", func_name, false, state.lambda_id, callee, state.file);
+            callee.cached_func = this_func;
+            CallGraph.instance.add_node(this_func);
         }
         else throw new Error(`Unsupported call type: ${callee.type}`)
 
